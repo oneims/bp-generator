@@ -1,6 +1,15 @@
 import React from "react";
 import Header from "@/components/layouts/editor/Header";
 import Main from "@/components/layouts/Main";
+import HeadingWithContent from "@/components/blocks/HeadingWithContent";
+import { Toolbox } from "../components/Toolbox";
+import { SettingsPanel } from "../components/SettingsPanel";
+import { Container } from "../components/user/Container";
+import { Button } from "../components/user/Button";
+import { Card } from "../components/user/Card";
+import { Text } from "../components/user/Text";
+
+import { Editor, Frame, Element } from "@craftjs/core";
 
 const Boilerplate = () => {
   return (
@@ -15,7 +24,7 @@ const Boilerplate = () => {
                   <h2 className="text-xl font-medium">Edit page</h2>
                 </div>
               </div>
-              <div class="theme-box text-theme-text-light border-t border-theme-border">
+              <div className="theme-box text-theme-text-light border-t border-theme-border">
                 <div className="theme-row bg-theme-panel-dark flex flex-items-center">
                   <div className="theme-column w-full max-w-1/2 bg-theme-panel text-center">
                     <div className="theme-box px-4 py-4 border-r border-theme-border font-normal border-b cursor-pointer">
@@ -69,41 +78,52 @@ const Boilerplate = () => {
                 </div>
               </div>
             </div>
-            <div className="theme-column w-full overflow-y-scroll" style={{ height: "100vh" }}>
-              <div className="pb-10">
-                <div
-                  style={{ width: "100%", height: "200px", borderBottom: "2px solid #eee" }}
-                ></div>
-                <div
-                  style={{
-                    backgroundColor: "#f7f7f7",
-                    width: "100%",
-                    height: "200px",
-                    borderBottom: "2px solid #eee",
-                  }}
-                ></div>
-                <div
-                  style={{ width: "100%", height: "200px", borderBottom: "2px solid #eee" }}
-                ></div>
-                <div
-                  style={{
-                    backgroundColor: "#f7f7f7",
-                    width: "100%",
-                    height: "200px",
-                    borderBottom: "2px solid #eee",
-                  }}
-                ></div>
-                <div
-                  style={{ width: "100%", height: "200px", borderBottom: "2px solid #eee" }}
-                ></div>
-                <div
-                  style={{
-                    backgroundColor: "#f7f7f7",
-                    width: "100%",
-                    height: "200px",
-                    borderBottom: "2px solid #eee",
-                  }}
-                ></div>
+            <div className="overflow-hidden w-full ">
+              <div
+                className="theme-column w-full pb-20 overflow-y-scroll"
+                style={{ height: "100vh" }}
+              >
+                <div className="w-full bg-theme-panel-dark text-theme-text py-1 text-center">
+                  <div className="container mx-auto px-4">
+                    <span className="text-xs block">Powered by OneIMS</span>
+                  </div>
+                </div>
+                <div className="pb-10">
+                  <Editor
+                    indicator={{
+                      success: "#0091ae",
+                      error: "#e34850",
+                      transition: "0s ease",
+                      thickness: 5,
+                    }}
+                    resolver={{ Card, Button, Text, Container, HeadingWithContent }}
+                  >
+                    <Frame>
+                      <Element is={Container} padding={0} background="#fff" canvas>
+                        <HeadingWithContent
+                          heading="Meet The Team"
+                          content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
+                          backgroundColor="white"
+                        />
+                        <HeadingWithContent
+                          heading="Powerful Section Heading to Insure Readability"
+                          content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
+                          backgroundColor="theme-light"
+                        />
+                        <HeadingWithContent
+                          heading="Integrated Marketing Solutions"
+                          content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
+                          backgroundColor="white"
+                        />
+                        <HeadingWithContent
+                          heading="OneIMS Website Grader"
+                          content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
+                          backgroundColor="theme-panel"
+                        />
+                      </Element>
+                    </Frame>
+                  </Editor>
+                </div>
               </div>
             </div>
           </div>

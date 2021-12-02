@@ -21,8 +21,8 @@ export default function App() {
         indicator={{
           success: "#0091ae",
           error: "#e34850",
-          transition: "0.1s ease",
-          thickness: 20,
+          transition: "0s ease",
+          thickness: 5,
         }}
         resolver={{ Card, Button, Text, Container }}
       >

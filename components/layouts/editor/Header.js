@@ -4,7 +4,7 @@ import Infobar from "@/components/parts/Infobar";
 
 const Header = () => {
   return (
-    <header>
+    <header style={{ position: "relative", zIndex: "99999999999999;" }}>
       <Topbar />
       <Infobar />
     </header>
