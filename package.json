@@ -8,12 +8,26 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@craftjs/core": "^0.2.0-beta.0",
+    "@material-ui/core": "^4.12.3",
+    "@mui/material": "^5.2.2",
+    "@mui/styled-engine-sc": "^5.1.0",
+    "bootstrap": "^4.6.0",
     "next": "12.0.4",
+    "nextjs-progressbar": "0.0.9",
+    "prop-types": "^15.7.2",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-bootstrap": "^1.5.2",
+    "react-dom": "17.0.2",
+    "sass": "^1.44.0",
+    "styled-components": "^5.3.3"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.0",
+    "babel-plugin-styled-components": "^1.12.0",
     "eslint": "7",
-    "eslint-config-next": "12.0.4"
+    "eslint-config-next": "12.0.4",
+    "postcss": "^8.4.4",
+    "tailwindcss": "^2.2.19"
   }
 }
