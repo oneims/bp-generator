@@ -23,7 +23,7 @@ const Topbar = () => {
 
           <div className="theme-column px-1">
             <div className="theme-box">
-              <h1 className="text-2xl font-medium">Blueprint Generator</h1>
+              <h1 className="text-2xl font-medium">Page Generator</h1>
             </div>
           </div>
 
