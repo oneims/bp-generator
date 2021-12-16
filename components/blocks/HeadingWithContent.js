@@ -1,25 +1,95 @@
 import React from "react";
 import { useState } from "react";
-import { useNode } from "@craftjs/core";
+import { useNode, useEditor } from "@craftjs/core";
 import { node } from "prop-types";
 import { Textarea, Select, Toggle } from "@/components/core/FormElements";
 import { backgroundColor } from "tailwindcss/defaultTheme";
 
 const HeadingWithContent = ({ backgroundColor, heading, content, borderTop, borderBottom }) => {
+  const { actions, query } = useEditor();
+
   const {
     connectors: { connect, drag },
+    id,
     isActive,
+    isHovered,
+    parent,
     actions: { setProp },
   } = useNode((node) => ({
     isActive: node.events.selected,
+    isHovered: node.events.hovered,
+    parent: node.data.parent,
   }));
+  let parentNode;
+  let indexToAdd;
+  if (!parent) {
+    return;
+  }
+  parentNode = query.node(parent).get();
+  indexToAdd = parentNode.data.nodes.indexOf(id) + 1;
+
   return (
     <section
+      data-id={id}
       className={`cursor-grab py-16 ${borderTop && `border-t-2`} ${
         borderBottom && `border-b-2`
-      } bg-${backgroundColor.value}`}
+      } bg-${backgroundColor.value} ${isActive && `CUSTOM__selected-block`} ${
+        isHovered && `CUSTOM__hovered-block`
+      }`}
       ref={(ref) => connect(drag(ref))}
     >
+      {isHovered && (
+        <div className="absolute top-0 right-0 bg-gray-700 text-white">
+          <div className="flex">
+            <div
+              className="column px-2 py-2 hover:bg-gray-500 cursor-pointer"
+              onClick={() => {
+                const {
+                  data: { type, props },
+                } = query.node(id).get();
+                actions.add(query.createNode(React.createElement(type, props)), parent, indexToAdd);
+                setTimeout(() => {
+                  actions.selectNode(query.node(parent).get().data.nodes[indexToAdd]);
+                }, 10);
+              }}
+            >
+              <div className="clone">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z" />
+                  <path d="M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h8a2 2 0 00-2-2H5z" />
+                </svg>
+              </div>
+            </div>
+
+            <div
+              className="column px-2 py-2 hover:bg-gray-500 cursor-pointer"
+              onClick={() => {
+                actions.delete(id);
+              }}
+            >
+              <div className="delete">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="container mx-auto px-4">
         <div className="theme-box text-center max-w-4xl mx-auto">
           <h1 className="text-7xl font-black mb-8">{heading}</h1>
@@ -47,8 +117,6 @@ const HeadingWithContentSettings = () => {
     borderTop: node.data.props.borderTop,
     borderBottom: node.data.props.borderBottom,
   }));
-
-  console.log(backgroundColor);
 
   const backgroundColorOptions = [
     { label: "White", value: "white" },
@@ -84,13 +152,13 @@ const HeadingWithContentSettings = () => {
       <Toggle
         wrapperClassName="mt-5"
         label="Add Border Top"
-        onClick={(e) => setProp((props) => (props.borderTop = e.target.checked))}
+        onChange={(e) => setProp((props) => (props.borderTop = e.target.checked))}
         value={borderTop}
       />
       <Toggle
         wrapperClassName="mt-5"
         label="Add Border Bottom"
-        onClick={(e) => setProp((props) => (props.borderBottom = e.target.checked))}
+        onChange={(e) => setProp((props) => (props.borderBottom = e.target.checked))}
         value={borderBottom}
       />
     </>

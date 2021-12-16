@@ -127,7 +127,7 @@ export const Toggle = (props) => {
           <div class="cursor-pointer label">
             <input
               type="checkbox"
-              onClick={props.onClick}
+              onChange={props.onChange}
               name={props.name}
               checked={props.value ? `checked` : ``}
               class="toggle border-2 border-theme-primary bg-theme-primary"
