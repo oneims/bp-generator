@@ -15,7 +15,7 @@ const Sidebar = () => {
         name: state.nodes[currentNodeId].data.name,
         settings: state.nodes[currentNodeId].related && state.nodes[currentNodeId].related.settings,
       };
-      console.log(selected);
+      // console.log(selected);
     }
 
     return {
@@ -29,13 +29,26 @@ const Sidebar = () => {
         <div className="theme-column text-theme-text w-full max-w-sm bg-white border-r border-theme-border">
           <div className="theme-box bg-white py-4 px-4">
             <div className="theme-box">
-              <span
-                onClick={() => {
-                  actions.clearEvents();
-                }}
-              >
-                Go Back
-              </span>
+              <div className="text-sm breadcrumbs">
+                <ul>
+                  <li
+                    className="cursor-pointer hover:theme-primary"
+                    onClick={() => {
+                      actions.clearEvents();
+                    }}
+                  >
+                    <span className="text-theme-primary">Home</span>
+                  </li>
+                  <li>
+                    <span
+                      style={{ width: "200px" }}
+                      className="text-gray-400 truncate cursor-not-allowed"
+                    >
+                      {selected.displayName}
+                    </span>
+                  </li>
+                </ul>
+              </div>
               <h2 className="text-xl font-medium">{selected.displayName}</h2>
             </div>
           </div>
@@ -50,11 +63,8 @@ const Sidebar = () => {
           </div>
           <div
             style={{ height: "calc(100vh - 57px - 60px - 125px)" }}
-            className="theme-box py-2 px-4 bg-theme-panel overflow-y-scroll pb-24"
+            className="theme-box py-5 px-4 bg-theme-panel overflow-y-scroll pb-52"
           >
-            <div className="theme-box text-theme-text-light py-4">
-              <h2 className="font-small">Heading</h2>
-            </div>
             {selected.settings && React.createElement(selected.settings)}
           </div>
         </div>
@@ -89,16 +99,7 @@ const Sidebar = () => {
             <div className="theme-row flex flex-wrap -mx-1">
               {Array.from(Array(10).keys()).map((elem, index) => (
                 <div
-                  ref={(ref) =>
-                    connectors.create(
-                      ref,
-                      <HeadingWithContent
-                        heading="Large Heading!"
-                        content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
-                        backgroundColor="white"
-                      />
-                    )
-                  }
+                  ref={(ref) => connectors.create(ref, <HeadingWithContent />)}
                   key={index}
                   className="theme-column mb-4 px-1 w-full max-w-1/3"
                 >

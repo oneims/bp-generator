@@ -31,6 +31,10 @@ module.exports = {
         "theme-light": {
           DEFAULT: "#F6F6F7",
         },
+        "theme-focus-green": {
+          DEFAULT: "#00d0e480",
+          light: "#e5f5f8",
+        },
       },
       maxWidth: {
         "1/4": "25%",
@@ -43,5 +47,5 @@ module.exports = {
   variants: {
     extend: {},
   },
-  plugins: [require("@tailwindcss/typography")],
+  plugins: [require("@tailwindcss/typography"), require("daisyui")],
 };

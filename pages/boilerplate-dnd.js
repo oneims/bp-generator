@@ -43,22 +43,22 @@ const Boilerplate = () => {
                         <HeadingWithContent
                           heading="Meet The Team"
                           content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
-                          backgroundColor="white"
+                          backgroundColor={{ label: "White", value: "white" }}
                         />
                         <HeadingWithContent
                           heading="Powerful Section Heading to Insure Readability"
                           content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
-                          backgroundColor="theme-light"
+                          backgroundColor={{ label: "Light", value: "theme-light" }}
                         />
                         <HeadingWithContent
                           heading="Integrated Marketing Solutions"
                           content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
-                          backgroundColor="white"
+                          backgroundColor={{ label: "White", value: "white" }}
                         />
                         <HeadingWithContent
                           heading="OneIMS Website Grader"
                           content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
-                          backgroundColor="theme-panel"
+                          backgroundColor={{ label: "Light", value: "theme-light" }}
                         />
                       </Element>
                     </Frame>
