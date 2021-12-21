@@ -6,17 +6,6 @@ import { SelectorIcon } from "@heroicons/react/solid";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import PropTypes from "prop-types";
-import {
-  FaBold,
-  FaItalic,
-  FaListUl,
-  FaListOl,
-  FaParagraph,
-  FaHeading,
-  FaUndo,
-  FaRedo,
-  FaQuoteLeft,
-} from "react-icons/fa";
 
 export const Textarea = (props) => {
   return (
