@@ -15,6 +15,43 @@
   }
 }
 
+// .rich-text-editor {
+//   background-color: #fff;
+//   border: 3px solid #0d0d0d;
+//   border-radius: 0.75rem;
+//   color: #0d0d0d;
+//   display: flex;
+//   flex-direction: column;
+//   max-height: 26rem;
+//   &__header {
+//     align-items: center;
+//     border-bottom: 3px solid #0d0d0d;
+//     display: flex;
+//     flex: 0 0 auto;
+//     flex-wrap: wrap;
+//     padding: 0.25rem;
+//     button {
+//       background-color: transparent;
+//       border: none;
+//       border-radius: 2px;
+//       color: #0d0d0d;
+//       margin-right: 0.25rem;
+//       padding: 0.25rem 0.5rem;
+//       &.is-active {
+//         background-color: #0d0d0d;
+//         color: #fff;
+//       }
+//     }
+//   }
+//   &__content {
+//     flex: 1 1 auto;
+//     overflow-x: hidden;
+//     overflow-y: auto;
+//     min-height: 200px;
+//     // padding: 1.25rem 1rem;
+//   }
+// }
+
 .CUSTOM {
   &__selected-block,
   &__hovered-block {
@@ -26,5 +63,54 @@
   }
   &__hovered-block {
     outline: 2px solid #7fd1de;
+  }
+  &__rich-text-editor {
+    color: #33475b;
+    &__header {
+      align-items: center;
+      display: flex;
+      flex: 0 0 auto;
+      flex-wrap: wrap;
+      padding: 0.25rem;
+      button {
+        transition: all 150ms ease-out 0s;
+        background-color: transparent;
+        border: none;
+        border-radius: 3px;
+        color: #0d0d0d;
+        height: 1.75rem;
+        margin-right: 0.25rem;
+        padding: 0.25rem;
+        width: 1.75rem;
+        border: 1px solid transparent;
+        svg {
+          fill: #425b76;
+          width: 18px;
+          height: 18px;
+        }
+        &:not(.is-active) {
+          &:hover {
+            transition: all 150ms ease-out 0s;
+            background-color: #f7f7f7;
+            border: 1px solid rgb(153, 172, 194);
+          }
+        }
+        &.is-active {
+          background: rgb(203, 214, 226);
+          border: 1px solid rgb(153, 172, 194);
+          border-radius: 3px;
+          display: inline-block;
+          height: 27px;
+          padding: 0px 4px;
+          vertical-align: middle;
+          transition: all 150ms ease-out 0s;
+        }
+      }
+    }
+    &__content-editable {
+      min-height: 14rem;
+      max-height: 18rem;
+      overflow-y: scroll;
+    }
   }
 }

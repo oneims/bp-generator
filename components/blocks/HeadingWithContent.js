@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { useNode, useEditor } from "@craftjs/core";
 import { node } from "prop-types";
-import { Textarea, Select, Toggle } from "@/components/core/FormElements";
+import { Textarea, Select, Toggle, Richtext } from "@/components/core/FormElements";
 import { backgroundColor } from "tailwindcss/defaultTheme";
 
 const HeadingWithContent = ({ backgroundColor, heading, content, borderTop, borderBottom }) => {
@@ -161,6 +161,7 @@ const HeadingWithContentSettings = () => {
         onChange={(e) => setProp((props) => (props.borderBottom = e.target.checked))}
         value={borderBottom}
       />
+      <Richtext wrapperClassName="mt-5" label="Rich Text" />
     </>
   );
 };
