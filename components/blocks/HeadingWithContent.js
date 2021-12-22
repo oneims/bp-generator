@@ -31,9 +31,9 @@ const HeadingWithContent = ({ backgroundColor, heading, content, borderTop, bord
   return (
     <section
       data-id={id}
-      className={`cursor-grab py-16 ${borderTop && `border-t-2`} ${
-        borderBottom && `border-b-2`
-      } bg-${backgroundColor.value} ${isActive && `CUSTOM__selected-block`} ${
+      className={`cursor-grab py-16 ${borderTop && `THEME__border-top`} ${
+        borderBottom && `THEME__border-bottom`
+      } THEME__bg-${backgroundColor.value} ${isActive && `CUSTOM__selected-block`} ${
         isHovered && `CUSTOM__hovered-block`
       }`}
       ref={(ref) => connect(drag(ref))}
@@ -90,9 +90,9 @@ const HeadingWithContent = ({ backgroundColor, heading, content, borderTop, bord
           </div>
         </div>
       )}
-      <div className="container mx-auto px-4">
-        <div className="theme-box text-center max-w-4xl mx-auto">
-          <h1 className="text-7xl font-black mb-8">{heading}</h1>
+      <div className="container">
+        <div className="THEME__mw-800 mx-auto text-center">
+          <h1 className="">{heading}</h1>
         </div>
         <div className="theme-box prose mx-auto text-center">
           <p>{content}</p>
@@ -120,8 +120,8 @@ const HeadingWithContentSettings = () => {
 
   const backgroundColorOptions = [
     { label: "White", value: "white" },
-    { label: "Gray", value: "theme-light" },
-    { label: "Sky", value: "theme-panel" },
+    { label: "Gray", value: "gray" },
+    { label: "Sky", value: "sky" },
   ];
   const [backgroundSelected, setbackgroundSelected] = useState(backgroundColor);
 

@@ -125,14 +125,14 @@ export const Toggle = (props) => {
             </label>
           </div>
         )}
-        <div class="form-control">
-          <div class="cursor-pointer label">
+        <div className="form-control">
+          <div className="cursor-pointer label">
             <input
               type="checkbox"
               onChange={props.onChange}
               name={props.name}
               checked={props.value ? `checked` : ``}
-              class={`toggle border-2 border-gray-600 bg-gray-600 ${
+              className={`toggle border-2 border-gray-600 bg-gray-600 ${
                 props.value && `border-theme-primary bg-theme-primary`
               }`}
             />

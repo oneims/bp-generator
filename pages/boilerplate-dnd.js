@@ -37,7 +37,7 @@ const Boilerplate = () => {
                       <span className="text-xs block">Powered by OneIMS</span>
                     </div>
                   </div>
-                  <div className="pb-10">
+                  <div className="pb-10 BS_ENABLED">
                     <Frame>
                       <Element is={Container} padding={0} background="#fff" canvas>
                         <HeadingWithContent
@@ -48,7 +48,7 @@ const Boilerplate = () => {
                         <HeadingWithContent
                           heading="Powerful Section Heading to Insure Readability"
                           content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
-                          backgroundColor={{ label: "Light", value: "theme-light" }}
+                          backgroundColor={{ label: "Gray", value: "gray" }}
                         />
                         <HeadingWithContent
                           heading="Integrated Marketing Solutions"
@@ -58,7 +58,7 @@ const Boilerplate = () => {
                         <HeadingWithContent
                           heading="OneIMS Website Grader"
                           content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
-                          backgroundColor={{ label: "Light", value: "theme-light" }}
+                          backgroundColor={{ label: "Gray", value: "gray" }}
                         />
                       </Element>
                     </Frame>
