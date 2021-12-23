@@ -3,8 +3,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { SelectorIcon } from "@heroicons/react/solid";
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import { EditorContent } from "@tiptap/react";
 import PropTypes from "prop-types";
 
 export const Textarea = (props) => {
@@ -89,7 +88,10 @@ export const Select = (props) => {
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <Listbox.Options className="absolute w-full mt-1 overflow-auto text-base bg-white rounded border border-solid border-gray-200 shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+              <Listbox.Options
+                style={{ zIndex: 9 }}
+                className="absolute w-full mt-1 overflow-auto text-base bg-white rounded border border-solid border-gray-200 shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+              >
                 {options.map((elem, index) => (
                   <Listbox.Option key={index} value={elem}>
                     {({ selected, active }) => (
@@ -239,16 +241,6 @@ const MenuBar = ({ editor }) => {
 };
 
 export const Richtext = (props) => {
-  const editor = useEditor({
-    extensions: [StarterKit],
-    editorProps: {
-      attributes: {
-        class: "prose p-4 focus:outline-none CUSTOM__rich-text-editor__content-editable",
-      },
-    },
-    content: "<p>Hi There! 👋</p>",
-  });
-
   return (
     <>
       <div className={props.wrapperClassName}>
@@ -261,10 +253,10 @@ export const Richtext = (props) => {
         )}
         <div className="CUSTOM__rich-text-editor bg-white bg-clip-padding border border-solid border-gray-300 rounded">
           <div className="CUSTOM__rich-text-editor__header bg-theme-panel-dark rounded-tl rounded-tr text-sm px-4 py-2 border-b border-solid border-gray-300">
-            <MenuBar editor={editor} />
+            <MenuBar editor={props.editor} />
           </div>
           <div className="CUSTOM__rich-text-editor__body bg-white">
-            <EditorContent editor={editor} />
+            <EditorContent editor={props.editor} />
           </div>
         </div>
       </div>

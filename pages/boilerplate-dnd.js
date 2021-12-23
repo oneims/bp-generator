@@ -3,6 +3,7 @@ import Header from "@/components/layouts/editor/Header";
 import Sidebar from "@/components/layouts/editor/Sidebar";
 import Main from "@/components/layouts/Main";
 import HeadingWithContent from "@/components/blocks/HeadingWithContent";
+import SimpleContent from "@/components/blocks/SimpleContent";
 import { Container } from "../components/user/Container";
 import { Button } from "../components/user/Button";
 import { Card } from "../components/user/Card";
@@ -22,7 +23,7 @@ const Boilerplate = () => {
             transition: "0s ease",
             thickness: 5,
           }}
-          resolver={{ Card, Button, Text, Container, HeadingWithContent }}
+          resolver={{ Card, Button, Text, Container, HeadingWithContent, SimpleContent }}
         >
           <Main>
             <div className="theme-row flex">
@@ -60,6 +61,7 @@ const Boilerplate = () => {
                           content="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
                           backgroundColor={{ label: "Gray", value: "gray" }}
                         />
+                        <SimpleContent />
                       </Element>
                     </Frame>
                     <div className="w-full bg-gray-900 text-white py-2 text-center">

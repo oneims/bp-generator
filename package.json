@@ -19,6 +19,7 @@
     "@tiptap/starter-kit": "^2.0.0-beta.163",
     "bootstrap": "^4.6.0",
     "daisyui": "^1.16.6",
+    "html-react-parser": "^1.4.4",
     "next": "12.0.4",
     "nextjs-progressbar": "0.0.9",
     "prop-types": "^15.7.2",

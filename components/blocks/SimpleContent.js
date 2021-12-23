@@ -3,8 +3,11 @@ import { useState } from "react";
 import { useNode, useEditor } from "@craftjs/core";
 import { node } from "prop-types";
 import { Textarea, Select, Toggle, Richtext } from "@/components/core/FormElements";
+import parse from "html-react-parser";
+import { useEditor as useRichTextEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 
-const HeadingWithContent = ({ backgroundColor, heading, content, borderTop, borderBottom }) => {
+const SimpleContent = ({ backgroundColor, borderTop, borderBottom, maxWidth, content }) => {
   const { actions, query } = useEditor();
 
   const {
@@ -90,31 +93,26 @@ const HeadingWithContent = ({ backgroundColor, heading, content, borderTop, bord
         </div>
       )}
       <div className="container">
-        <div className="THEME__mw-800 mx-auto text-center">
-          <h1 className="">{heading}</h1>
-        </div>
-        <div className="theme-box prose mx-auto text-center">
-          <p>{content}</p>
-        </div>
+        <div className={`mx-auto THEME__mw-${maxWidth.value}`}>{parse(content)}</div>
       </div>
     </section>
   );
 };
 
-const HeadingWithContentSettings = () => {
+const SimpleContentSettings = () => {
   const {
     actions: { setProp },
-    heading,
-    content,
     backgroundColor,
     borderTop,
     borderBottom,
+    maxWidth,
+    content,
   } = useNode((node) => ({
-    heading: node.data.props.heading,
-    content: node.data.props.content,
     backgroundColor: node.data.props.backgroundColor,
     borderTop: node.data.props.borderTop,
     borderBottom: node.data.props.borderBottom,
+    maxWidth: node.data.props.maxWidth,
+    content: node.data.props.content,
   }));
 
   const backgroundColorOptions = [
@@ -123,6 +121,30 @@ const HeadingWithContentSettings = () => {
     { label: "Sky", value: "sky" },
   ];
   const [backgroundSelected, setbackgroundSelected] = useState(backgroundColor);
+
+  const maxWidthOptions = [
+    { label: "Default", value: "default" },
+    { label: "500", value: "500" },
+    { label: "600", value: "600" },
+    { label: "700", value: "700" },
+    { label: "800", value: "800" },
+    { label: "900", value: "900" },
+    { label: "1000", value: "1000" },
+  ];
+  const [maxWidthSelected, setmaxWidthSelected] = useState(maxWidth);
+
+  const richTextEditor = useRichTextEditor({
+    extensions: [StarterKit],
+    editorProps: {
+      attributes: {
+        class: "prose p-4 focus:outline-none CUSTOM__rich-text-editor__content-editable",
+      },
+    },
+    content: content,
+    onUpdate({ editor }) {
+      setProp((props) => (props.content = editor.getHTML()));
+    },
+  });
 
   return (
     <>
@@ -134,20 +156,19 @@ const HeadingWithContentSettings = () => {
         }}
         value={backgroundSelected}
       />
-      <Textarea
+
+      <Select
         wrapperClassName="mt-5"
-        label="Heading"
-        onChange={(e) => setProp((props) => (props.heading = e.target.value))}
-        value={heading}
-        placeholder="Add Content"
+        label="Maximum Width"
+        options={maxWidthOptions}
+        onChange={(value) => {
+          setmaxWidthSelected(value), setProp((props) => (props.maxWidth = value));
+        }}
+        value={maxWidthSelected}
       />
-      <Textarea
-        wrapperClassName="mt-5"
-        label="Content"
-        onChange={(e) => setProp((props) => (props.content = e.target.value))}
-        value={content}
-        placeholder="Add Content"
-      />
+
+      <Richtext wrapperClassName="mt-5" label="Rich Text" editor={richTextEditor} />
+
       <Toggle
         wrapperClassName="mt-5"
         label="Add Border Top"
@@ -164,19 +185,18 @@ const HeadingWithContentSettings = () => {
   );
 };
 
-HeadingWithContent.craft = {
-  displayName: "Heading With Content",
+SimpleContent.craft = {
+  displayName: "Simple Content",
   props: {
-    heading: "Large Heading!",
-    content:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.",
     backgroundColor: { label: "White", value: "white" },
+    maxWidth: { label: "Default", value: "default" },
     borderTop: false,
     borderBottom: false,
+    content: `<h2>Simple Heading</h2><p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>`,
   },
   related: {
-    settings: HeadingWithContentSettings,
+    settings: SimpleContentSettings,
   },
 };
 
-export default HeadingWithContent;
+export default SimpleContent;
