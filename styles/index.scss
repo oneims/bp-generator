@@ -16,6 +16,12 @@
 }
 
 .CUSTOM {
+  &__z-index-high {
+    z-index: 5000000000;
+  }
+  &__z-index-most-high {
+    z-index: 50000000000;
+  }
   &__selected-block,
   &__hovered-block {
     position: relative;
@@ -74,6 +80,33 @@
       min-height: 14rem;
       max-height: 18rem;
       overflow-y: scroll;
+    }
+  }
+}
+
+.COMPONENT {
+  &__drawer {
+    transition: 0.2s ease;
+    transform: translateX(500px);
+    pointer-events: none;
+    visibility: hidden;
+    &-active {
+      transition: 0.2s ease;
+      transform: translateX(0);
+      pointer-events: all;
+      visibility: visible;
+    }
+  }
+  &__tint {
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.2s ease;
+    &-active {
+      visibility: visible;
+      opacity: 1;
+      transition: 0.2s ease;
+      pointer-events: all;
     }
   }
 }

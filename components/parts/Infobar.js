@@ -1,6 +1,8 @@
 import React from "react";
+import { useAppContext } from "@/context/AppWrapper";
 
 const Infobar = () => {
+  const { handlers } = useAppContext();
   return (
     <div className="py-3 bg-white text-theme-text border-b border-theme-border">
       <div className="theme-container mx-auto px-4">
@@ -9,6 +11,7 @@ const Infobar = () => {
             <div className="theme-row flex items-center -mx-1">
               <div className="theme-column px-1">
                 <button
+                  onClick={handlers.handleDrawer}
                   type="button"
                   className="px-6 py-2 rounded border border-theme-border bg-theme-panel text-xs"
                 >

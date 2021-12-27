@@ -4,14 +4,17 @@ import Sidebar from "@/components/layouts/editor/Sidebar";
 import Main from "@/components/layouts/Main";
 import HeadingWithContent from "@/components/blocks/HeadingWithContent";
 import SimpleContent from "@/components/blocks/SimpleContent";
+import Drawer from "@/components/parts/Drawer";
 import { Container } from "../components/user/Container";
 import { Button } from "../components/user/Button";
 import { Card } from "../components/user/Card";
 import { Text } from "../components/user/Text";
+import { useAppContext } from "@/context/AppWrapper";
 
 import { Editor, Frame, Element } from "@craftjs/core";
 
 const Boilerplate = () => {
+  const { globalState } = useAppContext();
   return (
     <>
       <div className="h-screen overflow-hidden">
@@ -76,6 +79,7 @@ const Boilerplate = () => {
           </Main>
         </Editor>
       </div>
+      <Drawer active={globalState.drawerOpen} />
     </>
   );
 };

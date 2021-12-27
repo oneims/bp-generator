@@ -93,7 +93,9 @@ const SimpleContent = ({ backgroundColor, borderTop, borderBottom, maxWidth, con
         </div>
       )}
       <div className="container">
-        <div className={`mx-auto THEME__mw-${maxWidth.value}`}>{parse(content)}</div>
+        <div className={`mx-auto prose max-w-full THEME__mw-${maxWidth.value}`}>
+          {parse(content)}
+        </div>
       </div>
     </section>
   );
