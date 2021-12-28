@@ -109,6 +109,36 @@
       pointer-events: all;
     }
   }
+  &__table {
+    thead {
+      th {
+        font-weight: 500;
+        font-size: 12px;
+        background-color: rgb(245, 248, 250);
+        color: rgb(51, 71, 91);
+        height: 44px;
+        padding: 8px 24px 4px;
+        text-align: left;
+        text-transform: uppercase;
+        vertical-align: middle;
+      }
+    }
+    tbody {
+      td {
+        hyphens: auto;
+        height: 72px;
+        overflow-wrap: break-word;
+        padding: 16px 24px;
+        vertical-align: middle;
+        border-color: rgb(223, 227, 235) !important;
+        border-style: solid;
+        border-width: 1px 0px 0px;
+      }
+      tr {
+        transition: background-color 150ms ease-out 0s;
+      }
+    }
+  }
 }
 
 // ******Block styles -- Bootstrap enabled ******
