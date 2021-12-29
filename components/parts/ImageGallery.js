@@ -38,7 +38,7 @@ const ImageGallery = () => {
       </div>
       <div className="flex flex-wrap -mx-2">
         {Array.from(Array(11).keys()).map((elem, index) => (
-          <div className="w-1/3 px-2 mb-3">
+          <div className="w-1/3 px-2 mb-3" key={index}>
             <div
               onClick={() =>
                 selectImage(
@@ -57,7 +57,7 @@ const ImageGallery = () => {
           </div>
         ))}
         {Array.from(Array(10).keys()).map((elem, index) => (
-          <div className="w-1/3 px-2 mb-3">
+          <div className="w-1/3 px-2 mb-3" key={index}>
             <div
               onClick={() =>
                 selectImage(

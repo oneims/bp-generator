@@ -12,7 +12,7 @@ export default function App() {
       <Main>
         <PageTitle title="Client Name" className="text-center" />
         <ContentWrapper className="max-w-lg pt-9">
-          <Link href="/blueprint-designer">
+          <Link href="/blueprint-designer" passHref>
             <div className="cursor-pointer card shadow-lg mb-5 text-theme-text border-2 border-theme-border">
               <div className="card-body">
                 <h2 className="card-title">Blueprint Designer</h2>
@@ -35,7 +35,7 @@ export default function App() {
                 type="button"
                 className="px-6 py-2 mt-4 w-max rounded border border-theme-border bg-theme-panel-dark text-theme-text-light text-sm"
               >
-                Access
+                Coming Soon
               </button>
             </div>
           </div>
