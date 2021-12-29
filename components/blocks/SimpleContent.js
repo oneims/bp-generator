@@ -2,12 +2,20 @@ import React from "react";
 import { useState } from "react";
 import { useNode, useEditor } from "@craftjs/core";
 import { node } from "prop-types";
-import { Textarea, Select, Toggle, Richtext } from "@/components/core/FormElements";
+import { Select, Toggle, Richtext, ImageField } from "@/components/core/FormElements";
 import parse from "html-react-parser";
 import { useEditor as useRichTextEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
-const SimpleContent = ({ backgroundColor, borderTop, borderBottom, maxWidth, content }) => {
+const SimpleContent = ({
+  backgroundColor,
+  borderTop,
+  borderBottom,
+  maxWidth,
+  content,
+  image,
+  imageTwo,
+}) => {
   const { actions, query } = useEditor();
 
   const {
@@ -95,6 +103,8 @@ const SimpleContent = ({ backgroundColor, borderTop, borderBottom, maxWidth, con
       <div className="container">
         <div className={`mx-auto prose max-w-full THEME__mw-${maxWidth.value}`}>
           {parse(content)}
+          {image && <img src={image.url} alt={image.alt} />}
+          {imageTwo && <img src={imageTwo.url} alt={imageTwo.alt} />}
         </div>
       </div>
     </section>
@@ -109,12 +119,16 @@ const SimpleContentSettings = () => {
     borderBottom,
     maxWidth,
     content,
+    image,
+    imageTwo,
   } = useNode((node) => ({
     backgroundColor: node.data.props.backgroundColor,
     borderTop: node.data.props.borderTop,
     borderBottom: node.data.props.borderBottom,
     maxWidth: node.data.props.maxWidth,
     content: node.data.props.content,
+    image: node.data.props.image,
+    imageTwo: node.data.props.imageTwo,
   }));
 
   const backgroundColorOptions = [
@@ -182,6 +196,22 @@ const SimpleContentSettings = () => {
         label="Add Border Bottom"
         onChange={(e) => setProp((props) => (props.borderBottom = e.target.checked))}
         value={borderBottom}
+      />
+      <ImageField
+        wrapperClassName="mt-5"
+        label="Image"
+        image={image}
+        name="image"
+        handleRemove={() => setProp((props) => (props.image = null))}
+        onChange={(e) => setProp((props) => (props.image.alt = e.target.value))}
+      />
+      <ImageField
+        wrapperClassName="mt-5"
+        label="Image Two"
+        image={imageTwo}
+        name="imageTwo"
+        handleRemove={() => setProp((props) => (props.imageTwo = null))}
+        onChange={(e) => setProp((props) => (props.imageTwo.alt = e.target.value))}
       />
     </>
   );

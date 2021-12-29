@@ -5,6 +5,7 @@ import Main from "@/components/layouts/Main";
 import HeadingWithContent from "@/components/blocks/HeadingWithContent";
 import SimpleContent from "@/components/blocks/SimpleContent";
 import Drawer from "@/components/parts/Drawer";
+import ImageGallery from "@/components/parts/ImageGallery";
 import { Container } from "@/components/blocks/Container";
 import { useAppContext } from "@/context/AppWrapper";
 
@@ -74,9 +75,11 @@ const Boilerplate = () => {
               </div>
             </div>
           </Main>
+          <Drawer active={globalState.drawerOpen}>
+            <ImageGallery />
+          </Drawer>
         </Editor>
       </div>
-      <Drawer active={globalState.drawerOpen} />
     </>
   );
 };

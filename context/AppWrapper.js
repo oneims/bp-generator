@@ -5,20 +5,22 @@ const AppContext = createContext();
 export function AppWrapper({ children }) {
   const [globalState, setGlobalState] = useState({
     drawerOpen: false,
+    imageGalleryFieldSelected: null,
   });
 
   const handlers = {
-    handleDrawer: () => {
-      console.log("clicked");
+    handleDrawer: (value) => {
       if (globalState.drawerOpen) {
         setGlobalState({
           ...globalState,
           drawerOpen: false,
+          imageGalleryFieldSelected: null,
         });
       } else {
         setGlobalState({
           ...globalState,
           drawerOpen: true,
+          imageGalleryFieldSelected: value,
         });
       }
     },

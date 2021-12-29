@@ -4,6 +4,7 @@ import { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
 import { SelectorIcon } from "@heroicons/react/solid";
 import { EditorContent } from "@tiptap/react";
+import { useAppContext } from "@/context/AppWrapper";
 import PropTypes from "prop-types";
 
 export const Textarea = (props) => {
@@ -259,6 +260,94 @@ export const Richtext = (props) => {
             <EditorContent editor={props.editor} />
           </div>
         </div>
+      </div>
+    </>
+  );
+};
+
+export const ImageField = (props) => {
+  const { handlers } = useAppContext();
+  return (
+    <>
+      <div className={props.wrapperClassName}>
+        {props.label && (
+          <div className="mb-2 flex items-center justify-between">
+            <label className="text-theme-text-light font-small block" htmlFor={props.name}>
+              {props.label}
+            </label>
+            {props.image && (
+              <div>
+                <span
+                  onClick={props.handleRemove}
+                  className="text-theme-notify block text-xs cursor-pointer hover:underline"
+                >
+                  Remove
+                </span>
+              </div>
+            )}
+          </div>
+        )}
+        {props.image ? (
+          <>
+            <div
+              onClick={() => handlers.handleDrawer(props.name)}
+              className="bg-theme-panel-dark h-48 cursor-pointer mt-2 w-full relative rounded COMPONENT__image-preview"
+            >
+              <div className="flex h-full justify-center items-center flex-col">
+                <img
+                  className="max-w-full max-h-full"
+                  src={props.image.url}
+                  alt={props.image.alt}
+                />
+                <div className="COMPONENT__image-preview__tint">
+                  <span className="text-white text-sm">Replace</span>
+                </div>
+              </div>
+            </div>
+            <div className="mt-4">
+              <div className="mb-2">
+                <label className="text-theme-text-light font-small block">Alt Text</label>
+              </div>
+              <TextareaAutosize
+                className="form-control
+                block
+                w-full
+                px-3
+                py-1.5
+                text-base
+                font-normal
+                text-gray-700
+                bg-white bg-clip-padding
+                border border-solid border-gray-300
+                rounded
+                transition
+                ease-in-out
+                m-0
+                focus:text-gray-700 focus:bg-white focus:border-theme-focus-green focus__shadow-green focus:border-8 focus:outline-none"
+                name={props.name}
+                type="textarea"
+                onChange={props.onChange}
+                value={props.image.alt}
+                placeholder={props.placeholder}
+                style={{ resize: "none" }}
+              />
+            </div>
+          </>
+        ) : (
+          <div
+            onClick={() => handlers.handleDrawer(props.name)}
+            className="bg-theme-panel-dark h-48 cursor-pointer mt-2 w-full rounded border-theme-border border-2 border-dotted"
+          >
+            <div className="flex h-full justify-center items-center flex-col">
+              <button
+                type="button"
+                className="px-6 py-2 rounded border border-theme-border bg-theme-panel-dark text-theme-text-light text-sm"
+              >
+                Browse Images
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

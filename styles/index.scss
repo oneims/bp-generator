@@ -139,6 +139,38 @@
       }
     }
   }
+  &__image-preview {
+    background-color: #fff;
+    background-image: linear-gradient(45deg, #eee 25%, transparent 0, transparent 75%, #eee 0, #eee),
+      linear-gradient(45deg, #eee 25%, transparent 0, transparent 75%, #eee 0, #eee);
+    background-size: 20px 20px;
+    background-position: 0 0, 10px 10px;
+    border: 1px solid #eaf0f6;
+    &__tint {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: RGB(37 51 66 / 70%);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+      opacity: 0;
+      transition: 0.2s ease;
+      border-radius: 4px;
+    }
+    &:hover {
+      .COMPONENT__image-preview__tint {
+        opacity: 1;
+        transition: 0.2s ease;
+      }
+    }
+  }
 }
 
 // ******Block styles -- Bootstrap enabled ******

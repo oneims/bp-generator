@@ -45,7 +45,12 @@ const Drawer = (props) => {
             </div>
           </div>
         </div>
-        <div className="COMPONENT__drawer__body h-full px-6 py-5"></div>
+        <div
+          className="COMPONENT__drawer__body h-full px-6 py-5 overflow-y-scroll"
+          style={{ maxHeight: "calc(100vh - 80px)" }}
+        >
+          {props.children}
+        </div>
         <div className="COMPONENT__drawer__footer px-6 py-5 bg-theme-panel border-t-2 border-theme-border">
           <div className="flex">
             <button
