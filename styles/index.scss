@@ -85,6 +85,16 @@
 }
 
 .COMPONENT {
+  &__editor {
+    > div {
+      &:first-child {
+        min-height: 80vh;
+      }
+    }
+    &__frame {
+      min-height: 80vh;
+    }
+  }
   &__drawer {
     transition: 0.2s ease;
     transform: translateX(500px);
@@ -111,6 +121,8 @@
   }
   &__table {
     thead {
+      position: relative;
+      z-index: 3;
       th {
         font-weight: 500;
         font-size: 12px;
@@ -133,9 +145,15 @@
         border-color: rgb(223, 227, 235) !important;
         border-style: solid;
         border-width: 1px 0px 0px;
+        background-color: transparent;
       }
       tr {
+        background-color: #fff;
         transition: background-color 150ms ease-out 0s;
+        &:hover {
+          background-color: #f5f8fa;
+          cursor: pointer;
+        }
       }
     }
   }
@@ -168,6 +186,39 @@
       .COMPONENT__image-preview__tint {
         opacity: 1;
         transition: 0.2s ease;
+      }
+    }
+  }
+}
+
+.craft-layer-node.ROOT {
+  color: #506e91;
+  > div {
+    background-color: transparent;
+    > div {
+      &:first-child {
+        display: none;
+      }
+    }
+    .craft-layer-node {
+      > div {
+        background-color: transparent;
+        > div {
+          cursor: grab;
+          padding: 0.8rem 1rem;
+          border-bottom: 2px solid #cbd6e2;
+          color: #506e91;
+          background-color: transparent !important;
+          &:hover {
+            background-color: #eaf0f6 !important;
+          }
+          &.eMwhEl {
+            background-color: #eaf0f6 !important;
+          }
+          svg {
+            fill: #869aaf !important;
+          }
+        }
       }
     }
   }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "@/components/layouts/editor/Header";
 import Sidebar from "@/components/layouts/editor/Sidebar";
 import Main from "@/components/layouts/Main";
@@ -12,6 +12,13 @@ import { useAppContext } from "@/context/AppWrapper";
 import { Editor, Frame, Element } from "@craftjs/core";
 
 const Boilerplate = () => {
+  const [renderLayers, setRenderLayers] = useState(false);
+  const handleRenderLayers = () => {
+    setTimeout(() => {
+      setRenderLayers(renderLayers ? false : true);
+    }, 50);
+  };
+
   const { globalState } = useAppContext();
   return (
     <>
@@ -28,7 +35,7 @@ const Boilerplate = () => {
         >
           <Main>
             <div className="theme-row flex">
-              <Sidebar />
+              <Sidebar renderLayers={renderLayers} handleRenderLayers={handleRenderLayers} />
               <div className="overflow-hidden w-full ">
                 <div
                   className="theme-column w-full pb-20 overflow-y-scroll"
@@ -39,7 +46,10 @@ const Boilerplate = () => {
                       <span className="text-xs block">Powered by OneIMS</span>
                     </div>
                   </div>
-                  <div className="pb-10 BS_ENABLED">
+                  <div
+                    className="pb-10 BS_ENABLED COMPONENT__editor"
+                    onClick={() => setRenderLayers(false)}
+                  >
                     <Frame>
                       <Element is={Container} padding={0} background="#fff" canvas>
                         <HeadingWithContent
@@ -65,9 +75,10 @@ const Boilerplate = () => {
                         <SimpleContent />
                       </Element>
                     </Frame>
+                    <div></div>
                     <div className="w-full bg-gray-900 text-white py-2 text-center">
                       <div className="container mx-auto px-4">
-                        <span className="text-xs block">© 2021 OneIMS</span>
+                        <span className="text-xs block">© {new Date().getFullYear()} OneIMS</span>
                       </div>
                     </div>
                   </div>

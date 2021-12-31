@@ -22,15 +22,17 @@ const BlueprintDesigner = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Dummy Blueprint</td>
-                  <td>
-                    May 29, 2021<span className="text-xs block">11:55 PM</span>
-                  </td>
-                  <td>
-                    May 29, 2021<span className="text-xs block">11:55 PM</span>
-                  </td>
-                </tr>
+                <Link href="/blueprint-pages">
+                  <tr>
+                    <td>Dummy Blueprint</td>
+                    <td>
+                      May 29, 2021<span className="text-xs block">11:55 PM</span>
+                    </td>
+                    <td>
+                      May 29, 2021<span className="text-xs block">11:55 PM</span>
+                    </td>
+                  </tr>
+                </Link>
                 <tr>
                   <td>Dummy Blueprint</td>
                   <td>
