@@ -8,7 +8,7 @@ const DashboardHeader = (props) => {
       <div className="COMPONENT__header py-3 text-white bg-theme-dark">
         <div className={`container mx-auto px-3 ${props.logoCentered && `flex justify-center`}`}>
           <div className="cursor-pointer">
-            <Link href="/">
+            <Link href="/clients">
               <div>
                 <Logo />
               </div>

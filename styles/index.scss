@@ -214,14 +214,41 @@
       right: 0;
       margin: auto;
     }
-
     .path {
       stroke-dasharray: 1, 200;
       stroke-dashoffset: 0;
-      animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+      animation: dash 1.5s ease-in-out infinite, colorWhite 6s ease-in-out infinite;
       stroke-linecap: round;
     }
+    &-button {
+      .loader {
+        width: 20px;
+      }
+    }
   }
+  &__skeleton-box {
+    position: relative;
+    overflow: hidden;
+    background-color: #e2e8f0;
+    &::after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      transform: translateX(-100%);
+      background-image: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, 0.2) 20%,
+        rgba(255, 255, 255, 0.5) 60%,
+        rgba(255, 255, 255, 0)
+      );
+      animation: shimmer 3s infinite;
+      content: "";
+    }
+  }
+  // New Components here
 }
 
 .craft-layer-node.ROOT {
@@ -294,6 +321,39 @@
   90% {
     stroke: #4f96d3;
   }
+}
+
+@keyframes colorWhite {
+  100%,
+  0% {
+    stroke: #fff;
+  }
+  40% {
+    stroke: #fff;
+  }
+  66% {
+    stroke: #fff;
+  }
+  80%,
+  90% {
+    stroke: #fff;
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+// Utilities
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 // ******Block styles -- Bootstrap enabled ******

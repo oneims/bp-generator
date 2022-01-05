@@ -1,4 +1,5 @@
 module.exports = {
+  // mode: "jit",
   purge: ["./pages/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}"],
   darkMode: false, // or 'media' or 'class'
   theme: {
@@ -6,6 +7,7 @@ module.exports = {
       colors: {
         "theme-primary": {
           DEFAULT: "#4f96d3",
+          hover: "#3776ad",
         },
         "theme-secondary": {
           DEFAULT: "#11284F",
@@ -16,6 +18,7 @@ module.exports = {
         "theme-panel": {
           DEFAULT: "#f5f8fa",
           dark: "#eaf0f6",
+          hover: "#dde6f0",
         },
         "theme-text": {
           DEFAULT: "#33475b",

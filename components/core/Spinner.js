@@ -1,9 +1,13 @@
 import React from "react";
 
-const Spinner = () => {
+const Spinner = (props) => {
   return (
     <>
-      <div className="COMPONENT__spinner">
+      <div
+        className={`COMPONENT__spinner ${props.button && `COMPONENT__spinner-button mr-3`} ${
+          props.white && `COMPONENT__spinner-white`
+        }`}
+      >
         <div className="showbox">
           <div className="loader">
             <svg className="circular" viewBox="25 25 50 50">
@@ -13,7 +17,7 @@ const Spinner = () => {
                 cy="50"
                 r="20"
                 fill="none"
-                strokeWidth="2"
+                strokeWidth={`${props.button ? `4` : `2`}`}
                 strokeMiterlimit="10"
               />
             </svg>

@@ -7,6 +7,45 @@ import { EditorContent } from "@tiptap/react";
 import { useAppContext } from "@/context/AppWrapper";
 import PropTypes from "prop-types";
 
+export const Input = (props) => {
+  return (
+    <>
+      <div className={props.wrapperClassName}>
+        {props.label && (
+          <div className="mb-2">
+            <label className="text-theme-text-light font-small block" htmlFor={props.name}>
+              {props.label}
+            </label>
+          </div>
+        )}
+        <input
+          className="form-control
+          block
+          w-full
+          px-3
+          py-1.5
+          text-base
+          font-normal
+          text-gray-700
+          bg-white bg-clip-padding
+          border border-solid border-gray-300
+          rounded
+          transition
+          ease-in-out
+          m-0
+          focus:text-gray-700 focus:bg-white focus:border-theme-focus-green focus__shadow-green focus:border-8 focus:outline-none"
+          name={props.name}
+          type={props.type}
+          onChange={props.onChange}
+          value={props.value}
+          placeholder={props.placeholder}
+          {...props.register(props.name, { ...props.rest })}
+        />
+      </div>
+    </>
+  );
+};
+
 export const Textarea = (props) => {
   return (
     <>
@@ -33,6 +72,7 @@ export const Textarea = (props) => {
           transition
           ease-in-out
           m-0
+          no-scrollbar
           focus:text-gray-700 focus:bg-white focus:border-theme-focus-green focus__shadow-green focus:border-8 focus:outline-none"
           name={props.name}
           type="textarea"

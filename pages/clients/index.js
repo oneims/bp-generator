@@ -4,11 +4,11 @@ import PageTitle from "@/components/parts/PageTitle";
 import Main from "@/components/layouts/Main";
 import ContentWrapper from "@/components/parts/ContentWrapper";
 import Spinner from "@/components/core/Spinner";
-import { useGetClients } from "@/lib/Fetcher";
+import { useClientsGET } from "@/lib/Fetcher";
 import Link from "next/link";
 
-const Clients = () => {
-  const { data, isLoading, isError } = useGetClients();
+const ClientsIndex = () => {
+  const { data, isLoading, isError } = useClientsGET();
 
   return (
     <>
@@ -40,16 +40,16 @@ const Clients = () => {
                 {data &&
                   data.data.map((elem) => {
                     const { id } = elem;
-                    const { Title } = elem.attributes;
+                    const { title } = elem.attributes;
                     return (
                       <Link key={id} href={`/clients/${id}`}>
                         <tr>
-                          <td>{Title}</td>
+                          <td>{title}</td>
                           <td></td>
                           <td className="text-center">
                             <button
                               type="button"
-                              className="px-6 py-2 w-max rounded border border-theme-border bg-theme-panel-dark text-theme-text-light text-xs"
+                              className="px-6 py-2 w-max rounded border border-theme-border bg-theme-panel-dark text-theme-text-light text-xs hover:bg-theme-panel-hover"
                             >
                               View
                             </button>
@@ -67,4 +67,4 @@ const Clients = () => {
   );
 };
 
-export default Clients;
+export default ClientsIndex;
