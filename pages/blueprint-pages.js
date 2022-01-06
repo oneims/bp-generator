@@ -24,7 +24,7 @@ import {
 
 import { CSS } from "@dnd-kit/utilities";
 
-const blueprintPages = () => {
+const BlueprintPages = () => {
   const [items, setItems] = useState([
     {
       id: 1,
@@ -152,4 +152,4 @@ const SortableItem = (props) => {
   );
 };
 
-export default blueprintPages;
+export default BlueprintPages;

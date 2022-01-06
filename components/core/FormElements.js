@@ -161,7 +161,7 @@ export const Select = (props) => {
                 m-0
                 focus:text-gray-700 focus:bg-white focus:border-theme-focus-green focus__shadow-green focus:border-8 focus:outline-none"
             >
-              <span className="block truncate">{selected.label}</span>
+              <span className="block truncate">{selected && selected.label}</span>
               <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
                 <SelectorIcon className="w-5 h-5 text-gray-400" aria-hidden="true" />
               </span>

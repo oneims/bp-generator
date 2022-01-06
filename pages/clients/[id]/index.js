@@ -10,7 +10,6 @@ import { useRouter } from "next/router";
 
 const ClientSingular = () => {
   const router = useRouter();
-  if (!router.isReady) return null;
   const { id } = router.query;
   const { data, isLoading, isError } = useClientGET(id);
   return (

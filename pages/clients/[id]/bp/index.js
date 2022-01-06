@@ -58,7 +58,9 @@ const BlueprintsIndex = () => {
             isLoading: false,
           }));
           const blueprintId = res.data.data.id;
-          window.location.href = `${router.asPath}/${blueprintId}`;
+          if (typeof window !== "undefined") {
+            window.location.href = `${router.asPath}/${blueprintId}`;
+          }
           // Router.reload(`${router.asPath}/${blueprintId}`);
         })
         .catch((err) => {
@@ -98,7 +100,7 @@ const BlueprintsIndex = () => {
               <h1 className="text-xl font-medium mb-3">Create Blueprints</h1>
               <p className="text-sm mb-1">
                 Create blueprints that prove to be knowledgable for clients. A blueprint may consist
-                of multiple pages and acts as a resource for the client's marketing strategy.
+                of multiple pages and acts as a resource for the client&apos;s marketing strategy.
               </p>
               <button
                 onClick={() => setOpenModal(true)}
@@ -179,7 +181,7 @@ const BlueprintsIndex = () => {
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
                         A blueprint may consist of multiple pages and acts as a resource for the
-                        client's marketing strategy.
+                        client&apos;s marketing strategy.
                       </p>
                     </div>
                     <div className="mt-2">
