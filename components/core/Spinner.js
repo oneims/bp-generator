@@ -4,8 +4,8 @@ const Spinner = (props) => {
   return (
     <>
       <div
-        className={`COMPONENT__spinner ${props.button && `COMPONENT__spinner-button mr-3`} ${
-          props.white && `COMPONENT__spinner-white`
+        className={`COMPONENT__spinner ${props.button ? `COMPONENT__spinner-button mr-3` : ``} ${
+          props.white ? `COMPONENT__spinner-white` : ``
         }`}
       >
         <div className="showbox">

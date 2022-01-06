@@ -7,14 +7,14 @@ import Link from "next/link";
 import Spinner from "@/components/core/Spinner";
 import axios from "axios";
 
-import { Input } from "@/components/core/FormElements";
+import { InputLF } from "@/components/core/FormElements";
 import { Dialog, Transition } from "@headlessui/react";
 import { Sleeper } from "@/lib/Helpers";
 
 import { useForm } from "react-hook-form";
 
 import { useBlueprintsByClientGET } from "@/lib/Fetcher";
-import Router from "next/router";
+// import Router from "next/router";
 import { useRouter } from "next/router";
 
 const BlueprintsIndex = () => {
@@ -58,7 +58,8 @@ const BlueprintsIndex = () => {
             isLoading: false,
           }));
           const blueprintId = res.data.data.id;
-          Router.push(`${router.asPath}/${blueprintId}`);
+          window.location.href = `${router.asPath}/${blueprintId}`;
+          // Router.reload(`${router.asPath}/${blueprintId}`);
         })
         .catch((err) => {
           console.log(err);
@@ -80,16 +81,11 @@ const BlueprintsIndex = () => {
             title="Blueprint Designer"
             clientTitle={data.data.attributes.title}
             renderActionButton
-            onClick={() => setOpenModal(true)}
+            actionsOnClick={() => setOpenModal(true)}
           />
         )}
         {isLoading && (
-          <PageTitle
-            title="Blueprint Designer"
-            clientTitle="Loading"
-            renderActionButton
-            onClick={() => setOpenModal(true)}
-          />
+          <PageTitle title="Blueprint Designer" clientTitle="Loading" renderActionButton />
         )}
         <ContentWrapper>
           {isLoading && (
@@ -189,7 +185,7 @@ const BlueprintsIndex = () => {
                     <div className="mt-2">
                       <form onSubmit={handleSubmit(onSubmit)}>
                         {/* <input type="text" {...register("blueprintName", { required: true })} /> */}
-                        <Input
+                        <InputLF
                           type="text"
                           wrapperClassName="mt-5 text-left"
                           label="Blueprint Name*"

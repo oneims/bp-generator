@@ -7,7 +7,7 @@ import { EditorContent } from "@tiptap/react";
 import { useAppContext } from "@/context/AppWrapper";
 import PropTypes from "prop-types";
 
-export const Input = (props) => {
+export const InputLF = (props) => {
   return (
     <>
       <div className={props.wrapperClassName}>
@@ -38,6 +38,7 @@ export const Input = (props) => {
           type={props.type}
           onChange={props.onChange}
           value={props.value}
+          defaultValue={props.defaultValue}
           placeholder={props.placeholder}
           {...props.register(props.name, { ...props.rest })}
         />
@@ -80,6 +81,48 @@ export const Textarea = (props) => {
           value={props.value}
           placeholder={props.placeholder}
           style={{ resize: "none" }}
+        />
+      </div>
+    </>
+  );
+};
+
+export const TextareaLF = (props) => {
+  return (
+    <>
+      <div className={props.wrapperClassName}>
+        {props.label && (
+          <div className="mb-2">
+            <label className="text-theme-text-light font-small block" htmlFor={props.name}>
+              {props.label}
+            </label>
+          </div>
+        )}
+        <TextareaAutosize
+          className="form-control
+          block
+          w-full
+          px-3
+          py-1.5
+          text-base
+          font-normal
+          text-gray-700
+          bg-white bg-clip-padding
+          border border-solid border-gray-300
+          rounded
+          transition
+          ease-in-out
+          m-0
+          no-scrollbar
+          focus:text-gray-700 focus:bg-white focus:border-theme-focus-green focus__shadow-green focus:border-8 focus:outline-none"
+          name={props.name}
+          type="textarea"
+          onChange={props.onChange}
+          value={props.value}
+          defaultValue={props.defaultValue}
+          placeholder={props.placeholder}
+          style={{ resize: "none" }}
+          {...props.register(props.name, { ...props.rest })}
         />
       </div>
     </>

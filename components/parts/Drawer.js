@@ -18,7 +18,7 @@ const Drawer = (props) => {
         <div className="COMPONENT__drawer__header bg-theme-notify px-6 py-5 text-white">
           <div className="flex justify-between items-center">
             <div>
-              <h2 className="text-xl font-medium">Upload Image</h2>
+              <h2 className="text-xl font-medium">{props.title ? props.title : `Upload Image`}</h2>
             </div>
             <div className="flex justify-between flex-col items-center">
               <button
@@ -57,7 +57,7 @@ const Drawer = (props) => {
               type="button"
               className="px-6 py-2 rounded border border-theme-border bg-theme-panel-dark text-theme-text-light text-sm"
             >
-              Add Image
+              {props.buttonOneTitle ? props.buttonOneTitle : `Add Image`}
             </button>
           </div>
         </div>

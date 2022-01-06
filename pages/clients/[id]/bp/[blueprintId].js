@@ -3,7 +3,15 @@ import DashboardHeader from "@/components/parts/DashboardHeader";
 import PageTitle from "@/components/parts/PageTitle";
 import Main from "@/components/layouts/Main";
 import ContentWrapper from "@/components/parts/ContentWrapper";
+import Drawer from "@/components/parts/Drawer";
+import { useAppContext } from "@/context/AppWrapper";
 import Link from "next/link";
+
+import { useBlueprintByIdGET } from "@/lib/Fetcher";
+import { useRouter } from "next/router";
+
+import { useForm } from "react-hook-form";
+import { InputLF, TextareaLF } from "@/components/core/FormElements";
 
 import {
   DndContext,
@@ -25,6 +33,23 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 
 const BlueprintSingular = () => {
+  const router = useRouter();
+  const { blueprintId, id } = router.query;
+  const { data, isLoading, isError } = useBlueprintByIdGET(blueprintId);
+  const { globalState, handlers } = useAppContext();
+  let attributes, client;
+  if (data) {
+    attributes = data.data.attributes;
+    client = attributes.client.data.attributes;
+  }
+
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm({ mode: "all" });
+
   const [items, setItems] = useState([
     {
       id: 1,
@@ -89,7 +114,25 @@ const BlueprintSingular = () => {
     <>
       <DashboardHeader />
       <Main>
-        <PageTitle title="Blueprint Pages" renderClientName renderActionButton />
+        {data && (
+          <PageTitle
+            title={attributes.title}
+            clientTitle={client.title}
+            clientRoute={`/clients/${id}/bp`}
+            renderActionButton
+            renderOptionsButton
+            optionsOnClick={() => handlers.handleDrawer()}
+          />
+        )}
+        {isLoading && (
+          <PageTitle
+            title="Loading"
+            clientTitle="Loading"
+            renderActionButton
+            renderOptionsButton
+            onClick={() => setOpenModal(true)}
+          />
+        )}
         <ContentWrapper>
           <div className="overflow-x-auto border border-theme-border">
             <table className="COMPONENT__table table w-full text-theme-text text-sm">
@@ -122,6 +165,31 @@ const BlueprintSingular = () => {
           </div>
         </ContentWrapper>
       </Main>
+      <Drawer active={globalState.drawerOpen} title="Blueprint Options" buttonOneTitle="Save">
+        <div className="mb-4">
+          <h2 className="font-medium text-theme-text">Blueprint Settings</h2>
+        </div>
+        {data && (
+          <>
+            <InputLF
+              type="text"
+              wrapperClassName="mt-5 text-left"
+              label="Blueprint Name*"
+              name="blueprintName"
+              defaultValue={attributes.title}
+              register={register}
+              rest={{ required: true }}
+            />
+            <TextareaLF
+              wrapperClassName="mt-5 text-left"
+              label="Blueprint Description"
+              name="blueprintDescription"
+              defaultValue={attributes.description}
+              register={register}
+            />
+          </>
+        )}
+      </Drawer>
     </>
   );
 };
