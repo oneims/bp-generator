@@ -39,6 +39,7 @@ export const InputLF = (props) => {
           onChange={props.onChange}
           value={props.value}
           defaultValue={props.defaultValue}
+          autoComplete="off"
           placeholder={props.placeholder}
           {...props.register(props.name, { ...props.rest })}
         />

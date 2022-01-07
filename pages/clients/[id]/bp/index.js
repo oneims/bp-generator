@@ -62,7 +62,6 @@ const BlueprintsIndex = () => {
           if (typeof window !== "undefined") {
             window.location.href = `${router.asPath}/${blueprintId}`;
           }
-          // Router.reload(`${router.asPath}/${blueprintId}`);
         })
         .catch((err) => {
           console.log(err);
