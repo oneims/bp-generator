@@ -1,4 +1,5 @@
 import React from "react";
+import Spinner from "@/components/core/Spinner";
 import { useAppContext } from "@/context/AppWrapper";
 
 const Drawer = (props) => {
@@ -54,9 +55,17 @@ const Drawer = (props) => {
         <div className="COMPONENT__drawer__footer px-6 py-5 bg-theme-panel border-t-2 border-theme-border">
           <div className="flex">
             <button
+              onClick={props.buttonOneHandler}
               type="button"
-              className="px-6 py-2 rounded border border-theme-border bg-theme-panel-dark text-theme-text-light text-sm"
+              className={`${
+                props.buttonOneLoading
+                  ? `inline-flex justify-center align-center opacity-50 pointer-events-none`
+                  : ``
+              } ${
+                props.buttonOneDisabled ? `opacity-50 pointer-events-none` : ``
+              } px-6 py-2 hover:bg-theme-panel-hover rounded border border-theme-border bg-theme-panel-dark text-theme-text-light text-sm`}
             >
+              {props.buttonOneLoading && <Spinner button />}
               {props.buttonOneTitle ? props.buttonOneTitle : `Add Image`}
             </button>
           </div>

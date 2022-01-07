@@ -7,6 +7,10 @@ import Drawer from "@/components/parts/Drawer";
 import { useAppContext } from "@/context/AppWrapper";
 import Link from "next/link";
 
+import { useSWRConfig } from "swr";
+import axios from "axios";
+import { Sleeper } from "@/lib/Helpers";
+
 import { useBlueprintByIdGET } from "@/lib/Fetcher";
 import { useRouter } from "next/router";
 
@@ -34,9 +38,54 @@ import { CSS } from "@dnd-kit/utilities";
 
 const BlueprintSingular = () => {
   const router = useRouter();
+  const { mutate } = useSWRConfig();
   const { blueprintId, id } = router.query;
   const { data, isLoading, isError } = useBlueprintByIdGET(blueprintId);
   const { globalState, handlers } = useAppContext();
+  const [updateBlueprint, setUpdateBlueprint] = useState({
+    response: null,
+    isLoading: false,
+    isError: null,
+  });
+  const [items, setItems] = useState([
+    {
+      id: 1,
+      orderId: 1,
+      title: "Dummy Page",
+      status: "Draft",
+    },
+    {
+      id: 2,
+      orderId: 2,
+      title: "Dummy Page 2",
+      status: "Draft",
+    },
+    {
+      id: 3,
+      orderId: 3,
+      title: "Dummy Page 3",
+      status: "Published",
+    },
+    {
+      id: 4,
+      orderId: 4,
+      title: "Dummy Page 4",
+      status: "Draft",
+    },
+    {
+      id: 5,
+      orderId: 5,
+      title: "Dummy Page 5",
+      status: "Draft",
+    },
+    {
+      id: 6,
+      orderId: 6,
+      title: "Dummy Page 6",
+      status: "Draft",
+    },
+  ]);
+
   let attributes, client;
   if (data) {
     attributes = data.data.attributes;
@@ -46,42 +95,55 @@ const BlueprintSingular = () => {
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors },
   } = useForm({ mode: "all" });
 
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      orderId: 1,
-      title: "Dummy Page",
-    },
-    {
-      id: 2,
-      orderId: 2,
-      title: "Dummy Page 2",
-    },
-    {
-      id: 3,
-      orderId: 3,
-      title: "Dummy Page 3",
-    },
-    {
-      id: 4,
-      orderId: 4,
-      title: "Dummy Page 4",
-    },
-    {
-      id: 5,
-      orderId: 5,
-      title: "Dummy Page 5",
-    },
-    {
-      id: 6,
-      orderId: 6,
-      title: "Dummy Page 6",
-    },
-  ]);
+  const updateBlueprintMeta = (updatedData) => {
+    setUpdateBlueprint((prevState) => ({ ...prevState, isLoading: true }));
+    const payload = {
+      data: {
+        title: updatedData.blueprintTitle,
+        description: updatedData.blueprintDescription,
+      },
+    };
+    const putPayload = async () => {
+      await axios
+        .put(`${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}`, payload)
+        .then(Sleeper(500))
+        .then((res) => {
+          mutate(
+            `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=pages`,
+            (data) => {
+              return {
+                ...data,
+                data: {
+                  ...data.data,
+                  attributes: {
+                    ...data.data.attributes,
+                    title: updatedData.blueprintTitle,
+                  },
+                },
+              };
+            },
+            false
+          );
+          setUpdateBlueprint((prevState) => ({
+            ...prevState,
+            response: res.data.data,
+            isLoading: false,
+          }));
+          mutate(
+            `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=pages`
+          );
+          handlers.handleDrawer();
+        })
+        .catch((err) => {
+          console.log(err);
+          setUpdateBlueprint((prevState) => ({ ...prevState, isError: true, isLoading: false }));
+        });
+    };
+    putPayload();
+  };
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -156,6 +218,7 @@ const BlueprintSingular = () => {
                         id={elem.id}
                         title={elem.title}
                         order={elem.orderId}
+                        status={elem.status}
                       />
                     ))}
                   </SortableContext>
@@ -165,17 +228,25 @@ const BlueprintSingular = () => {
           </div>
         </ContentWrapper>
       </Main>
-      <Drawer active={globalState.drawerOpen} title="Blueprint Options" buttonOneTitle="Save">
-        <div className="mb-4">
-          <h2 className="font-medium text-theme-text">Blueprint Settings</h2>
-        </div>
-        {data && (
+      {data && (
+        <Drawer
+          active={globalState.drawerOpen}
+          title="Blueprint Options"
+          buttonOneTitle="Save"
+          buttonOneDisabled={errors.blueprintName}
+          buttonOneLoading={updateBlueprint.isLoading}
+          buttonOneHandler={handleSubmit(updateBlueprintMeta)}
+        >
+          <div className="mb-4">
+            <h2 className="font-medium text-theme-text">Blueprint Settings</h2>
+          </div>
+
           <>
             <InputLF
               type="text"
               wrapperClassName="mt-5 text-left"
-              label="Blueprint Name*"
-              name="blueprintName"
+              label="Blueprint Title*"
+              name="blueprintTitle"
               defaultValue={attributes.title}
               register={register}
               rest={{ required: true }}
@@ -188,8 +259,8 @@ const BlueprintSingular = () => {
               register={register}
             />
           </>
-        )}
-      </Drawer>
+        </Drawer>
+      )}
     </>
   );
 };
@@ -208,7 +279,15 @@ const SortableItem = (props) => {
     <tr ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <td>
         {props.title}
-        <span className="text-xs block">Order: {props.order}</span>
+        <span className="text-xs block mb-1 mt-1">Order: {props.order}</span>
+        <span className="text-xs block mt-2">
+          <div
+            className={`indicator w-2 h-2 mr-1 rounded-full ${
+              props.status === "Draft" ? `bg-gray-400` : `bg-green-500`
+            }`}
+          ></div>{" "}
+          {props.status}
+        </span>
       </td>
       <td>
         May 29, 2021<span className="text-xs block">11:55 PM</span>

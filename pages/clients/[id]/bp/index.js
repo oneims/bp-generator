@@ -5,11 +5,12 @@ import Main from "@/components/layouts/Main";
 import ContentWrapper from "@/components/parts/ContentWrapper";
 import Link from "next/link";
 import Spinner from "@/components/core/Spinner";
+
 import axios from "axios";
+import { Sleeper } from "@/lib/Helpers";
 
 import { InputLF } from "@/components/core/FormElements";
 import { Dialog, Transition } from "@headlessui/react";
-import { Sleeper } from "@/lib/Helpers";
 
 import { useForm } from "react-hook-form";
 
@@ -43,7 +44,7 @@ const BlueprintsIndex = () => {
     setNewBlueprint((prevState) => ({ ...prevState, isLoading: true }));
     const payload = {
       data: {
-        title: data.blueprintName,
+        title: data.blueprintTitle,
         client: id,
       },
     };
@@ -72,7 +73,7 @@ const BlueprintsIndex = () => {
   };
 
   useEffect(() => {
-    setError("blueprintName", { type: "required" });
+    setError("blueprintTitle", { type: "required" });
   }, []);
   return (
     <>
@@ -186,12 +187,12 @@ const BlueprintsIndex = () => {
                     </div>
                     <div className="mt-2">
                       <form onSubmit={handleSubmit(onSubmit)}>
-                        {/* <input type="text" {...register("blueprintName", { required: true })} /> */}
+                        {/* <input type="text" {...register("blueprintTitle", { required: true })} /> */}
                         <InputLF
                           type="text"
                           wrapperClassName="mt-5 text-left"
-                          label="Blueprint Name*"
-                          name="blueprintName"
+                          label="Blueprint Title*"
+                          name="blueprintTitle"
                           register={register}
                           rest={{ required: true }}
                         />
@@ -202,7 +203,7 @@ const BlueprintsIndex = () => {
                 <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                   <button
                     type="button"
-                    className={`${errors.blueprintName && `opacity-50 pointer-events-none`} ${
+                    className={`${errors.blueprintTitle && `opacity-50 pointer-events-none`} ${
                       newBlueprint.isLoading && `opacity-50 pointer-events-none`
                     } w-full inline-flex justify-center rounded border border-transparent px-6 py-2 bg-theme-primary font-medium text-white hover:bg-theme-primary-hover sm:ml-3 sm:w-auto sm:text-sm`}
                     onClick={handleSubmit(onSubmit)}
