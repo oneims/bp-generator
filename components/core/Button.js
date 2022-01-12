@@ -11,7 +11,11 @@ const Button = (props) => {
     classList = `border-theme-primary bg-theme-primary text-white`;
   }
   return (
-    <button type="button" className={`px-6 py-2 rounded ${classList} ${props.className}`}>
+    <button
+      type="button"
+      onClick={props.onClick}
+      className={`px-6 py-2 rounded ${classList} ${props.className}`}
+    >
       {props.children}
     </button>
   );

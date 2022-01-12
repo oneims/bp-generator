@@ -114,9 +114,10 @@ const BlueprintSingular = () => {
 
   let attributes, client, pages;
   if (data) {
+    console.log(data);
     attributes = data.data.attributes;
     client = attributes.client.data.attributes;
-    pages = attributes.pages.data;
+    pages = attributes.blueprint_pages.data;
   }
 
   console.log(pages);
@@ -135,7 +136,7 @@ const BlueprintSingular = () => {
         .then(Sleeper(500))
         .then((res) => {
           mutate(
-            `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=pages`,
+            `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=blueprint_pages`,
             (data) => {
               return {
                 ...data,
@@ -156,7 +157,7 @@ const BlueprintSingular = () => {
             isLoading: false,
           }));
           mutate(
-            `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=pages`
+            `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=blueprint_pages`
           );
           handlers.handleDrawer();
         })
@@ -173,14 +174,15 @@ const BlueprintSingular = () => {
     const payload = {
       data: {
         title: pageData.pageTitle,
+        draftTitle: pageData.pageTitle,
         orderId: pages.length > 0 ? pages[pages.length - 1].attributes.orderId + 1 : 1,
         blueprint: blueprintId,
-        publishedAt: null,
+        status: "draft",
       },
     };
     const postPayload = async () => {
       await axios
-        .post(`${process.env.NEXT_PUBLIC_API_URL}/pages/`, payload)
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/blueprint-pages/`, payload)
         .then(Sleeper(500))
         .then((res) => {
           setNewPage((prevState) => ({
@@ -189,7 +191,7 @@ const BlueprintSingular = () => {
             isLoading: false,
           }));
           mutate(
-            `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=pages`
+            `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=blueprint_pages`
           );
           setOpenModal(false);
           resetFieldNewPage("pageTitle");
@@ -282,7 +284,7 @@ const BlueprintSingular = () => {
 
     if (active.id !== over.id) {
       mutate(
-        `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=pages`,
+        `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=blueprint_pages`,
         (data) => {
           const oldIndex = pages.findIndex((x) => x.id === active.id);
           const newIndex = pages.findIndex((x) => x.id === over.id);
@@ -294,8 +296,8 @@ const BlueprintSingular = () => {
               ...data.data,
               attributes: {
                 ...data.data.attributes,
-                pages: {
-                  ...data.data.attributes.pages,
+                blueprint_pages: {
+                  ...data.data.attributes.blueprint_pages,
                   data: movedArray,
                 },
               },
@@ -392,10 +394,11 @@ const BlueprintSingular = () => {
                       {pages.map((elem) => (
                         <SortableItem
                           key={elem.id}
+                          clientId={id}
                           id={elem.id}
                           title={elem.attributes.title}
                           order={elem.attributes.orderId}
-                          status={elem.attributes.publishedAt}
+                          status={elem.attributes.status}
                         />
                       ))}
                     </SortableContext>
@@ -554,6 +557,7 @@ const BlueprintSingular = () => {
 };
 
 const SortableItem = (props) => {
+  const router = useRouter();
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
     id: props.id,
   });
@@ -566,15 +570,15 @@ const SortableItem = (props) => {
   return (
     <tr ref={setNodeRef} style={style} {...attributes} {...listeners}>
       <td>
-        {props.title}
+        <a href={`/clients/${props.clientId}/editor/${props.id}`}>{props.title}</a>
         <span className="text-xs block mb-1 mt-1">Order: {props.order}</span>
         <span className="text-xs block mt-2">
           <div
             className={`indicator w-2 h-2 mr-1 rounded-full ${
-              props.status ? `bg-green-500` : `bg-gray-400`
+              props.status === "published" ? `bg-green-500` : `bg-gray-400`
             }`}
           ></div>{" "}
-          {props.status ? `Published` : `Draft`}
+          {props.status === "published" ? `Published` : `Draft`}
         </span>
       </td>
       <td>
