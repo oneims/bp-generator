@@ -1,4 +1,5 @@
 import React from "react";
+import Spinner from "@/components/core/Spinner";
 import PropTypes from "prop-types";
 
 const Button = (props) => {
@@ -14,8 +15,11 @@ const Button = (props) => {
     <button
       type="button"
       onClick={props.onClick}
-      className={`px-6 py-2 rounded ${classList} ${props.className}`}
+      className={`px-6 py-2 rounded inline-flex justify-center items-center ${classList} ${
+        props.className
+      } ${props.loading ? `opacity-50 pointer-events-none` : ``}`}
     >
+      {props.loading && <Spinner button white xs={props.xs} />}
       {props.children}
     </button>
   );

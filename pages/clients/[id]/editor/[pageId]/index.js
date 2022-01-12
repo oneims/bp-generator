@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "@/components/layouts/editor/Header";
 import Sidebar from "@/components/layouts/editor/Sidebar";
 import Main from "@/components/layouts/Main";
@@ -15,6 +15,7 @@ import { Editor, Frame, Element } from "@craftjs/core";
 import lz from "lzutf8";
 
 // Fetchers
+import Spinner from "@/components/core/Spinner";
 import axios from "axios";
 import { Sleeper } from "@/lib/Helpers";
 import { useRouter } from "next/router";
@@ -40,15 +41,15 @@ const PageEditor = () => {
     }, 50);
   };
   let pageData;
+  let editorState;
   if (data) {
     pageData = data.data.attributes;
-    console.log(lz.decompress(lz.decodeBase64(pageData.draftEditorState)));
-    if (pageData.drafteEditorState) {
-      setJson(lz.decompress(lz.decodeBase64(pageData.draftEditorState)));
-    }
+    editorState = pageData.draftEditorState
+      ? lz.decompress(lz.decodeBase64(pageData.draftEditorState))
+      : pageData.draftEditorState;
   }
 
-  console.log(pageData);
+  // console.log(editorState);
 
   const updatePageDraft = (updatedData) => {
     setUpdatePage((prevState) => ({ ...prevState, isLoading: true }));
@@ -69,13 +70,9 @@ const PageEditor = () => {
             (data) => {
               return {
                 ...data,
-                data: {
-                  ...data.data,
-                  attributes: {
-                    ...data.data.attributes,
-                    title: updatedData.blueprintTitle,
-                  },
-                },
+                draftTitle: updatedData.draftTitle,
+                draftDescription: updatedData.draftDescription,
+                draftEditorState: updatedData.draftEditorState,
               };
             },
             false
@@ -108,6 +105,7 @@ const PageEditor = () => {
           resolver={{ Container, HeadingWithContent, SimpleContent }}
         >
           <Header
+            updatePage={updatePage}
             updatePageDraft={updatePageDraft}
             router={router}
             clientId={id}
@@ -115,7 +113,11 @@ const PageEditor = () => {
           />
           <Main>
             <div className="theme-row flex">
-              <Sidebar renderLayers={renderLayers} handleRenderLayers={handleRenderLayers} />
+              <Sidebar
+                loading={isLoading}
+                renderLayers={renderLayers}
+                handleRenderLayers={handleRenderLayers}
+              />
               <div className="overflow-hidden w-full ">
                 <div
                   className="theme-column w-full pb-20 overflow-y-scroll"
@@ -131,10 +133,23 @@ const PageEditor = () => {
                     onClick={() => setRenderLayers(false)}
                   >
                     {data && (
-                      <Frame data={lz.decompress(lz.decodeBase64(pageData.draftEditorState))}>
-                        <Element is={Container} padding={0} background="#fff" canvas></Element>
-                      </Frame>
+                      <>
+                        <Frame data={editorState}>
+                          <Element is={Container} padding={0} background="#fff" canvas></Element>
+                        </Frame>
+                      </>
                     )}
+                    {isLoading && (
+                      <>
+                        <div
+                          className="flex justify-center items-center flex-col"
+                          style={{ height: "400px" }}
+                        >
+                          <Spinner />
+                        </div>
+                      </>
+                    )}
+
                     <div></div>
                     <div className="w-full bg-gray-900 text-white py-2 text-center">
                       <div className="container mx-auto px-4">

@@ -230,6 +230,11 @@
         animation: dash 1.5s ease-in-out infinite, colorWhite 6s ease-in-out infinite;
       }
     }
+    &-xs {
+      .loader {
+        width: 15px;
+      }
+    }
   }
   &__skeleton-box {
     position: relative;

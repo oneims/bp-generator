@@ -13,7 +13,7 @@ const Topbar = (props) => {
     <div className="py-4 bg-theme-dark text-theme-text-inverted">
       <div className="theme-container mx-auto px-4">
         <div className="theme-row flex items-center -mx-1 justify-between">
-          <div className="theme-column px-1">
+          <div className="theme-column px-1 w-full max-w-3/4 flex justify-start items-center">
             <div className="theme-row flex items-center -mx-1">
               <div className="theme-column px-1">
                 {props.pageData ? (
@@ -39,8 +39,10 @@ const Topbar = (props) => {
                       };
                       props.updatePageDraft(updatedData);
                     }}
+                    loading={props.updatePage.isLoading}
                     variant="dark"
                     className="text-xs"
+                    xs={true}
                   >
                     Save
                   </Button>
@@ -51,7 +53,7 @@ const Topbar = (props) => {
             </div>
           </div>
 
-          <div className="theme-column px-1">
+          <div className="theme-column px-1 w-full flex justify-center items-center">
             <div className="theme-box">
               {props.pageData ? (
                 <h1 className="text-2xl font-medium">{pageData.draftTitle}</h1>
@@ -61,7 +63,7 @@ const Topbar = (props) => {
             </div>
           </div>
 
-          <div className="theme-column px-1">
+          <div className="theme-column px-1 w-full max-w-3/4 flex justify-end items-center">
             <div className="theme-box">
               {props.pageData ? (
                 <Button variant="primary" className="text-xs">
