@@ -11,6 +11,10 @@ import { useAppContext } from "@/context/AppWrapper";
 
 import { Editor, Frame, Element } from "@craftjs/core";
 
+// Static Blocks
+import FrameHeader from "@/components/blocks/static/FrameHeader";
+import FrameFooter from "@/components/blocks/static/FrameFooter";
+
 // Compressor
 import lz from "lzutf8";
 
@@ -86,7 +90,8 @@ const PageEditor = () => {
             response: res.data.data,
             isLoading: false,
           }));
-          if (pendingChanges > 2) {
+          if (pendingChanges > 0) {
+            setCanSave(true);
             setPendingChanges(0);
           } else {
             setCanSave(false);
@@ -105,9 +110,6 @@ const PageEditor = () => {
   const autoSave = () => {
     if (canSave && editorReady) {
       updatePageDraft();
-      setTimeout(() => {
-        console.log(canSave);
-      }, 500);
     }
   };
 
@@ -121,7 +123,7 @@ const PageEditor = () => {
   useEffect(() => {
     let interval = setInterval(() => {
       autoSave();
-    }, 500);
+    }, 1500);
     return () => {
       clearInterval(interval);
       interval = 0;
@@ -167,11 +169,7 @@ const PageEditor = () => {
                   className="theme-column w-full pb-20 overflow-y-scroll"
                   style={{ height: "100vh" }}
                 >
-                  <div className="w-full bg-theme-panel-dark text-theme-text py-1 text-center">
-                    <div className="container mx-auto px-4">
-                      <span className="text-xs block">Powered by OneIMS</span>
-                    </div>
-                  </div>
+                  <FrameHeader />
                   <div
                     className="pb-10 BS_ENABLED COMPONENT__editor"
                     onClick={() => setRenderLayers(false)}
@@ -195,11 +193,7 @@ const PageEditor = () => {
                     )}
 
                     <div></div>
-                    <div className="w-full bg-gray-900 text-white py-2 text-center">
-                      <div className="container mx-auto px-4">
-                        <span className="text-xs block">© {new Date().getFullYear()} OneIMS</span>
-                      </div>
-                    </div>
+                    <FrameFooter />
                   </div>
                 </div>
               </div>

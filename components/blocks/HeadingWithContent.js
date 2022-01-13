@@ -5,7 +5,11 @@ import { node } from "prop-types";
 import { Textarea, Select, Toggle, Richtext } from "@/components/core/FormElements";
 
 const HeadingWithContent = ({ backgroundColor, heading, content, borderTop, borderBottom }) => {
-  const { actions, query } = useEditor();
+  const { enabled, actions, query } = useEditor((state) => ({
+    enabled: state.options.enabled,
+  }));
+
+  // console.log(enabled);
 
   const {
     connectors: { connect, drag },
@@ -30,14 +34,14 @@ const HeadingWithContent = ({ backgroundColor, heading, content, borderTop, bord
   return (
     <section
       data-id={id}
-      className={`cursor-grab py-16 ${borderTop && `THEME__border-top`} ${
+      className={`${enabled ? `cursor-grab` : ``} py-16 ${borderTop && `THEME__border-top`} ${
         borderBottom && `THEME__border-bottom`
-      } THEME__bg-${backgroundColor.value} ${isActive && `CUSTOM__selected-block`} ${
-        isHovered && `CUSTOM__hovered-block`
+      } THEME__bg-${backgroundColor.value} ${isActive && enabled && `CUSTOM__selected-block`} ${
+        isHovered && enabled && `CUSTOM__hovered-block`
       }`}
       ref={(ref) => connect(drag(ref))}
     >
-      {isHovered && (
+      {isHovered && enabled && (
         <div className="absolute top-0 right-0 bg-gray-700 text-white">
           <div className="flex">
             <div
