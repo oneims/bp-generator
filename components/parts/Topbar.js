@@ -1,13 +1,7 @@
 import React from "react";
 import Button from "@/components/core/Button";
-import { useEditor } from "@craftjs/core";
-import lz from "lzutf8";
 
 const Topbar = (props) => {
-  const { actions, query, enabled } = useEditor((state) => ({
-    enabled: state.options.enabled,
-  }));
-
   const pageData = props.pageData ? props.pageData : null;
   return (
     <div className="py-4 bg-theme-dark text-theme-text-inverted">
@@ -28,24 +22,48 @@ const Topbar = (props) => {
               </div>
               <div className="theme-column px-1">
                 {props.pageData ? (
-                  <Button
-                    onClick={() => {
-                      const json = query.serialize();
-                      console.log(json);
-                      const updatedData = {
-                        draftTitle: pageData.draftTitle,
-                        draftDescription: pageData.draftDescription,
-                        draftEditorState: lz.encodeBase64(lz.compress(json)),
-                      };
-                      props.updatePageDraft(updatedData);
-                    }}
-                    loading={props.updatePage.isLoading}
-                    variant="dark"
-                    className="text-xs"
-                    xs={true}
-                  >
-                    Save
-                  </Button>
+                  <>
+                    <div className="flex">
+                      <Button
+                        onClick={() => props.updatePageDraft()}
+                        loading={props.updatePage.isLoading}
+                        variant="dark"
+                        className="text-xs"
+                        xs={true}
+                      >
+                        Save
+                      </Button>
+                      {props.updatePage.isLoading ? (
+                        <div className="pl-3 flex items-center">
+                          <span className="text-white text-sm">Saving...</span>
+                        </div>
+                      ) : (
+                        <div className="pl-3 flex items-center">
+                          {props.canSave ? (
+                            <span className="text-white text-sm">Unsaved Changes</span>
+                          ) : (
+                            <div className="flex items-center">
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-5 w-5"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M5 13l4 4L19 7"
+                                />
+                              </svg>
+                              <span className="text-white text-sm flex pl-1">Saved</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </>
                 ) : (
                   <span className="COMPONENT__skeleton-box COMPONENT__skeleton-box-dark mt-2 h-6 w-24 inline-block rounded"></span>
                 )}

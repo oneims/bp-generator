@@ -6,6 +6,7 @@ const Header = (props) => {
   return (
     <header style={{ position: "relative", zIndex: "99999999999999" }}>
       <Topbar
+        canSave={props.canSave}
         updatePage={props.updatePage}
         updatePageDraft={props.updatePageDraft}
         router={props.router}

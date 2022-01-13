@@ -33,7 +33,10 @@ const PageEditor = () => {
     isLoading: false,
     isError: null,
   });
-  const [json, setJson] = useState(null);
+  const [pageQuery, setPageQuery] = useState(null);
+  const [canSave, setCanSave] = useState(false);
+  const [editorReady, setEditorReady] = useState(false);
+  const [pendingChanges, setPendingChanges] = useState(0);
   const [renderLayers, setRenderLayers] = useState(false);
   const handleRenderLayers = () => {
     setTimeout(() => {
@@ -51,13 +54,13 @@ const PageEditor = () => {
 
   // console.log(editorState);
 
-  const updatePageDraft = (updatedData) => {
+  const updatePageDraft = () => {
     setUpdatePage((prevState) => ({ ...prevState, isLoading: true }));
     const payload = {
       data: {
-        draftTitle: updatedData.draftTitle,
-        draftDescription: updatedData.draftDescription,
-        draftEditorState: updatedData.draftEditorState,
+        draftTitle: pageData.draftTitle,
+        draftDescription: pageData.draftDescription,
+        draftEditorState: lz.encodeBase64(lz.compress(pageQuery)),
       },
     };
     const putPayload = async () => {
@@ -68,11 +71,12 @@ const PageEditor = () => {
           mutate(
             `${process.env.NEXT_PUBLIC_API_URL}/blueprint-pages/${pageId}?populate=blueprint`,
             (data) => {
+              console.log(data);
               return {
                 ...data,
-                draftTitle: updatedData.draftTitle,
-                draftDescription: updatedData.draftDescription,
-                draftEditorState: updatedData.draftEditorState,
+                draftTitle: pageData.draftTitle,
+                draftDescription: pageData.draftDescription,
+                draftEditorState: lz.encodeBase64(lz.compress(pageQuery)),
               };
             },
             false
@@ -82,6 +86,12 @@ const PageEditor = () => {
             response: res.data.data,
             isLoading: false,
           }));
+          if (pendingChanges > 2) {
+            setPendingChanges(0);
+          } else {
+            setCanSave(false);
+          }
+          console.log(pendingChanges);
           mutate(`${process.env.NEXT_PUBLIC_API_URL}/blueprint-pages/${pageId}?populate=blueprint`);
         })
         .catch((err) => {
@@ -92,10 +102,43 @@ const PageEditor = () => {
     putPayload();
   };
 
+  const autoSave = () => {
+    if (canSave && editorReady) {
+      updatePageDraft();
+      setTimeout(() => {
+        console.log(canSave);
+      }, 500);
+    }
+  };
+
+  useEffect(() => {
+    setTimeout(() => {
+      setEditorReady(true);
+      console.log("Setting Editor Ready");
+    }, 3000);
+  }, []);
+
+  useEffect(() => {
+    let interval = setInterval(() => {
+      autoSave();
+    }, 500);
+    return () => {
+      clearInterval(interval);
+      interval = 0;
+    };
+  }, [pageQuery, canSave, pendingChanges]);
+
   return (
     <>
       <div className="h-screen overflow-hidden">
         <Editor
+          onNodesChange={(query) => {
+            setPageQuery(query.serialize());
+            if (editorReady) {
+              setCanSave(true);
+              setPendingChanges(pendingChanges + 1);
+            }
+          }}
           indicator={{
             success: "#0091ae",
             error: "#e34850",
@@ -105,6 +148,7 @@ const PageEditor = () => {
           resolver={{ Container, HeadingWithContent, SimpleContent }}
         >
           <Header
+            canSave={canSave}
             updatePage={updatePage}
             updatePageDraft={updatePageDraft}
             router={router}

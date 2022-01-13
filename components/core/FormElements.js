@@ -82,6 +82,7 @@ export const Textarea = (props) => {
           value={props.value}
           placeholder={props.placeholder}
           style={{ resize: "none" }}
+          maxRows={6}
         />
       </div>
     </>
@@ -123,6 +124,7 @@ export const TextareaLF = (props) => {
           defaultValue={props.defaultValue}
           placeholder={props.placeholder}
           style={{ resize: "none" }}
+          maxRows={6}
           {...props.register(props.name, { ...props.rest })}
         />
       </div>
