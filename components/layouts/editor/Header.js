@@ -12,11 +12,13 @@ const Header = (props) => {
         router={props.router}
         clientId={props.clientId}
         pageData={props.pageData ? props.pageData : null}
+        clientData={props.clientData ? props.clientData : null}
       />
       <Infobar
         router={props.router}
         clientId={props.clientId}
         pageData={props.pageData ? props.pageData : null}
+        clientData={props.clientData ? props.clientData : null}
       />
     </header>
   );

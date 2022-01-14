@@ -33,13 +33,14 @@ const HeadingWithContent = ({ backgroundColor, heading, content, borderTop, bord
 
   return (
     <section
+      id={`BLOCK__id-${id}`}
       data-id={id}
       className={`${enabled ? `cursor-grab` : ``} py-16 ${borderTop && `THEME__border-top`} ${
         borderBottom && `THEME__border-bottom`
       } THEME__bg-${backgroundColor.value} ${isActive && enabled && `CUSTOM__selected-block`} ${
         isHovered && enabled && `CUSTOM__hovered-block`
       }`}
-      ref={(ref) => connect(drag(ref))}
+      ref={(ref) => enabled && connect(drag(ref))}
     >
       {isHovered && enabled && (
         <div className="absolute top-0 right-0 bg-gray-700 text-white">

@@ -49,8 +49,10 @@ const PageEditor = () => {
   };
   let pageData;
   let editorState;
+  let clientData;
   if (data) {
     pageData = data.data.attributes;
+    clientData = data.data.attributes.client.data.attributes;
     editorState = pageData.draftEditorState
       ? lz.decompress(lz.decodeBase64(pageData.draftEditorState))
       : pageData.draftEditorState;
@@ -156,6 +158,7 @@ const PageEditor = () => {
             router={router}
             clientId={id}
             pageData={data ? pageData : null}
+            clientData={data ? clientData : null}
           />
           <Main>
             <div className="theme-row flex">
@@ -169,7 +172,7 @@ const PageEditor = () => {
                   className="theme-column w-full pb-20 overflow-y-scroll"
                   style={{ height: "100vh" }}
                 >
-                  <FrameHeader />
+                  <FrameHeader loading={isLoading} clientData={data ? clientData : null} />
                   <div
                     className="pb-10 BS_ENABLED COMPONENT__editor"
                     onClick={() => setRenderLayers(false)}

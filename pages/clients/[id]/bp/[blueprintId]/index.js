@@ -177,6 +177,7 @@ const BlueprintSingular = () => {
         draftTitle: pageData.pageTitle,
         orderId: pages.length > 0 ? pages[pages.length - 1].attributes.orderId + 1 : 1,
         blueprint: blueprintId,
+        client: id,
         status: "draft",
       },
     };
@@ -193,6 +194,9 @@ const BlueprintSingular = () => {
           mutate(
             `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=blueprint_pages`
           );
+          if (typeof window !== "undefined") {
+            window.location.href = `/clients/${id}/editor/${res.data.data.id}`;
+          }
           setOpenModal(false);
           resetFieldNewPage("pageTitle");
           setErrorNewPage("pageTitle", { type: "required" });
