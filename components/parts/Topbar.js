@@ -74,7 +74,7 @@ const Topbar = (props) => {
           <div className="theme-column px-1 w-full flex justify-center items-center">
             <div className="theme-box">
               {props.pageData ? (
-                <h1 className="text-2xl font-medium">{pageData.draftTitle}</h1>
+                <h1 className="text-2xl font-medium truncate max-w-xs">{pageData.draftTitle}</h1>
               ) : (
                 <span className="COMPONENT__skeleton-box COMPONENT__skeleton-box-dark mt-2 h-6 w-44 inline-block rounded "></span>
               )}

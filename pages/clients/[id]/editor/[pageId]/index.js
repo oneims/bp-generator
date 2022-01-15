@@ -9,6 +9,10 @@ import ImageGallery from "@/components/parts/ImageGallery";
 import { Container } from "@/components/blocks/Container";
 import { useAppContext } from "@/context/AppWrapper";
 
+// SEO
+import { NextSeo } from "next-seo";
+
+// Craft
 import { Editor, Frame, Element } from "@craftjs/core";
 
 // Static Blocks
@@ -26,12 +30,27 @@ import { useRouter } from "next/router";
 import { useSWRConfig } from "swr";
 import { useBlueprintPageByIdGET } from "@/lib/Fetcher";
 
+// Form
+import { useForm } from "react-hook-form";
+import { InputLF, TextareaLF } from "@/components/core/FormElements";
+
 const PageEditor = () => {
   const router = useRouter();
   const { mutate } = useSWRConfig();
   const { pageId, id } = router.query;
   const { data, isLoading, isError } = useBlueprintPageByIdGET(pageId);
   const { globalState, handlers } = useAppContext();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({ mode: "all" });
+  const [updatePageSettings, setUpdatePageSettings] = useState({
+    response: null,
+    isLoading: false,
+    isError: null,
+  });
   const [updatePage, setUpdatePage] = useState({
     response: null,
     isLoading: false,
@@ -39,8 +58,10 @@ const PageEditor = () => {
   });
   const [pageQuery, setPageQuery] = useState(null);
   const [canSave, setCanSave] = useState(false);
+  const [showPageSettings, setShowPageSettings] = useState(false);
   const [editorReady, setEditorReady] = useState(false);
   const [pendingChanges, setPendingChanges] = useState(0);
+  const [enableResponsive, setEnableResponsive] = useState(false);
   const [renderLayers, setRenderLayers] = useState(false);
   const handleRenderLayers = () => {
     setTimeout(() => {
@@ -115,10 +136,79 @@ const PageEditor = () => {
     }
   };
 
+  const pageSettingsHandler = (bool) => {
+    setShowPageSettings(bool);
+    if (!bool) {
+      reset(
+        {
+          pageTitle: data && pageData.draftTitle,
+          pageDescription: data && pageData.draftDescription,
+        },
+        { keepDefaultValues: true }
+      );
+    }
+  };
+
+  const updatePageMeta = (updatedData) => {
+    console.log(updatedData);
+    setUpdatePageSettings((prevState) => ({ ...prevState, isLoading: true }));
+    const payload = {
+      data: {
+        title: updatedData.pageTitle,
+        description: updatedData.pageDescription,
+        draftTitle: updatedData.pageTitle,
+        draftDescription: updatedData.pageDescription,
+      },
+    };
+    const putPayload = async () => {
+      await axios
+        .put(`${process.env.NEXT_PUBLIC_API_URL}/blueprint-pages/${pageId}`, payload)
+        .then(Sleeper(500))
+        .then((res) => {
+          mutate(
+            `${process.env.NEXT_PUBLIC_API_URL}/blueprint-pages/${pageId}?populate=blueprint&populate=client`,
+            (data) => {
+              return {
+                ...data,
+                data: {
+                  ...data.data,
+                  attributes: {
+                    ...data.data.attributes,
+                    title: updatedData.pageTitle,
+                    description: updatedData.pageDescription,
+                    draftTitle: updatedData.pageTitle,
+                    draftDescription: updatedData.pageDescription,
+                  },
+                },
+              };
+            },
+            false
+          );
+          setUpdatePageSettings((prevState) => ({
+            ...prevState,
+            response: res.data.data,
+            isLoading: false,
+          }));
+          mutate(
+            `${process.env.NEXT_PUBLIC_API_URL}/blueprint-pages/${pageId}?populate=blueprint&populate=client`
+          );
+          handlers.handleDrawer();
+        })
+        .catch((err) => {
+          console.log(err);
+          setUpdatePageSettings((prevState) => ({ ...prevState, isError: true, isLoading: false }));
+        });
+    };
+    putPayload();
+  };
+
+  const enableResponsiveMode = () => {
+    setEnableResponsive(enableResponsive ? false : true);
+  };
+
   useEffect(() => {
     setTimeout(() => {
       setEditorReady(true);
-      console.log("Setting Editor Ready");
     }, 3000);
   }, []);
 
@@ -134,6 +224,7 @@ const PageEditor = () => {
 
   return (
     <>
+      <NextSeo title="Editor | Design Lab | OneIMS" description="Edit pages" />
       <div className="h-screen overflow-hidden">
         <Editor
           onNodesChange={(query) => {
@@ -152,6 +243,8 @@ const PageEditor = () => {
           resolver={{ Container, HeadingWithContent, SimpleContent }}
         >
           <Header
+            pageSettingsHandler={pageSettingsHandler}
+            enableResponsiveMode={enableResponsiveMode}
             canSave={canSave}
             updatePage={updatePage}
             updatePageDraft={updatePageDraft}
@@ -167,7 +260,13 @@ const PageEditor = () => {
                 renderLayers={renderLayers}
                 handleRenderLayers={handleRenderLayers}
               />
-              <div className="overflow-hidden w-full ">
+              <div
+                className={`transition-all duration-200 overflow-hidden w-full ${
+                  enableResponsive
+                    ? `max-w-lg mx-auto ring-theme-primary ring-opacity-30 transition-all duration-400 ring-2`
+                    : ``
+                }`}
+              >
                 <div
                   className="theme-column w-full pb-20 overflow-y-scroll"
                   style={{ height: "100vh" }}
@@ -202,9 +301,52 @@ const PageEditor = () => {
               </div>
             </div>
           </Main>
-          <Drawer active={globalState.drawerOpen}>
-            <ImageGallery />
-          </Drawer>
+          {data && (
+            <>
+              {setShowPageSettings ? (
+                <Drawer
+                  active={globalState.drawerOpen}
+                  title={`Page Settings`}
+                  buttonOneTitle={`Save`}
+                  buttonOneDisabled={errors.pageTitle}
+                  buttonOneLoading={updatePageSettings.isLoading}
+                  buttonOneHandler={handleSubmit(updatePageMeta)}
+                  pageSettingsHandler={pageSettingsHandler}
+                >
+                  <div className="mb-4">
+                    <h2 className="font-medium text-theme-text mb-2">Update Page Meta</h2>
+                    <p className="text-theme-text text-xs leading-relaxed">
+                      Page meta is published immediately and will be displayed as the{" "}
+                      <strong>Meta Data</strong> as well as the <strong>Label</strong> of the page
+                    </p>
+                  </div>
+
+                  <>
+                    <InputLF
+                      type="text"
+                      wrapperClassName="mt-5 text-left"
+                      label="Page Title*"
+                      name="pageTitle"
+                      defaultValue={pageData.draftTitle}
+                      register={register}
+                      rest={{ required: true }}
+                    />
+                    <TextareaLF
+                      wrapperClassName="mt-5 text-left"
+                      label="Page Description"
+                      name="pageDescription"
+                      defaultValue={pageData.draftDescription}
+                      register={register}
+                    />
+                  </>
+                </Drawer>
+              ) : (
+                <Drawer active={globalState.drawerOpen}>
+                  <ImageGallery />
+                </Drawer>
+              )}
+            </>
+          )}
         </Editor>
       </div>
     </>

@@ -15,6 +15,8 @@ const Header = (props) => {
         clientData={props.clientData ? props.clientData : null}
       />
       <Infobar
+        enableResponsiveMode={props.enableResponsiveMode}
+        pageSettingsHandler={props.pageSettingsHandler}
         router={props.router}
         clientId={props.clientId}
         pageData={props.pageData ? props.pageData : null}

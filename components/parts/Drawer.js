@@ -23,7 +23,10 @@ const Drawer = (props) => {
             </div>
             <div className="flex justify-between flex-col items-center">
               <button
-                onClick={handlers.handleDrawer}
+                onClick={() => {
+                  props.pageSettingsHandler && props.pageSettingsHandler(false);
+                  handlers.handleDrawer();
+                }}
                 className="cursor-pointer block"
                 type="button"
                 aria-label="Close Drawer"

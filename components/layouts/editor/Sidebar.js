@@ -72,7 +72,7 @@ const Sidebar = ({ renderLayers, handleRenderLayers, loading }) => {
       ) : (
         <>
           <div className="theme-column text-theme-text w-full max-w-sm bg-white border-r border-theme-border">
-            <div className="theme-box bg-white py-4 px-4">
+            <div className="theme-box flex items-center justify-between bg-white py-4 px-4">
               <div className="theme-box">
                 <h2 className="text-xl font-medium">Edit page</h2>
               </div>

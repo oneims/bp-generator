@@ -5,13 +5,16 @@ import { Container } from "@/components/blocks/Container";
 import { useAppContext } from "@/context/AppWrapper";
 
 import { Editor, Frame, Element } from "@craftjs/core";
-import lz from "lzutf8";
+
+// SEO
+import { NextSeo } from "next-seo";
 
 // Static Blocks
 import FrameHeader from "@/components/blocks/static/FrameHeader";
 import FrameFooter from "@/components/blocks/static/FrameFooter";
 
 // Compressor
+import lz from "lzutf8";
 
 // Fetchers
 import Spinner from "@/components/core/Spinner";
@@ -53,22 +56,28 @@ const PagePreview = () => {
 
   return (
     <>
+      <NextSeo
+        title={data ? pageData.title : `Generating Preview | Design Lab | OneIMS`}
+        description={data ? pageData.description : `Preview page`}
+      />
       <Editor enabled={false} resolver={{ Container, HeadingWithContent, SimpleContent }}>
         <FrameHeader loading={isLoading} clientData={data ? clientData : null} />
         <main>
           <div className="BS_ENABLED RENDERER">
-            {data && pageReady && (
+            {data && (
               <>
-                <Frame key={previewCounter} data={editorState}>
-                  <Element is={Container} padding={0} background="#fff"></Element>
-                </Frame>
+                <div style={{ display: pageReady ? "block" : "none" }}>
+                  <Frame key={previewCounter} data={editorState}>
+                    <Element is={Container} padding={0} background="#fff"></Element>
+                  </Frame>
+                </div>
               </>
             )}
             {!pageReady && (
               <>
                 <div
                   className="flex justify-center items-center flex-col"
-                  style={{ height: "800px" }}
+                  style={{ height: "700px" }}
                 >
                   <Spinner />
                 </div>
