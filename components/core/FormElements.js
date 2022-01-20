@@ -5,6 +5,7 @@ import { Listbox, Transition } from "@headlessui/react";
 import { SelectorIcon } from "@heroicons/react/solid";
 import { EditorContent } from "@tiptap/react";
 import { useAppContext } from "@/context/AppWrapper";
+import ReactSlider from "react-slider";
 import PropTypes from "prop-types";
 
 export const InputLF = (props) => {
@@ -232,6 +233,38 @@ export const Toggle = (props) => {
   );
 };
 
+export const Slider = (props) => {
+  return (
+    <>
+      <div className={props.wrapperClassName}>
+        {props.label && (
+          <div className="mb-2">
+            <label className="text-theme-text-light font-small block" htmlFor={props.name}>
+              {props.label}
+            </label>
+          </div>
+        )}
+        <div className="form-control">
+          <div className="cursor-pointer label">
+            <ReactSlider
+              className="horizontal-slider text-theme-text-inverted text-xs font-bold h-4 rounded-xl border border-solid border-gray-300 bg-white w-full"
+              marks
+              markClassName=""
+              min={0}
+              max={10}
+              thumbClassName="CUSTOM__transform-translate-y-negative-50 focus:outline-none example-thumb h-6 w-6 top-1/2 flex items-center justify-center border-1 border-theme-panel rounded-full bg-theme-focus-green-dark cursor-pointer"
+              trackClassName="CUSTOM__progress"
+              renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
+              onChange={props.onChange}
+              defaultValue={props.defaultValue}
+            />
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
 const MenuBar = ({ editor }) => {
   if (!editor) {
     return null;
@@ -421,7 +454,9 @@ export const ImageField = (props) => {
           </>
         ) : (
           <div
-            onClick={() => handlers.handleDrawer(props.name)}
+            onClick={() => {
+              handlers.handleDrawer(props.name);
+            }}
             className="bg-theme-panel-dark h-48 cursor-pointer mt-2 w-full rounded border-theme-border border-2 border-dotted"
           >
             <div className="flex h-full justify-center items-center flex-col">

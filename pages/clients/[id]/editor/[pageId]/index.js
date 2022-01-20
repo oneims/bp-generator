@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import Header from "@/components/layouts/editor/Header";
 import Sidebar from "@/components/layouts/editor/Sidebar";
 import Main from "@/components/layouts/Main";
-import HeadingWithContent from "@/components/blocks/HeadingWithContent";
 import SimpleContent from "@/components/blocks/SimpleContent";
 import Drawer from "@/components/parts/Drawer";
 import ImageGallery from "@/components/parts/ImageGallery";
 import { Container } from "@/components/blocks/Container";
 import { useAppContext } from "@/context/AppWrapper";
+
+// Blocks
+import { HeadingDescriptionCta, HeadingWithContent } from "@/components/blocks";
 
 // SEO
 import { NextSeo } from "next-seo";
@@ -119,7 +121,7 @@ const PageEditor = () => {
           } else {
             setCanSave(false);
           }
-          console.log(pendingChanges);
+          // console.log(pendingChanges);
           mutate(`${process.env.NEXT_PUBLIC_API_URL}/blueprint-pages/${pageId}?populate=blueprint`);
         })
         .catch((err) => {
@@ -240,7 +242,7 @@ const PageEditor = () => {
             transition: "0s ease",
             thickness: 5,
           }}
-          resolver={{ Container, HeadingWithContent, SimpleContent }}
+          resolver={{ Container, HeadingWithContent, SimpleContent, HeadingDescriptionCta }}
         >
           <Header
             pageSettingsHandler={pageSettingsHandler}
@@ -272,14 +274,11 @@ const PageEditor = () => {
                   style={{ height: "100vh" }}
                 >
                   <FrameHeader loading={isLoading} clientData={data ? clientData : null} />
-                  <div
-                    className="pb-10 BS_ENABLED COMPONENT__editor"
-                    onClick={() => setRenderLayers(false)}
-                  >
+                  <div className="pb-10 COMPONENT__editor" onClick={() => setRenderLayers(false)}>
                     {data && (
                       <>
                         <Frame data={editorState}>
-                          <Element is={Container} padding={0} background="#fff" canvas></Element>
+                          <Element is={Container} padding={0} background="#fff" canvas />
                         </Frame>
                       </>
                     )}
@@ -303,7 +302,7 @@ const PageEditor = () => {
           </Main>
           {data && (
             <>
-              {setShowPageSettings ? (
+              {showPageSettings ? (
                 <Drawer
                   active={globalState.drawerOpen}
                   title={`Page Settings`}

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import HeadingWithContent from "@/components/blocks/HeadingWithContent";
 import SimpleContent from "@/components/blocks/SimpleContent";
 import { Container } from "@/components/blocks/Container";
 import { useAppContext } from "@/context/AppWrapper";
+// Blocks
+import { HeadingDescriptionCta, HeadingWithContent } from "@/components/blocks";
 
 import { Editor, Frame, Element } from "@craftjs/core";
 
@@ -60,10 +61,13 @@ const PagePreview = () => {
         title={data ? pageData.title : `Generating Preview | Design Lab | OneIMS`}
         description={data ? pageData.description : `Preview page`}
       />
-      <Editor enabled={false} resolver={{ Container, HeadingWithContent, SimpleContent }}>
+      <Editor
+        enabled={false}
+        resolver={{ Container, HeadingWithContent, SimpleContent, HeadingDescriptionCta }}
+      >
         <FrameHeader loading={isLoading} clientData={data ? clientData : null} />
         <main>
-          <div className="BS_ENABLED RENDERER">
+          <div className="RENDERER">
             {data && (
               <>
                 <div style={{ display: pageReady ? "block" : "none" }}>

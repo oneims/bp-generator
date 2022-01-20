@@ -45,7 +45,11 @@ const Infobar = (props) => {
           <div className="theme-column px-1">
             <div className="theme-row flex items-center -mx-1">
               <div className="theme-column px-1">
-                <a href={`${props.router.asPath}/preview?ref=editor`} target="_blank">
+                <a
+                  href={`${props.router.asPath}/preview?ref=editor`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   <button
                     type="button"
                     className="px-6 flex items-center py-2 rounded border border-theme-border bg-theme-panel-dark text-theme-text-light text-xs hover:bg-theme-panel-hover"

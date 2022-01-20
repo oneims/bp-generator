@@ -37,6 +37,7 @@ module.exports = {
         "theme-focus-green": {
           DEFAULT: "#00d0e480",
           light: "#e5f5f8",
+          dark: "#00a4bd",
         },
       },
       maxWidth: {
