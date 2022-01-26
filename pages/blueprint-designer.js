@@ -22,7 +22,7 @@ const BlueprintDesigner = () => {
                 </tr>
               </thead>
               <tbody>
-                <Link href="/blueprint-pages">
+                <Link href="/pages">
                   <tr>
                     <td>Dummy Blueprint</td>
                     <td>

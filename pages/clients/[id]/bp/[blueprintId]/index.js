@@ -117,7 +117,7 @@ const BlueprintSingular = () => {
     console.log(data);
     attributes = data.data.attributes;
     client = attributes.client.data.attributes;
-    pages = attributes.blueprint_pages.data;
+    pages = attributes.pages.data;
   }
 
   console.log(pages);
@@ -136,7 +136,7 @@ const BlueprintSingular = () => {
         .then(Sleeper(500))
         .then((res) => {
           mutate(
-            `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=blueprint_pages`,
+            `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=pages`,
             (data) => {
               return {
                 ...data,
@@ -157,7 +157,7 @@ const BlueprintSingular = () => {
             isLoading: false,
           }));
           mutate(
-            `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=blueprint_pages`
+            `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=pages`
           );
           handlers.handleDrawer();
         })
@@ -179,11 +179,12 @@ const BlueprintSingular = () => {
         blueprint: blueprintId,
         client: id,
         status: "draft",
+        type: "blueprint",
       },
     };
     const postPayload = async () => {
       await axios
-        .post(`${process.env.NEXT_PUBLIC_API_URL}/blueprint-pages/`, payload)
+        .post(`${process.env.NEXT_PUBLIC_API_URL}/pages/`, payload)
         .then(Sleeper(500))
         .then((res) => {
           setNewPage((prevState) => ({
@@ -192,7 +193,7 @@ const BlueprintSingular = () => {
             isLoading: false,
           }));
           mutate(
-            `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=blueprint_pages`
+            `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=pages`
           );
           if (typeof window !== "undefined") {
             window.location.href = `/clients/${id}/editor/${res.data.data.id}`;
@@ -288,7 +289,7 @@ const BlueprintSingular = () => {
 
     if (active.id !== over.id) {
       mutate(
-        `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=blueprint_pages`,
+        `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=pages`,
         (data) => {
           const oldIndex = pages.findIndex((x) => x.id === active.id);
           const newIndex = pages.findIndex((x) => x.id === over.id);
@@ -300,8 +301,8 @@ const BlueprintSingular = () => {
               ...data.data,
               attributes: {
                 ...data.data.attributes,
-                blueprint_pages: {
-                  ...data.data.attributes.blueprint_pages,
+                pages: {
+                  ...data.data.attributes.pages,
                   data: movedArray,
                 },
               },

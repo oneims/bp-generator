@@ -31,7 +31,7 @@ import axios from "axios";
 import { Sleeper } from "@/lib/Helpers";
 import { useRouter } from "next/router";
 import { useSWRConfig } from "swr";
-import { useBlueprintPageByIdGET } from "@/lib/Fetcher";
+import { usePageByIdGET } from "@/lib/Fetcher";
 
 // Form
 import { useForm } from "react-hook-form";
@@ -41,7 +41,7 @@ const PageEditor = () => {
   const router = useRouter();
   const { mutate } = useSWRConfig();
   const { pageId, id } = router.query;
-  const { data, isLoading, isError } = useBlueprintPageByIdGET(pageId);
+  const { data, isLoading, isError } = usePageByIdGET(pageId);
   const { globalState, handlers } = useAppContext();
   const {
     register,
@@ -95,11 +95,11 @@ const PageEditor = () => {
     };
     const putPayload = async () => {
       await axios
-        .put(`${process.env.NEXT_PUBLIC_API_URL}/blueprint-pages/${pageId}`, payload)
+        .put(`${process.env.NEXT_PUBLIC_API_URL}/pages/${pageId}`, payload)
         .then(Sleeper(500))
         .then((res) => {
           mutate(
-            `${process.env.NEXT_PUBLIC_API_URL}/blueprint-pages/${pageId}?populate=blueprint`,
+            `${process.env.NEXT_PUBLIC_API_URL}/pages/${pageId}?populate=blueprint&populate=client`,
             (data) => {
               console.log(data);
               return {
@@ -124,7 +124,9 @@ const PageEditor = () => {
           // }
           setCanSave(false);
           // console.log(pendingChanges);
-          mutate(`${process.env.NEXT_PUBLIC_API_URL}/blueprint-pages/${pageId}?populate=blueprint`);
+          mutate(
+            `${process.env.NEXT_PUBLIC_API_URL}/pages/${pageId}?populate=blueprint&populate=client`
+          );
         })
         .catch((err) => {
           console.log(err);
@@ -166,11 +168,11 @@ const PageEditor = () => {
     };
     const putPayload = async () => {
       await axios
-        .put(`${process.env.NEXT_PUBLIC_API_URL}/blueprint-pages/${pageId}`, payload)
+        .put(`${process.env.NEXT_PUBLIC_API_URL}/pages/${pageId}`, payload)
         .then(Sleeper(500))
         .then((res) => {
           mutate(
-            `${process.env.NEXT_PUBLIC_API_URL}/blueprint-pages/${pageId}?populate=blueprint&populate=client`,
+            `${process.env.NEXT_PUBLIC_API_URL}/pages/${pageId}?populate=blueprint&populate=client`,
             (data) => {
               return {
                 ...data,
@@ -194,7 +196,7 @@ const PageEditor = () => {
             isLoading: false,
           }));
           mutate(
-            `${process.env.NEXT_PUBLIC_API_URL}/blueprint-pages/${pageId}?populate=blueprint&populate=client`
+            `${process.env.NEXT_PUBLIC_API_URL}/pages/${pageId}?populate=blueprint&populate=client`
           );
           handlers.handleDrawer();
           setShowPageSettings(false);

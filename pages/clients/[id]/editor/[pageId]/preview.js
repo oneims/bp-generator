@@ -21,13 +21,13 @@ import lz from "lzutf8";
 import Spinner from "@/components/core/Spinner";
 import { useRouter } from "next/router";
 import { useSWRConfig } from "swr";
-import { useBlueprintPageByIdGET } from "@/lib/Fetcher";
+import { usePageByIdGET } from "@/lib/Fetcher";
 
 const PagePreview = () => {
   const router = useRouter();
   const { mutate } = useSWRConfig();
   const { pageId, id } = router.query;
-  const { data, isLoading, isError } = useBlueprintPageByIdGET(pageId);
+  const { data, isLoading, isError } = usePageByIdGET(pageId);
   const [pageReady, setPageReady] = useState(false);
   const [previewCounter, setPreviewCounter] = useState(0);
   let pageData;
@@ -46,9 +46,7 @@ const PagePreview = () => {
 
   const refreshPreview = () => {
     setPageReady(false);
-    mutate(
-      `${process.env.NEXT_PUBLIC_API_URL}/blueprint-pages/${id}?populate=blueprint&populate=client`
-    );
+    mutate(`${process.env.NEXT_PUBLIC_API_URL}/pages/${id}?populate=blueprint&populate=client`);
     setPreviewCounter(previewCounter + 1);
     setTimeout(() => {
       setPageReady(true);
