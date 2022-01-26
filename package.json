@@ -8,8 +8,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@craftjs/core": "^0.2.0-beta.0",
-    "@craftjs/layers": "^0.2.0-beta.0",
+    "@craftjs/core": "^0.2.0-beta.2",
+    "@craftjs/layers": "^0.2.0-beta.2",
     "@dnd-kit/core": "^4.0.3",
     "@dnd-kit/sortable": "^5.1.0",
     "@headlessui/react": "^1.4.2",

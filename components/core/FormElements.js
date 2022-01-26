@@ -223,7 +223,7 @@ export const Toggle = (props) => {
               name={props.name}
               checked={props.value ? `checked` : ``}
               className={`toggle border-2 border-gray-600 bg-gray-600 ${
-                props.value && `border-theme-primary bg-theme-primary`
+                props.value ? `border-theme-focus-green-dark bg-theme-focus-green-dark` : ``
               }`}
             />
           </div>

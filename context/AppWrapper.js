@@ -5,7 +5,7 @@ const AppContext = createContext();
 export function AppWrapper({ children }) {
   const [globalState, setGlobalState] = useState({
     drawerOpen: false,
-    imageGalleryFieldSelected: null,
+    mediaGalleryFieldSelected: null,
   });
 
   const handlers = {
@@ -14,13 +14,13 @@ export function AppWrapper({ children }) {
         setGlobalState({
           ...globalState,
           drawerOpen: false,
-          imageGalleryFieldSelected: null,
+          mediaGalleryFieldSelected: null,
         });
       } else {
         setGlobalState({
           ...globalState,
           drawerOpen: true,
-          imageGalleryFieldSelected: value,
+          mediaGalleryFieldSelected: value,
         });
       }
     },
