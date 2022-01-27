@@ -178,6 +178,7 @@ const HeadingWithContentSettings = () => {
 
 HeadingWithContent.craft = {
   displayName: "Heading With Content",
+  preview: "/previews/blocks/HeadingWithContent.png",
   props: {
     heading: "Large Heading!",
     content:

@@ -11,8 +11,8 @@ import { Editor, Frame, Element } from "@craftjs/core";
 import { NextSeo } from "next-seo";
 
 // Static Blocks
-import FrameHeader from "@/components/blocks/static/FrameHeader";
-import FrameFooter from "@/components/blocks/static/FrameFooter";
+import FrameHeader from "@/components/blocks/staticBlocks/FrameHeader";
+import FrameFooter from "@/components/blocks/staticBlocks/FrameFooter";
 
 // Compressor
 import lz from "lzutf8";

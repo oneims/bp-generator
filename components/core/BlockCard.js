@@ -1,10 +1,22 @@
 import React from "react";
 
-const BlockCard = ({ connectors, component, title, icon }) => {
+const BlockCard = ({
+  connectors,
+  component,
+  title,
+  icon,
+  renderBlockPreview,
+  previewImage,
+  unsetBlockPreview,
+}) => {
   return (
     <>
       {component && (
         <div
+          onMouseEnter={() => {
+            renderBlockPreview(previewImage);
+          }}
+          onMouseLeave={unsetBlockPreview}
           ref={(ref) => connectors.create(ref, component)}
           className="theme-column mb-4 px-1 w-full max-w-1/3"
         >

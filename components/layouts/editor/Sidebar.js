@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import BlockCard from "@/components/core/BlockCard";
 import { HeadingDescriptionCta, HeadingWithContent } from "@/components/blocks";
 import { Element, useEditor } from "@craftjs/core";
@@ -7,6 +7,8 @@ import Spinner from "@/components/core/Spinner";
 
 const Sidebar = ({ renderLayers, handleRenderLayers, loading }) => {
   const { connectors, query } = useEditor();
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
   const { actions, selected } = useEditor((state) => {
     const currentNodeId = [...state.events.selected][0];
     let selected;
@@ -24,6 +26,16 @@ const Sidebar = ({ renderLayers, handleRenderLayers, loading }) => {
       selected,
     };
   });
+
+  const renderBlockPreview = (image) => {
+    setShowPreview(true);
+    setPreviewImage(image);
+  };
+
+  const unsetBlockPreview = () => {
+    setShowPreview(false);
+    setPreviewImage(false);
+  };
 
   return (
     <>
@@ -139,6 +151,22 @@ const Sidebar = ({ renderLayers, handleRenderLayers, loading }) => {
                   <Layers expandRootOnLoad={true} />
                 ) : (
                   <>
+                    {showPreview && (
+                      <div
+                        className="previewer h-40 w-full shadow-xl rounded-lg shadow-outline border-theme-border border-2 fixed"
+                        style={{ zIndex: "9", left: "0", maxWidth: "383px", top: "125px" }}
+                      >
+                        <div className="COMPONENT__image-preview h-full border-theme-border rounded border-2 w-full">
+                          <div className="flex h-full justify-center items-center flex-col">
+                            <img
+                              className="max-w-full max-h-full"
+                              src={previewImage}
+                              alt="Block Preview"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    )}
                     <div className="theme-box text-theme-text-light py-4">
                       <h2 className="font-medium">Hero Blocks</h2>
                     </div>
@@ -147,8 +175,11 @@ const Sidebar = ({ renderLayers, handleRenderLayers, loading }) => {
                         <BlockCard
                           connectors={connectors}
                           component={<HeadingDescriptionCta />}
-                          title={HeadingDescriptionCta.craft.displayName}
                           key={index}
+                          title={HeadingDescriptionCta.craft?.displayName}
+                          previewImage={HeadingDescriptionCta.craft?.preview}
+                          renderBlockPreview={renderBlockPreview}
+                          unsetBlockPreview={unsetBlockPreview}
                         />
                       ))}
                     </div>
@@ -161,6 +192,9 @@ const Sidebar = ({ renderLayers, handleRenderLayers, loading }) => {
                           connectors={connectors}
                           component={<HeadingWithContent />}
                           title={`Heading With Content`}
+                          previewImage={HeadingWithContent.craft?.preview}
+                          renderBlockPreview={renderBlockPreview}
+                          unsetBlockPreview={unsetBlockPreview}
                           key={index}
                         />
                       ))}
@@ -173,7 +207,10 @@ const Sidebar = ({ renderLayers, handleRenderLayers, loading }) => {
                         <BlockCard
                           connectors={connectors}
                           component={<HeadingDescriptionCta />}
+                          previewImage={HeadingDescriptionCta.craft?.preview}
+                          renderBlockPreview={renderBlockPreview}
                           title={`Heading Description CTA`}
+                          unsetBlockPreview={unsetBlockPreview}
                           key={index}
                         />
                       ))}

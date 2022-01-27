@@ -186,7 +186,8 @@ const HeadingDescriptionCtaSettings = () => {
 
 HeadingDescriptionCta.craft = {
   category: "Hero Blocks",
-  preview: null,
+  type: "local",
+  preview: "/previews/blocks/HeadingDescriptionCta.png",
   displayName: "Heading with Description & CTA",
   props: {
     // Default Block Props

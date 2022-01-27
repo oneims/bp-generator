@@ -15,8 +15,9 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useForm } from "react-hook-form";
 
 import { useBlueprintsByClientGET } from "@/lib/Fetcher";
-// import Router from "next/router";
 import { useRouter } from "next/router";
+
+import { parseISO, format } from "date-fns";
 
 const BlueprintsIndex = () => {
   const router = useRouter();
@@ -31,6 +32,7 @@ const BlueprintsIndex = () => {
   let blueprints;
   if (data) {
     blueprints = data.data.attributes.blueprints.data;
+    console.log(blueprints);
   }
 
   const {
@@ -117,21 +119,23 @@ const BlueprintsIndex = () => {
                 <thead className="bg-theme-panel border-b border-theme-border">
                   <tr>
                     <th>Name</th>
-                    <th>Updated Date</th>
                     <th>Created Date</th>
                   </tr>
                 </thead>
                 <tbody>
                   {blueprints.map((elem) => {
+                    const createdAtDate = format(
+                      new Date(elem.attributes?.createdAt),
+                      "MMM d, yyyy"
+                    );
+                    const createdAtTime = format(new Date(elem.attributes?.createdAt), "hh:mm a");
                     return (
                       <Link key={elem.id} href={`${router.asPath}/${elem.id}`}>
                         <tr>
                           <td>{elem.attributes.title}</td>
                           <td>
-                            May 29, 2021<span className="text-xs block">11:55 PM</span>
-                          </td>
-                          <td>
-                            May 29, 2021<span className="text-xs block">11:55 PM</span>
+                            {createdAtDate}
+                            <span className="text-xs block">{createdAtTime}</span>
                           </td>
                         </tr>
                       </Link>

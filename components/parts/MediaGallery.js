@@ -65,7 +65,9 @@ const MediaGallery = (props) => {
                 {data.map((elem, index) => {
                   const image = {
                     thumbnail: elem.mime.includes("image")
-                      ? `${process.env.NEXT_PUBLIC_MEDIA_URL}${elem.formats.small.url}`
+                      ? elem.formats
+                        ? `${process.env.NEXT_PUBLIC_MEDIA_URL}${elem.formats.small.url}`
+                        : `${process.env.NEXT_PUBLIC_MEDIA_URL}${elem.url}`
                       : "/document.png",
                     full: elem.mime.includes("image")
                       ? `${process.env.NEXT_PUBLIC_MEDIA_URL}${elem.url}`
