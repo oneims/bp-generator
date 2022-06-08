@@ -10,7 +10,11 @@ import { Container } from "@/components/blocks/Container";
 import { useAppContext } from "@/context/AppWrapper";
 
 // Blocks
-import { HeadingDescriptionCta, HeadingWithSubtitle } from "@/components/blocks";
+import {
+  HeadingDescriptionCta,
+  HeadingWithSubtitle,
+  TwoColumnImageContent,
+} from "@/components/blocks";
 
 // SEO
 import { NextSeo } from "next-seo";
@@ -249,7 +253,13 @@ const PageEditor = () => {
             transition: "0s ease",
             thickness: 5,
           }}
-          resolver={{ Container, SimpleContent, HeadingDescriptionCta, HeadingWithSubtitle }}
+          resolver={{
+            Container,
+            SimpleContent,
+            HeadingDescriptionCta,
+            HeadingWithSubtitle,
+            TwoColumnImageContent,
+          }}
         >
           <Header
             pageSettingsHandler={pageSettingsHandler}

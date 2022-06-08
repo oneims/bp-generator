@@ -1,6 +1,6 @@
 import React from "react";
 import { useNode, useEditor } from "@craftjs/core";
-import { Textarea, Toggle, ImageField, LinkField } from "@/components/core/FormElements";
+import { Textarea, Toggle, ImageField } from "@/components/core/FormElements";
 import { Disclosure } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 

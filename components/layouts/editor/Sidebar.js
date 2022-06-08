@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import BlockCard from "@/components/core/BlockCard";
-import { HeadingDescriptionCta, HeadingWithSubtitle } from "@/components/blocks";
+import {
+  HeadingDescriptionCta,
+  HeadingWithSubtitle,
+  TwoColumnImageContent,
+} from "@/components/blocks";
 import { Element, useEditor } from "@craftjs/core";
 import { Layers } from "@craftjs/layers";
 import Spinner from "@/components/core/Spinner";
@@ -189,6 +193,14 @@ const Sidebar = ({ renderLayers, handleRenderLayers, loading }) => {
                         component={<HeadingWithSubtitle />}
                         title={HeadingWithSubtitle.craft?.displayName}
                         previewImage={HeadingWithSubtitle.craft?.preview}
+                        renderBlockPreview={renderBlockPreview}
+                        unsetBlockPreview={unsetBlockPreview}
+                      />
+                      <BlockCard
+                        connectors={connectors}
+                        component={<TwoColumnImageContent />}
+                        title={TwoColumnImageContent.craft?.displayName}
+                        previewImage={TwoColumnImageContent.craft?.preview}
                         renderBlockPreview={renderBlockPreview}
                         unsetBlockPreview={unsetBlockPreview}
                       />
