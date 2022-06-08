@@ -7,7 +7,7 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 import BlockSection from "@/components/blocks/globals/BlockSection";
 import BlockSectionSettings from "@/components/blocks/globals/BlockSectionSettings";
 
-const HeadingDescriptionCta = ({
+const HeadingWithSubtitle = ({
   // Block Settings
   backgroundColor,
   borderTop,
@@ -18,8 +18,6 @@ const HeadingDescriptionCta = ({
   // Content Settings
   heading,
   content,
-  buttonTitle,
-  buttonDestination,
   backgroundImage,
   tint,
 }) => {
@@ -65,37 +63,32 @@ const HeadingDescriptionCta = ({
       paddingTop={paddingTop}
       paddingBottom={paddingBottom}
       invertText={invertText}
-      blockClassName={`BLOCK__hero-blocks__headingDescriptionCTA`}
+      blockClassName={`BLOCK__content-blocks__HeadingWithSubtitle`}
     >
       <div
-        className={`BLOCK__hero-blocks__headingDescriptionCTA__wrapper ${
+        className={`BLOCK__content-blocks__HeadingWithSubtitle__wrapper ${
           invertText ? `THEME__text-inverted` : ``
         }`}
       >
         {backgroundImage && (
-          <div className="BLOCK__hero-blocks__headingDescriptionCTA__image-wrapper">
+          <div className="MODULE__absolute-image">
             <img src={backgroundImage.url} alt={backgroundImage.alt} />
           </div>
         )}
         {tint && <div className="MODULE__tint MODULE__tint-dark"></div>}
         <div className="container">
-          <div className="THEME__mw-700">
+          <div className="THEME__mw-800 text-center mx-auto position-relative THEME__z-index-1">
             {heading && (
-              <div className="BLOCK__hero-blocks__headingDescriptionCTA__heading-wrapper">
-                <h1 className="BLOCK__hero-blocks__headingDescriptionCTA__heading">{heading}</h1>
+              <div className="BLOCK__content-blocks__HeadingWithSubtitle__heading-wrapper">
+                <h2 className="BLOCK__content-blocks__HeadingWithSubtitle__heading h1">
+                  {heading}
+                </h2>
               </div>
             )}
             {content && (
-              <div className="BLOCK__hero-blocks__headingDescriptionCTA__description-wrapper">
-                <p className="BLOCK__hero-blocks__headingDescriptionCTA__description">{content}</p>
+              <div className="BLOCK__content-blocks__HeadingWithSubtitle__description-wrapper">
+                <p className="BLOCK__content-blocks__HeadingWithSubtitle__description">{content}</p>
               </div>
-            )}
-            {buttonTitle && (
-              <a href={buttonDestination ? buttonDestination : "#"} target="_blank">
-                <button type="button" className="THEME__button THEME__button-primary">
-                  {buttonTitle}
-                </button>
-              </a>
             )}
           </div>
         </div>
@@ -104,20 +97,16 @@ const HeadingDescriptionCta = ({
   );
 };
 
-const HeadingDescriptionCtaSettings = () => {
+const HeadingWithSubtitleSettings = () => {
   const {
     actions: { setProp },
     heading,
     content,
-    buttonTitle,
-    buttonDestination,
     backgroundImage,
     tint,
   } = useNode((node) => ({
     heading: node.data.props.heading,
     content: node.data.props.content,
-    buttonTitle: node.data.props.buttonTitle,
-    buttonDestination: node.data.props.buttonDestination,
     backgroundImage: node.data.props.backgroundImage,
     tint: node.data.props.tint,
   }));
@@ -167,18 +156,6 @@ const HeadingDescriptionCtaSettings = () => {
                     value={content}
                     placeholder="Add Content"
                   />
-                  <LinkField
-                    label="Button Title"
-                    linkTitleOnChange={(e) =>
-                      setProp((props) => (props.buttonTitle = e.target.value))
-                    }
-                    linkDestinationOnChange={(e) =>
-                      setProp((props) => (props.buttonTitle = e.target.value))
-                    }
-                    linkTitleValue={buttonTitle}
-                    linkDestinationValue={buttonDestination}
-                    placeholder="Add Button Title"
-                  />
                   <ImageField
                     wrapperClassName="mt-5"
                     label="Background Image"
@@ -205,11 +182,11 @@ const HeadingDescriptionCtaSettings = () => {
   );
 };
 
-HeadingDescriptionCta.craft = {
+HeadingWithSubtitle.craft = {
   category: "Hero Blocks",
   type: "local",
-  preview: "/previews/blocks/HeadingDescriptionCta.png",
-  displayName: "Heading with Description & CTA",
+  preview: "/previews/blocks/HeadingWithSubtitle.png",
+  displayName: "Heading with Subtitle",
   props: {
     // Default Block Props
     backgroundColor: { label: "White", value: "white" },
@@ -220,14 +197,12 @@ HeadingDescriptionCta.craft = {
     // Default Content Props
     heading: `Powerful Section Heading to Insure Readability`,
     content: `Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliq Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam`,
-    buttonTitle: `Get Started`,
-    buttonDestination: `#`,
     backgroundImage: null,
     tint: false,
   },
   related: {
-    settings: HeadingDescriptionCtaSettings,
+    settings: HeadingWithSubtitleSettings,
   },
 };
 
-export default HeadingDescriptionCta;
+export default HeadingWithSubtitle;

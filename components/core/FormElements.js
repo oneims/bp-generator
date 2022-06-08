@@ -473,3 +473,24 @@ export const ImageField = (props) => {
     </>
   );
 };
+
+export const LinkField = (props) => {
+  return (
+    <>
+      <Textarea
+        wrapperClassName="mt-5"
+        label="Button Title"
+        onChange={props.linkTitleOnChange}
+        value={props.linkTitleValue}
+        placeholder="Add Button Title"
+      />
+      <Textarea
+        wrapperClassName="mt-5"
+        label="Button Destination"
+        onChange={props.linkDestinationOnChange}
+        value={props.linkDestinationValue}
+        placeholder="Add Button Destination"
+      />
+    </>
+  );
+};

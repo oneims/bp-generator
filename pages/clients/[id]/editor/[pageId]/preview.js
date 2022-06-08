@@ -3,7 +3,7 @@ import SimpleContent from "@/components/blocks/SimpleContent";
 import { Container } from "@/components/blocks/Container";
 import { useAppContext } from "@/context/AppWrapper";
 // Blocks
-import { HeadingDescriptionCta, HeadingWithContent } from "@/components/blocks";
+import { HeadingDescriptionCta, HeadingWithSubtitle } from "@/components/blocks";
 
 import { Editor, Frame, Element } from "@craftjs/core";
 
@@ -61,7 +61,12 @@ const PagePreview = () => {
       />
       <Editor
         enabled={false}
-        resolver={{ Container, HeadingWithContent, SimpleContent, HeadingDescriptionCta }}
+        resolver={{
+          Container,
+          SimpleContent,
+          HeadingDescriptionCta,
+          HeadingWithSubtitle,
+        }}
       >
         <FrameHeader loading={isLoading} clientData={data ? clientData : null} />
         <main>
