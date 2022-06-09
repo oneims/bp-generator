@@ -1,26 +1,16 @@
 import React, { useState, useEffect } from "react";
-import SimpleContent from "@/components/blocks/SimpleContent";
 import { Container } from "@/components/blocks/Container";
 import { useAppContext } from "@/context/AppWrapper";
-// Blocks
-import {
-  HeadingDescriptionCta,
-  HeadingWithSubtitle,
-  TwoColumnImageContent,
-} from "@/components/blocks";
-
 import { Editor, Frame, Element } from "@craftjs/core";
-
+// All Blocks
+import AllBlocks from "@/lib/AllBlocks";
 // SEO
 import { NextSeo } from "next-seo";
-
 // Static Blocks
 import FrameHeader from "@/components/blocks/staticBlocks/FrameHeader";
 import FrameFooter from "@/components/blocks/staticBlocks/FrameFooter";
-
 // Compressor
 import lz from "lzutf8";
-
 // Fetchers
 import Spinner from "@/components/core/Spinner";
 import { useRouter } from "next/router";
@@ -63,16 +53,7 @@ const PagePreview = () => {
         title={data ? pageData.title : `Generating Preview | Design Lab | OneIMS`}
         description={data ? pageData.description : `Preview page`}
       />
-      <Editor
-        enabled={false}
-        resolver={{
-          Container,
-          SimpleContent,
-          HeadingDescriptionCta,
-          HeadingWithSubtitle,
-          TwoColumnImageContent,
-        }}
-      >
+      <Editor enabled={false} resolver={AllBlocks}>
         <FrameHeader loading={isLoading} clientData={data ? clientData : null} />
         <main>
           <div className="RENDERER">

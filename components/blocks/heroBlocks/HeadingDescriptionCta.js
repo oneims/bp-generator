@@ -65,15 +65,15 @@ const HeadingDescriptionCta = ({
       paddingTop={paddingTop}
       paddingBottom={paddingBottom}
       invertText={invertText}
-      blockClassName={`BLOCK__hero-blocks__headingDescriptionCTA`}
+      blockClassName={`BLOCK__hero-blocks__HeadingDescriptionCTA`}
     >
       <div
-        className={`BLOCK__hero-blocks__headingDescriptionCTA__wrapper ${
+        className={`BLOCK__hero-blocks__HeadingDescriptionCTA__wrapper ${
           invertText ? `THEME__text-inverted` : ``
         }`}
       >
         {backgroundImage && (
-          <div className="BLOCK__hero-blocks__headingDescriptionCTA__image-wrapper">
+          <div className="BLOCK__hero-blocks__HeadingDescriptionCTA__image-wrapper">
             <img src={backgroundImage.url} alt={backgroundImage.alt} />
           </div>
         )}
@@ -81,13 +81,13 @@ const HeadingDescriptionCta = ({
         <div className="container">
           <div className="THEME__mw-700">
             {heading && (
-              <div className="BLOCK__hero-blocks__headingDescriptionCTA__heading-wrapper">
-                <h1 className="BLOCK__hero-blocks__headingDescriptionCTA__heading">{heading}</h1>
+              <div className="BLOCK__hero-blocks__HeadingDescriptionCTA__heading-wrapper">
+                <h1 className="BLOCK__hero-blocks__HeadingDescriptionCTA__heading">{heading}</h1>
               </div>
             )}
             {content && (
-              <div className="BLOCK__hero-blocks__headingDescriptionCTA__description-wrapper">
-                <p className="BLOCK__hero-blocks__headingDescriptionCTA__description">{content}</p>
+              <div className="BLOCK__hero-blocks__HeadingDescriptionCTA__description-wrapper">
+                <p className="BLOCK__hero-blocks__HeadingDescriptionCTA__description">{content}</p>
               </div>
             )}
             {buttonTitle && (

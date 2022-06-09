@@ -183,7 +183,7 @@ const HeadingWithSubtitleSettings = () => {
 };
 
 HeadingWithSubtitle.craft = {
-  category: "Hero Blocks",
+  category: "Content Blocks",
   type: "local",
   preview: "/previews/blocks/HeadingWithSubtitle.png",
   displayName: "Heading with Subtitle",

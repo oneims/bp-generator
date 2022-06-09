@@ -8,27 +8,17 @@ import MediaDrawer from "@/components/parts/MediaDrawer";
 import ImageGallery from "@/components/parts/ImageGallery";
 import { Container } from "@/components/blocks/Container";
 import { useAppContext } from "@/context/AppWrapper";
-
-// Blocks
-import {
-  HeadingDescriptionCta,
-  HeadingWithSubtitle,
-  TwoColumnImageContent,
-} from "@/components/blocks";
-
+// All Blocks
+import AllBlocks from "@/lib/AllBlocks";
 // SEO
 import { NextSeo } from "next-seo";
-
 // Craft
 import { Editor, Frame, Element } from "@craftjs/core";
-
 // Static Blocks
 import FrameHeader from "@/components/blocks/staticBlocks/FrameHeader";
 import FrameFooter from "@/components/blocks/staticBlocks/FrameFooter";
-
 // Compressor
 import lz from "lzutf8";
-
 // Fetchers
 import Spinner from "@/components/core/Spinner";
 import axios from "axios";
@@ -36,7 +26,6 @@ import { Sleeper } from "@/lib/Helpers";
 import { useRouter } from "next/router";
 import { useSWRConfig } from "swr";
 import { usePageByIdGET } from "@/lib/Fetcher";
-
 // Form
 import { useForm } from "react-hook-form";
 import { InputLF, TextareaLF } from "@/components/core/FormElements";
@@ -253,13 +242,7 @@ const PageEditor = () => {
             transition: "0s ease",
             thickness: 5,
           }}
-          resolver={{
-            Container,
-            SimpleContent,
-            HeadingDescriptionCta,
-            HeadingWithSubtitle,
-            TwoColumnImageContent,
-          }}
+          resolver={AllBlocks}
         >
           <Header
             pageSettingsHandler={pageSettingsHandler}

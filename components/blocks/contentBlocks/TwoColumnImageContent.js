@@ -102,7 +102,7 @@ const TwoColumnImageContent = ({
             {image && (
               <div className="col-lg-6 order-lg-1">
                 <div className="BLOCK__content-blocks__twoColumnWithImage__image-wrapper">
-                  <figure class="my-0 mx-0">
+                  <figure className="my-0 mx-0">
                     <img className="THEME__br-8" src={image.url} alt={image.alt} />
                   </figure>
                 </div>
@@ -215,7 +215,7 @@ const TwoColumnImageContentSettings = () => {
 };
 
 TwoColumnImageContent.craft = {
-  category: "Hero Blocks",
+  category: "Content Blocks",
   type: "local",
   preview: "/previews/blocks/TwoColumnImageContent.png",
   displayName: "Two Column with Image",
