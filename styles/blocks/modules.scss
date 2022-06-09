@@ -1,0 +1,83 @@
+.MODULE {
+  &__tint {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    &-dark {
+      background-color: rgba(0, 0, 0, 0.65);
+    }
+  }
+  &__absolute-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  &__testimonial-with-image {
+    background-color: #eee;
+    padding: 2rem 1.5rem;
+    border-radius: 4px;
+    figure {
+      svg {
+        path {
+          fill: $theme_primary-color;
+        }
+      }
+    }
+    &__wrapper {
+      @media (min-width: 992px) {
+        display: flex;
+        margin-left: -10px;
+        margin-right: -10px;
+      }
+    }
+    &__top {
+      margin-bottom: 2rem;
+    }
+    &__comma-wrapper {
+      margin-bottom: 1.5rem;
+    }
+    &__column {
+      @media (min-width: 992px) {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+      &-content {
+        margin-bottom: 2rem;
+        @media (min-width: 992px) {
+          margin-bottom: 0;
+          padding-right: 4.5rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+      }
+      &-image {
+        @media (min-width: 992px) {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+      }
+    }
+    &__image-wrapper {
+      img {
+        width: 100%;
+        max-width: 100%;
+      }
+    }
+  }
+  // New Modules Here
+}

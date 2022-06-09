@@ -527,7 +527,7 @@ export const RepeaterField = (props) => {
                   }`}
                 >
                   <span className="text-theme-text-light text-sm block truncate pr-5">
-                    {Object.values(elem)[0]}
+                    {Object.values(elem)[0] ? Object.values(elem)[0] : `...`}
                   </span>
                   <div className="flex theme-row text-theme-notify -mx-2 items-center">
                     {repeaterEditingMeta.index === index && (
