@@ -9,6 +9,8 @@ import {
 } from "@/components/core/FormElements";
 import { Disclosure } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
+// Repeater Fields
+import { arrayMove } from "@dnd-kit/sortable";
 // Rich Text
 import parse from "html-react-parser";
 import { useEditor as useRichTextEditor } from "@tiptap/react";
@@ -111,8 +113,11 @@ const RepeaterTestSettings = () => {
     repeater: node.data.props.repeater,
   }));
 
-  const repeaterFields = {
-    heading: "Lorem Ipsum",
+  const repeaterFields = (id) => {
+    return {
+      heading: "Lorem Ipsum",
+      id,
+    };
   };
 
   const [repeaterEditingMeta, setRepeaterEditingMeta] = useState({
@@ -157,22 +162,42 @@ const RepeaterTestSettings = () => {
                     label="Repeater"
                     name="repeater"
                     repeaterEditingMeta={repeaterEditingMeta}
-                    repeaterFields={repeater}
+                    repeater={repeater}
                     handleAdd={() =>
                       setProp((props) => {
-                        return (props.repeater = [...props.repeater, repeaterFields]);
+                        return (props.repeater = [
+                          ...props.repeater,
+                          repeaterFields(props.repeater?.length),
+                        ]);
                       })
                     }
+                    handleMove={(active, over) => {
+                      setProp((props) => {
+                        if (active && over) {
+                          const oldIndex = props.repeater.findIndex((x) => x.id === active.id);
+                          const newIndex = props.repeater.findIndex((x) => x.id === over.id);
+                          const output = arrayMove(props.repeater, oldIndex, newIndex);
+                          return (props.repeater = output);
+                        }
+                      });
+                    }}
                     handleEdit={(index) => {
                       setRepeaterEditingMeta({
                         editing: true,
                         index,
                       });
                     }}
+                    handleFinishEdit={(index) => {
+                      setRepeaterEditingMeta({
+                        editing: false,
+                        index,
+                      });
+                    }}
                     handleClone={(index) =>
                       setProp((props) => {
                         let output = [...repeater];
-                        let item = output[index];
+                        let item = { ...output[index] };
+                        item.id = props.repeater?.length;
                         output = [...repeater, item];
                         return (props.repeater = output);
                       })
@@ -190,6 +215,7 @@ const RepeaterTestSettings = () => {
                         {repeater.map((elem, index) => {
                           return (
                             <div
+                              key={index}
                               style={{
                                 display: `${
                                   index === repeaterEditingMeta.index ? "block" : "none"
