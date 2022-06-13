@@ -11,15 +11,11 @@ import { Disclosure } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 // Repeater Fields
 import { arrayMove } from "@dnd-kit/sortable";
-// Rich Text
-import parse from "html-react-parser";
-import { useEditor as useRichTextEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
 // Block Wrapper
 import BlockSection from "@/components/blocks/globals/BlockSection";
 import BlockSectionSettings from "@/components/blocks/globals/BlockSectionSettings";
 
-const RepeaterTest = ({
+const CardsRow = ({
   // Block Settings
   backgroundColor,
   borderTop,
@@ -28,6 +24,8 @@ const RepeaterTest = ({
   paddingBottom,
   invertText,
   // Content Settings
+  heading,
+  description,
   repeater,
 }) => {
   const { enabled, actions, query } = useEditor((state) => ({
@@ -72,53 +70,128 @@ const RepeaterTest = ({
       paddingTop={paddingTop}
       paddingBottom={paddingBottom}
       invertText={invertText}
-      blockClassName={`BLOCK__content-blocks__RepeaterTest`}
+      blockClassName={`BLOCK__content-blocks__CardsRow`}
     >
       <div
-        className={`BLOCK__content-blocks__RepeaterTest__wrapper ${
+        className={`BLOCK__content-blocks__CardsRow__wrapper ${
           invertText ? `THEME__text-inverted` : ``
         }`}
       >
-        <div className="container position-relative">
-          <div className="row">
-            <div className="col-lg-6 mb-4 mb-lg-0 order-lg-2">
-              <div className="BLOCK__content-blocks__twoColumnWithImage__content-wrapper ps-lg-4">
-                {repeater &&
-                  repeater.map((elem, index) => {
-                    return (
-                      <div
-                        key={index}
-                        className="BLOCK__content-blocks__twoColumnWithImage__heading-wrapper"
-                      >
-                        <h2 className="BLOCK__content-blocks__twoColumnWithImage__heading">
-                          {elem.heading}
-                        </h2>
-                      </div>
-                    );
-                  })}
+        {/* Markup */}
+        <div className="container">
+          <div className="MODULE__heading-with-description THEME__mw-900 text-left text-center text-md-start">
+            {heading && (
+              <div className="MODULE__heading-with-description__heading-wrapper">
+                <h2 className="MODULE__heading-with-description__heading h2">{heading}</h2>
               </div>
-            </div>
+            )}
+            {description && (
+              <div className="MODULE__heading-with-description__description-wrapper">
+                <p className="MODULE__heading-with-description__description">{description}</p>
+              </div>
+            )}
           </div>
         </div>
+        {repeater && repeater?.length > 0 && (
+          <div className="container mt-4 pt-3">
+            <div className="row">
+              {repeater.map((elem, index) => {
+                return (
+                  <div key={index} className="col-lg-4 mb-4 mb-lg-0">
+                    <div className="MODULE__card__var-01 relative">
+                      {elem?.image && (
+                        <div className="MODULE__card__var-01__top">
+                          <div className="MODULE__card__var-01__image-wrapper">
+                            <img
+                              className="THEME__br-8"
+                              src={elem.image?.url}
+                              alt={elem.image?.alt}
+                            />
+                          </div>
+                        </div>
+                      )}
+                      <div className="MODULE__card__var-01__bottom">
+                        {elem?.label && (
+                          <span
+                            style={{ fontSize: "0.8rem" }}
+                            className="THEME__text-body-light d-block mb-1"
+                          >
+                            {elem?.label}
+                          </span>
+                        )}
+                        {elem?.heading && (
+                          <div className="MODULE__card__var-01__heading-wrapper">
+                            <h3 className="MODULE__card__var-01__heading h5">{elem?.heading}</h3>
+                          </div>
+                        )}
+                        {elem?.description && (
+                          <div className="MODULE__card__var-01__desc-wrapper">
+                            <p className="MODULE__card__var-01__desc">{elem?.description}</p>
+                          </div>
+                        )}
+                      </div>
+                      {elem?.buttonText && (
+                        <div className="MODULE__card__var-01__button-wrapper mt-auto">
+                          <div className="MODULE__button-wrapper">
+                            <a href={elem?.buttonDestination} target="_blank">
+                              <button type="button" className="THEME__button THEME__button-link">
+                                {elem?.buttonText}
+                              </button>
+                            </a>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+        {/* //End Markup */}
       </div>
     </BlockSection>
   );
 };
 
-const RepeaterTestSettings = () => {
+const repeaterFields = (id) => {
+  let meta = {
+    image: {
+      url: "/placeholder.png",
+      alt: "Placeholder Image",
+    },
+    heading: "5 Simple Steps For Organized Finances",
+    label: "Generic title for the card",
+    description:
+      "Having organized finances allows you to relax, knowing that you won't be stressed fr...",
+    buttonTitle: "Read More",
+    buttonDestination: "#",
+    id,
+    sortingLabel: "heading", // required
+  };
+
+  return meta;
+};
+
+const defaultRepeaterData = () => {
+  let arr = [];
+  for (let i = 0; i < 3; i++) {
+    arr.push(repeaterFields(i + 1));
+  }
+  return arr;
+};
+
+const CardsRowSettings = () => {
   const {
     actions: { setProp },
+    heading,
+    description,
     repeater,
   } = useNode((node) => ({
+    heading: node.data.props.heading,
+    description: node.data.props.description,
     repeater: node.data.props.repeater,
   }));
-
-  const repeaterFields = (id) => {
-    return {
-      heading: "Lorem Ipsum",
-      id,
-    };
-  };
 
   const [repeaterEditingMeta, setRepeaterEditingMeta] = useState({
     editing: false,
@@ -158,7 +231,21 @@ const RepeaterTestSettings = () => {
                   />
                 </Disclosure.Button>
                 <Disclosure.Panel className="pt-5 pb-6 px-4 pb-2 bg-theme-panel-dark border-theme-border border-b">
+                  <Textarea
+                    label="Heading"
+                    onChange={(e) => setProp((props) => (props.heading = e.target.value))}
+                    value={heading}
+                    placeholder="Add Heading"
+                  />
+                  <Textarea
+                    wrapperClassName="mt-5"
+                    label="Description"
+                    onChange={(e) => setProp((props) => (props.description = e.target.value))}
+                    value={description}
+                    placeholder="Add Description"
+                  />
                   <RepeaterField
+                    wrapperClassName="mt-5"
                     label="Repeater"
                     name="repeater"
                     repeaterEditingMeta={repeaterEditingMeta}
@@ -222,8 +309,30 @@ const RepeaterTestSettings = () => {
                                 }`,
                               }}
                             >
+                              <ImageField
+                                wrapperClassName="mt-5"
+                                label="Image"
+                                image={elem.image}
+                                name="image"
+                                handleRemove={() =>
+                                  setProp((props) => (props.repeater[index].image = null))
+                                }
+                                onChange={(e) =>
+                                  setProp(
+                                    (props) => (props.repeater[index].image.alt = e.target.value)
+                                  )
+                                }
+                              />
                               <Textarea
-                                key={index}
+                                wrapperClassName="mt-5"
+                                label="Label"
+                                onChange={(e) =>
+                                  setProp((props) => (props.repeater[index].label = e.target.value))
+                                }
+                                value={elem.label}
+                                placeholder="Add Label"
+                              />
+                              <Textarea
                                 wrapperClassName="mt-5"
                                 label="Heading"
                                 onChange={(e) =>
@@ -233,6 +342,17 @@ const RepeaterTestSettings = () => {
                                 }
                                 value={elem.heading}
                                 placeholder="Add Heading"
+                              />
+                              <Textarea
+                                wrapperClassName="mt-5"
+                                label="Description"
+                                onChange={(e) =>
+                                  setProp(
+                                    (props) => (props.repeater[index].description = e.target.value)
+                                  )
+                                }
+                                value={elem.description}
+                                placeholder="Add Description"
                               />
                             </div>
                           );
@@ -250,12 +370,14 @@ const RepeaterTestSettings = () => {
   );
 };
 
-RepeaterTest.craft = {
-  category: "Hero Blocks",
+CardsRow.craft = {
+  category: "Content Blocks",
   type: "local",
-  preview: "/previews/blocks/RepeaterTest.png",
-  displayName: "Repeater Test",
+  preview: "/previews/blocks/CardsRow.png",
+  displayName: "Cards Row",
   props: {
+    // Meta
+    hasRepeater: true,
     // Default Block Props
     backgroundColor: { label: "White", value: "white" },
     borderTop: false,
@@ -263,11 +385,14 @@ RepeaterTest.craft = {
     paddingTop: 4,
     paddingBottom: 4,
     // Default Content Props
-    repeater: [],
+    heading: "Powerful Section Heading to Insure Readability",
+    description:
+      "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat",
+    repeater: defaultRepeaterData(),
   },
   related: {
-    settings: RepeaterTestSettings,
+    settings: CardsRowSettings,
   },
 };
 
-export default RepeaterTest;
+export default CardsRow;

@@ -79,5 +79,29 @@
       }
     }
   }
+  &__card {
+    &__var-01 {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      &__image-wrapper {
+        position: relative;
+        img {
+          object-fit: cover;
+          width: 100%;
+        }
+        height: 280px;
+        @media (min-width: 768px) {
+          height: 330px;
+        }
+        @media (min-width: 992px) {
+          height: 225px;
+        }
+      }
+      &__bottom {
+        margin-top: 1.5rem;
+      }
+    }
+  }
   // New Modules Here
 }

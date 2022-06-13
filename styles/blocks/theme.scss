@@ -35,6 +35,15 @@
         color: $black;
       }
     }
+    &-link {
+      padding: 0;
+      background: transparent;
+      color: $theme_primary-color;
+      &:hover {
+        color: darken($theme_primary-color, 10);
+        text-decoration: underline;
+      }
+    }
   }
   &__section {
     padding-top: 4rem;

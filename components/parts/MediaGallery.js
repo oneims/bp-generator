@@ -33,7 +33,14 @@ const MediaGallery = (props) => {
 
   const selectImage = (url, alt) => {
     actions.setProp(selected.id, (props) => {
-      props[globalState.mediaGalleryFieldSelected] = { url, alt };
+      if (props?.hasRepeater) {
+        const repeaterName = globalState?.repeaterMeta?.repeaterName;
+        const selectedIndex = globalState?.repeaterMeta?.editingIndex;
+        const fieldName = globalState?.mediaGalleryFieldSelected;
+        props[repeaterName][selectedIndex][fieldName] = { url, alt };
+      } else {
+        props[globalState.mediaGalleryFieldSelected] = { url, alt };
+      }
     });
     handlers.handleDrawer();
   };

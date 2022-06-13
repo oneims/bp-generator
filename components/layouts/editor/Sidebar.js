@@ -5,6 +5,7 @@ import {
   HeadingWithSubtitle,
   TwoColumnImageContent,
   TestimonialCardWithHeading,
+  CardsRow,
   RepeaterTest,
 } from "@/components/blocks";
 import { Element, useEditor } from "@craftjs/core";
@@ -211,6 +212,14 @@ const Sidebar = ({ renderLayers, handleRenderLayers, loading }) => {
                         component={<RepeaterTest />}
                         title={RepeaterTest.craft?.displayName}
                         previewImage={RepeaterTest.craft?.preview}
+                        renderBlockPreview={renderBlockPreview}
+                        unsetBlockPreview={unsetBlockPreview}
+                      />
+                      <BlockCard
+                        connectors={connectors}
+                        component={<CardsRow />}
+                        title={CardsRow.craft?.displayName}
+                        previewImage={CardsRow.craft?.preview}
                         renderBlockPreview={renderBlockPreview}
                         unsetBlockPreview={unsetBlockPreview}
                       />

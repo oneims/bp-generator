@@ -147,7 +147,7 @@ const HeadingWithSubtitleSettings = () => {
                     label="Heading"
                     onChange={(e) => setProp((props) => (props.heading = e.target.value))}
                     value={heading}
-                    placeholder="Add Content"
+                    placeholder="Add Heading"
                   />
                   <Textarea
                     wrapperClassName="mt-5"

@@ -434,8 +434,8 @@ export const ImageField = (props) => {
               <div className="flex h-full justify-center items-center flex-col">
                 <img
                   className="max-w-full max-h-full"
-                  src={props.image.url}
-                  alt={props.image.alt}
+                  src={props.image?.url}
+                  alt={props.image?.alt}
                 />
                 <div className="COMPONENT__image-preview__tint">
                   <span className="text-white text-sm">Replace</span>
@@ -557,26 +557,26 @@ export const RepeaterField = (props) => {
                     key={index}
                     elem={elem}
                     index={index}
+                    repeaterName={props.name}
                     repeaterEditingMeta={repeaterEditingMeta}
                     handleEdit={props.handleEdit}
                     handleClone={props.handleClone}
                     handleDelete={props.handleDelete}
-                    id={elem?.id}
+                    id={elem.id}
                   />
                 );
               })}
             </SortableContext>
-            {/* <DragOverlay>
+            <DragOverlay>
               {activeID ? (
                 <RepeaterListItem
-                  elem={repeater[activeID]}
-                  repeaterEditingMeta={repeaterEditingMeta}
+                  elem={repeater.find((x) => x.id === activeID)}
                   handleEdit={props.handleEdit}
                   handleClone={props.handleClone}
                   handleDelete={props.handleDelete}
                 />
               ) : null}
-            </DragOverlay> */}
+            </DragOverlay>
           </DndContext>
         </div>
 
@@ -601,18 +601,22 @@ export const RepeaterField = (props) => {
 export const RepeaterListItem = ({
   elem,
   index,
+  repeaterName,
   repeaterEditingMeta,
   handleEdit,
   handleClone,
   handleDelete,
   id,
 }) => {
+  const { handlers } = useAppContext();
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
+
+  const sortingLabel = elem?.sortingLabel;
 
   return (
     <div
@@ -633,17 +637,28 @@ export const RepeaterListItem = ({
             />
           </svg>
         </button>
-        {Object.values(elem)[0] ? Object.values(elem)[0] : `...`}
+        <span className="truncate pr-3">
+          {elem && elem.sortingLabel ? elem[sortingLabel] : `...`}
+        </span>
       </span>
       <div className="flex theme-row text-theme-notify -mx-2 items-center">
-        {repeaterEditingMeta.index === index && (
+        {repeaterEditingMeta && repeaterEditingMeta.index === index && (
           <div className="theme-column px-2">
             <div className="badge bg-theme-primary border-none flex">
               <span style={{ fontSize: "0.6rem" }}>Editing</span>
             </div>
           </div>
         )}
-        <div className="theme-column px-2 cursor-pointer" onClick={() => handleEdit(index)}>
+        <div
+          className="theme-column px-2 cursor-pointer"
+          onClick={() => {
+            handleEdit(index),
+              handlers.handleRepeaterMeta({
+                repeaterName,
+                editingIndex: index,
+              });
+          }}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 w-4"

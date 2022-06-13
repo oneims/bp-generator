@@ -6,6 +6,7 @@ export function AppWrapper({ children }) {
   const [globalState, setGlobalState] = useState({
     drawerOpen: false,
     mediaGalleryFieldSelected: null,
+    repeaterMeta: null,
   });
 
   const handlers = {
@@ -23,6 +24,12 @@ export function AppWrapper({ children }) {
           mediaGalleryFieldSelected: value,
         });
       }
+    },
+    handleRepeaterMeta: (value) => {
+      setGlobalState({
+        ...globalState,
+        repeaterMeta: value,
+      });
     },
   };
 
