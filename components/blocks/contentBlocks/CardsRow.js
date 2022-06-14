@@ -173,9 +173,11 @@ const repeaterFields = (id) => {
   return meta;
 };
 
+const defaultRepeaterLength = 3;
+
 const defaultRepeaterData = () => {
   let arr = [];
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < defaultRepeaterLength; i++) {
     arr.push(repeaterFields(i + 1));
   }
   return arr;
@@ -197,6 +199,8 @@ const CardsRowSettings = () => {
     editing: false,
     index: null,
   });
+
+  const [readyToAddIndex, setReadyToAddIndex] = useState(defaultRepeaterLength + 1);
 
   return (
     <>
@@ -250,14 +254,15 @@ const CardsRowSettings = () => {
                     name="repeater"
                     repeaterEditingMeta={repeaterEditingMeta}
                     repeater={repeater}
-                    handleAdd={() =>
+                    handleAdd={() => {
+                      setReadyToAddIndex(readyToAddIndex + 1);
                       setProp((props) => {
                         return (props.repeater = [
                           ...props.repeater,
-                          repeaterFields(props.repeater?.length + 1),
+                          repeaterFields(readyToAddIndex),
                         ]);
-                      })
-                    }
+                      });
+                    }}
                     handleMove={(active, over) => {
                       setProp((props) => {
                         if (active && over) {
@@ -280,15 +285,16 @@ const CardsRowSettings = () => {
                         index,
                       });
                     }}
-                    handleClone={(index) =>
+                    handleClone={(index) => {
+                      setReadyToAddIndex(readyToAddIndex + 1);
                       setProp((props) => {
                         let output = [...repeater];
                         let item = { ...output[index] };
-                        item.id = props.repeater?.length + 1;
+                        item.id = readyToAddIndex;
                         output = [...repeater, item];
                         return (props.repeater = output);
-                      })
-                    }
+                      });
+                    }}
                     handleDelete={(index) =>
                       setProp((props) => {
                         let output = [...repeater];
