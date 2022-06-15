@@ -7,6 +7,8 @@ export function AppWrapper({ children }) {
     drawerOpen: false,
     mediaGalleryFieldSelected: null,
     repeaterMeta: null,
+    expandedRichText: false,
+    richTextSelected: null,
   });
 
   const handlers = {
@@ -24,6 +26,14 @@ export function AppWrapper({ children }) {
           mediaGalleryFieldSelected: value,
         });
       }
+    },
+    handleExpandedRichText: (bool, value) => {
+      console.log(globalState);
+      setGlobalState({
+        ...globalState,
+        expandedRichText: bool,
+        richTextSelected: value,
+      });
     },
     handleRepeaterMeta: (value) => {
       setGlobalState({

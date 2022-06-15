@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNode, useEditor } from "@craftjs/core";
-import { Textarea, ImageField, LinkField, Richtext } from "@/components/core/FormElements";
+import { Richtext, Select } from "@/components/core/FormElements";
 import { Disclosure } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 // Rich Text
@@ -11,7 +11,7 @@ import StarterKit from "@tiptap/starter-kit";
 import BlockSection from "@/components/blocks/globals/BlockSection";
 import BlockSectionSettings from "@/components/blocks/globals/BlockSectionSettings";
 
-const TwoColumnImageContent = ({
+const SimpleContent = ({
   // Block Settings
   backgroundColor,
   borderTop,
@@ -20,11 +20,8 @@ const TwoColumnImageContent = ({
   paddingBottom,
   invertText,
   // Content Settings
-  heading,
   content,
-  buttonTitle,
-  buttonDestination,
-  image,
+  maxWidth,
 }) => {
   const { enabled, actions, query } = useEditor((state) => ({
     enabled: state.options.enabled,
@@ -68,68 +65,45 @@ const TwoColumnImageContent = ({
       paddingTop={paddingTop}
       paddingBottom={paddingBottom}
       invertText={invertText}
-      blockClassName={`BLOCK__content-blocks__TwoColumnImageContent`}
+      blockClassName={`BLOCK__content-blocks__SimpleContent`}
     >
       <div
-        className={`BLOCK__content-blocks__TwoColumnImageContent__wrapper ${
+        className={`BLOCK__content-blocks__SimpleContent__wrapper ${
           invertText ? `THEME__text-inverted` : ``
         }`}
       >
-        <div className="container position-relative">
-          <div className="row">
-            <div className="col-lg-6 mb-4 mb-lg-0 order-lg-2">
-              <div className="BLOCK__content-blocks__twoColumnWithImage__content-wrapper ps-lg-4">
-                {heading && (
-                  <div className="BLOCK__content-blocks__twoColumnWithImage__heading-wrapper">
-                    <h2 className="BLOCK__content-blocks__twoColumnWithImage__heading">
-                      {heading}
-                    </h2>
-                  </div>
-                )}
-                {content && <div className="MODULE__richtext-field">{parse(content)}</div>}
-
-                {buttonTitle && (
-                  <div className="MODULE__button-wrapper mt-3 pt-2">
-                    <a href={buttonDestination ? buttonDestination : "#"} target="_blank">
-                      <button type="button" className="THEME__button THEME__button-primary">
-                        {buttonTitle}
-                      </button>
-                    </a>
-                  </div>
-                )}
-              </div>
+        {content && (
+          <div className="container">
+            <div className={`mx-auto prose max-w-full THEME__mw-${maxWidth?.value}`}>
+              {parse(content)}
             </div>
-            {image && (
-              <div className="col-lg-6 order-lg-1">
-                <div className="BLOCK__content-blocks__twoColumnWithImage__image-wrapper">
-                  <figure className="my-0 mx-0">
-                    <img className="THEME__br-8" src={image.url} alt={image.alt} />
-                  </figure>
-                </div>
-              </div>
-            )}
           </div>
-        </div>
+        )}
       </div>
     </BlockSection>
   );
 };
 
-const TwoColumnImageContentSettings = () => {
+const SimpleContentSettings = () => {
   const {
     actions: { setProp },
-    heading,
     content,
-    buttonTitle,
-    buttonDestination,
-    image,
+    maxWidth,
   } = useNode((node) => ({
-    heading: node.data.props.heading,
     content: node.data.props.content,
-    buttonTitle: node.data.props.buttonTitle,
-    buttonDestination: node.data.props.buttonDestination,
-    image: node.data.props.image,
+    maxWidth: node.data.props.maxWidth,
   }));
+
+  const maxWidthOptions = [
+    { label: "Default", value: "default" },
+    { label: "500", value: "500" },
+    { label: "600", value: "600" },
+    { label: "700", value: "700" },
+    { label: "800", value: "800" },
+    { label: "900", value: "900" },
+    { label: "1000", value: "1000" },
+  ];
+  const [maxWidthSelected, setMaxWidthSelected] = useState(maxWidth);
 
   const richTextEditor = useRichTextEditor({
     extensions: [StarterKit],
@@ -177,37 +151,20 @@ const TwoColumnImageContentSettings = () => {
                   />
                 </Disclosure.Button>
                 <Disclosure.Panel className="pt-5 pb-6 px-4 pb-2 bg-theme-panel-dark border-theme-border border-b">
-                  <Textarea
-                    label="Heading"
-                    onChange={(e) => setProp((props) => (props.heading = e.target.value))}
-                    value={heading}
-                    placeholder="Add Content"
+                  <Select
+                    wrapperClassName=""
+                    label="Maximum Width"
+                    options={maxWidthOptions}
+                    onChange={(value) => {
+                      setMaxWidthSelected(value), setProp((props) => (props.maxWidth = value));
+                    }}
+                    value={maxWidthSelected}
                   />
                   <Richtext
                     wrapperClassName="mt-5"
                     label="Rich Text"
                     name="content"
                     editor={richTextEditor}
-                  />
-                  <LinkField
-                    label="Button Title"
-                    linkTitleOnChange={(e) =>
-                      setProp((props) => (props.buttonTitle = e.target.value))
-                    }
-                    linkDestinationOnChange={(e) =>
-                      setProp((props) => (props.buttonTitle = e.target.value))
-                    }
-                    linkTitleValue={buttonTitle}
-                    linkDestinationValue={buttonDestination}
-                    placeholder="Add Button Title"
-                  />
-                  <ImageField
-                    wrapperClassName="mt-5"
-                    label="Image"
-                    image={image}
-                    name="image"
-                    handleRemove={() => setProp((props) => (props.image = null))}
-                    onChange={(e) => setProp((props) => (props.image.alt = e.target.value))}
                   />
                 </Disclosure.Panel>
               </>
@@ -219,11 +176,11 @@ const TwoColumnImageContentSettings = () => {
   );
 };
 
-TwoColumnImageContent.craft = {
+SimpleContent.craft = {
   category: "Content Blocks",
   type: "local",
-  preview: "/previews/blocks/TwoColumnImageContent.png",
-  displayName: "Two Column with Image",
+  preview: "/previews/blocks/SimpleContent.png",
+  displayName: "Simple Content",
   props: {
     // Default Block Props
     backgroundColor: { label: "White", value: "white" },
@@ -232,18 +189,12 @@ TwoColumnImageContent.craft = {
     paddingTop: 4,
     paddingBottom: 4,
     // Default Content Props
-    heading: `Powerful Section Heading to Insure Readability`,
-    content: `<p> <strong> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat </strong> </p><p> gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. </p><p> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliq </p>`,
-    buttonTitle: `Get Started`,
-    buttonDestination: `#`,
-    image: {
-      url: "/placeholder.png",
-      alt: "Placeholder Image",
-    },
+    content: `<h2>Powerful Section Heading to Insure Readability</h2><p> <strong> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat </strong> </p><p> gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. </p><p> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliq </p>`,
+    maxWidth: { label: "Default", value: "default" },
   },
   related: {
-    settings: TwoColumnImageContentSettings,
+    settings: SimpleContentSettings,
   },
 };
 
-export default TwoColumnImageContent;
+export default SimpleContent;

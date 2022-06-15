@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "@/components/layouts/editor/Header";
 import Sidebar from "@/components/layouts/editor/Sidebar";
 import Main from "@/components/layouts/Main";
-import SimpleContent from "@/components/blocks/SimpleContent";
+import SimpleContent from "@/components/blocks/contentBlocks/SimpleContent";
 import Drawer from "@/components/parts/Drawer";
 import Viewport from "@/components/parts/Viewport";
 import ImageGallery from "@/components/parts/ImageGallery";

@@ -17,7 +17,6 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import {
-  arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
@@ -380,6 +379,8 @@ const MenuBar = ({ editor }) => {
 };
 
 export const Richtext = (props) => {
+  const { handlers, globalState } = useAppContext();
+
   return (
     <>
       <div className={props.wrapperClassName}>
@@ -390,14 +391,54 @@ export const Richtext = (props) => {
             </label>
           </div>
         )}
-        <div className="CUSTOM__rich-text-editor bg-white bg-clip-padding border border-solid border-gray-300 rounded">
-          <div className="CUSTOM__rich-text-editor__header bg-theme-panel-dark rounded-tl rounded-tr text-sm px-4 py-2 border-b border-solid border-gray-300">
-            <MenuBar editor={props.editor} />
-          </div>
-          <div className="CUSTOM__rich-text-editor__body bg-white">
-            <EditorContent editor={props.editor} />
-          </div>
-        </div>
+        {props.expanded ? (
+          <>
+            <div className="CUSTOM__rich-text-editor bg-white bg-clip-padding border border-solid border-gray-300 rounded">
+              <div className="CUSTOM__rich-text-editor__header bg-theme-panel-dark rounded-tl rounded-tr text-sm px-4 py-2 border-b border-solid border-gray-300">
+                <MenuBar editor={props.editor} />
+              </div>
+              <div className="CUSTOM__rich-text-editor__body bg-white">
+                <EditorContent editor={props.editor} />
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            {!globalState.expandedRichText ? (
+              <>
+                <div className="CUSTOM__rich-text-editor bg-white bg-clip-padding border border-solid border-gray-300 rounded">
+                  <div className="CUSTOM__rich-text-editor__header bg-theme-panel-dark rounded-tl rounded-tr text-sm px-4 py-2 border-b border-solid border-gray-300">
+                    <MenuBar editor={props.editor} />
+                  </div>
+                  <div className="CUSTOM__rich-text-editor__body bg-white">
+                    <EditorContent editor={props.editor} />
+                  </div>
+                </div>
+                <div className="mt-2 text-right">
+                  <button
+                    onClick={() => handlers.handleExpandedRichText(true, props.name)}
+                    type="button"
+                    class="px-6 py-2 rounded border border-theme-border bg-theme-panel text-theme-text-light text-xs hover:bg-theme-panel-dark"
+                  >
+                    Expand Editor
+                  </button>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="mt-2">
+                  <button
+                    onClick={() => handlers.handleExpandedRichText(false, null)}
+                    type="button"
+                    class="px-6 py-2 rounded border border-theme-border bg-theme-panel text-theme-text-light text-xs hover:bg-theme-panel-dark"
+                  >
+                    Close Expanded View
+                  </button>
+                </div>
+              </>
+            )}
+          </>
+        )}
       </div>
     </>
   );

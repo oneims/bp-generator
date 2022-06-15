@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import Header from "@/components/layouts/editor/Header";
 import Sidebar from "@/components/layouts/editor/Sidebar";
 import Main from "@/components/layouts/Main";
-import SimpleContent from "@/components/blocks/SimpleContent";
 import Drawer from "@/components/parts/Drawer";
 import MediaDrawer from "@/components/parts/MediaDrawer";
 import ImageGallery from "@/components/parts/ImageGallery";
 import { Container } from "@/components/blocks/Container";
+// Expanded Richtext Editor
+import ExpandedRichTextEditor from "@/components/parts/ExpandedRichTextEditor";
+// Global Context
 import { useAppContext } from "@/context/AppWrapper";
 // All Blocks
 import AllBlocks from "@/lib/AllBlocks";
@@ -274,28 +276,33 @@ const PageEditor = () => {
                   className="theme-column w-full pb-20 overflow-y-scroll"
                   style={{ height: "100vh" }}
                 >
-                  <FrameHeader loading={isLoading} clientData={data ? clientData : null} />
-                  <div className="pb-10 COMPONENT__editor" onClick={() => setRenderLayers(false)}>
-                    {data && (
-                      <>
-                        <Frame data={editorState}>
-                          <Element is={Container} padding={0} background="#fff" canvas />
-                        </Frame>
-                      </>
-                    )}
-                    {isLoading && (
-                      <>
-                        <div
-                          className="flex justify-center items-center flex-col"
-                          style={{ height: "400px" }}
-                        >
-                          <Spinner />
-                        </div>
-                      </>
-                    )}
+                  {/* Editor Expanded */}
+                  {globalState.expandedRichText && <ExpandedRichTextEditor />}
+                  {/* //End Editor Expanded */}
+                  <div className={globalState.expandedRichText ? `hidden` : ``}>
+                    <FrameHeader loading={isLoading} clientData={data ? clientData : null} />
+                    <div className="pb-10 COMPONENT__editor" onClick={() => setRenderLayers(false)}>
+                      {data && (
+                        <>
+                          <Frame data={editorState}>
+                            <Element is={Container} padding={0} background="#fff" canvas />
+                          </Frame>
+                        </>
+                      )}
+                      {isLoading && (
+                        <>
+                          <div
+                            className="flex justify-center items-center flex-col"
+                            style={{ height: "400px" }}
+                          >
+                            <Spinner />
+                          </div>
+                        </>
+                      )}
 
-                    <div></div>
-                    <FrameFooter />
+                      <div></div>
+                      <FrameFooter />
+                    </div>
                   </div>
                 </div>
               </div>
