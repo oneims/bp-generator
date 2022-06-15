@@ -4,6 +4,8 @@ import { Richtext } from "@/components/core/FormElements";
 import { useEditor } from "@craftjs/core";
 import { useEditor as useRichTextEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
+import Image from "@tiptap/extension-image";
 
 const ExpandedRichTextEditor = (props) => {
   const { handlers, globalState } = useAppContext();
@@ -27,16 +29,17 @@ const ExpandedRichTextEditor = (props) => {
   });
 
   const richTextEditor = useRichTextEditor({
-    extensions: [StarterKit],
+    extensions: [StarterKit, Underline, Image],
     editorProps: {
       attributes: {
-        class: "prose p-4 focus:outline-none CUSTOM__rich-text-editor__content-editable max-w-max",
+        class:
+          "prose p-4 focus:outline-none CUSTOM__rich-text-editor__content-editable CUSTOM__rich-text-editor__content-editable-full-height max-w-max",
       },
     },
-    content: selected?.props[globalState.richTextSelected],
+    content: selected?.props[globalState.richTextSelectedFieldName],
     onUpdate({ editor }) {
       actions.setProp(selected.id, (props) => {
-        props[globalState?.richTextSelected] = editor.getHTML();
+        props[globalState?.richTextSelectedFieldName] = editor.getHTML();
       });
     },
   });

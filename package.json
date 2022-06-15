@@ -15,6 +15,8 @@
     "@headlessui/react": "^1.4.2",
     "@heroicons/react": "^1.0.5",
     "@tailwindcss/typography": "^0.4.1",
+    "@tiptap/extension-image": "^2.0.0-beta.27",
+    "@tiptap/extension-underline": "^2.0.0-beta.23",
     "@tiptap/react": "^2.0.0-beta.101",
     "@tiptap/starter-kit": "^2.0.0-beta.163",
     "axios": "^0.24.0",

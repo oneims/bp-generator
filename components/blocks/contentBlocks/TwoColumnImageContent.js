@@ -7,6 +7,8 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 import parse from "html-react-parser";
 import { useEditor as useRichTextEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
+import Image from "@tiptap/extension-image";
 // Block Wrapper
 import BlockSection from "@/components/blocks/globals/BlockSection";
 import BlockSectionSettings from "@/components/blocks/globals/BlockSectionSettings";
@@ -132,7 +134,7 @@ const TwoColumnImageContentSettings = () => {
   }));
 
   const richTextEditor = useRichTextEditor({
-    extensions: [StarterKit],
+    extensions: [StarterKit, Underline, Image],
     editorProps: {
       attributes: {
         class: "prose p-4 focus:outline-none CUSTOM__rich-text-editor__content-editable",

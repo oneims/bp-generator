@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
@@ -283,10 +283,18 @@ export const Slider = (props) => {
   );
 };
 
-const MenuBar = ({ editor }) => {
+const MenuBar = ({ editor, name }) => {
+  const { handlers, richTextMedia } = useAppContext();
+
   if (!editor) {
     return null;
   }
+
+  useEffect(() => {
+    if (richTextMedia && richTextMedia.intent) {
+      editor.chain().focus().setImage({ src: richTextMedia.src }).run();
+    }
+  }, [richTextMedia]);
 
   return (
     <>
@@ -306,6 +314,15 @@ const MenuBar = ({ editor }) => {
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
           <path fill="none" d="M0 0h24v24H0z" />
           <path d="M15 20H7v-2h2.927l2.116-12H9V4h8v2h-2.927l-2.116 12H15z" />
+        </svg>
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleUnderline().run()}
+        className={editor.isActive("underline") ? "is-active" : ""}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+          <path fill="none" d="M0 0h24v24H0z" />
+          <path d="M8 3v9a4 4 0 1 0 8 0V3h2v9a6 6 0 1 1-12 0V3h2zM4 20h16v2H4v-2z" />
         </svg>
       </button>
       <button
@@ -333,6 +350,17 @@ const MenuBar = ({ editor }) => {
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
           <path fill="none" d="M0 0H24V24H0z" />
           <path d="M4 4v7h7V4h2v16h-2v-7H4v7H2V4h2zm14.5 4c2.071 0 3.75 1.679 3.75 3.75 0 .857-.288 1.648-.772 2.28l-.148.18L18.034 18H22v2h-7v-1.556l4.82-5.546c.268-.307.43-.709.43-1.148 0-.966-.784-1.75-1.75-1.75-.918 0-1.671.707-1.744 1.606l-.006.144h-2C14.75 9.679 16.429 8 18.5 8z" />
+        </svg>
+      </button>
+      <button
+        onClick={() => {
+          handlers.handleDrawer();
+          handlers.handleRichTextImageIntent(true);
+        }}
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+          <path fill="none" d="M0 0h24v24H0z" />
+          <path d="M5 11.1l2-2 5.5 5.5 3.5-3.5 3 3V5H5v6.1zM4 3h16a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm11.5 7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
         </svg>
       </button>
       <button
@@ -395,7 +423,7 @@ export const Richtext = (props) => {
           <>
             <div className="CUSTOM__rich-text-editor bg-white bg-clip-padding border border-solid border-gray-300 rounded">
               <div className="CUSTOM__rich-text-editor__header bg-theme-panel-dark rounded-tl rounded-tr text-sm px-4 py-2 border-b border-solid border-gray-300">
-                <MenuBar editor={props.editor} />
+                <MenuBar name={props.name} editor={props.editor} />
               </div>
               <div className="CUSTOM__rich-text-editor__body bg-white">
                 <EditorContent editor={props.editor} />
@@ -408,7 +436,7 @@ export const Richtext = (props) => {
               <>
                 <div className="CUSTOM__rich-text-editor bg-white bg-clip-padding border border-solid border-gray-300 rounded">
                   <div className="CUSTOM__rich-text-editor__header bg-theme-panel-dark rounded-tl rounded-tr text-sm px-4 py-2 border-b border-solid border-gray-300">
-                    <MenuBar editor={props.editor} />
+                    <MenuBar name={props.name} editor={props.editor} />
                   </div>
                   <div className="CUSTOM__rich-text-editor__body bg-white">
                     <EditorContent editor={props.editor} />
@@ -418,7 +446,7 @@ export const Richtext = (props) => {
                   <button
                     onClick={() => handlers.handleExpandedRichText(true, props.name)}
                     type="button"
-                    class="px-6 py-2 rounded border border-theme-border bg-theme-panel text-theme-text-light text-xs hover:bg-theme-panel-dark"
+                    className="px-6 py-2 rounded border border-theme-border bg-theme-panel text-theme-text-light text-xs hover:bg-theme-panel-dark"
                   >
                     Expand Editor
                   </button>
@@ -430,7 +458,7 @@ export const Richtext = (props) => {
                   <button
                     onClick={() => handlers.handleExpandedRichText(false, null)}
                     type="button"
-                    class="px-6 py-2 rounded border border-theme-border bg-theme-panel text-theme-text-light text-xs hover:bg-theme-panel-dark"
+                    className="px-6 py-2 rounded border border-theme-border bg-theme-panel text-theme-text-light text-xs hover:bg-theme-panel-dark"
                   >
                     Close Expanded View
                   </button>
