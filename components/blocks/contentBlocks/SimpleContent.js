@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNode, useEditor } from "@craftjs/core";
 import { Richtext, Select } from "@/components/core/FormElements";
 import { Disclosure } from "@headlessui/react";
@@ -6,9 +6,7 @@ import { ChevronDownIcon } from "@heroicons/react/solid";
 // Rich Text
 import parse from "html-react-parser";
 import { useEditor as useRichTextEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline";
-import Image from "@tiptap/extension-image";
+import RichTextExtensions from "@/lib/RichTextExtensions";
 // Block Wrapper
 import BlockSection from "@/components/blocks/globals/BlockSection";
 import BlockSectionSettings from "@/components/blocks/globals/BlockSectionSettings";
@@ -109,7 +107,7 @@ const SimpleContentSettings = () => {
   const [maxWidthSelected, setMaxWidthSelected] = useState(maxWidth);
 
   const richTextEditor = useRichTextEditor({
-    extensions: [StarterKit, Underline, Image],
+    extensions: RichTextExtensions,
     editorProps: {
       attributes: {
         class: "prose p-4 focus:outline-none CUSTOM__rich-text-editor__content-editable",
@@ -163,6 +161,7 @@ const SimpleContentSettings = () => {
                     }}
                     value={maxWidthSelected}
                   />
+
                   <Richtext
                     wrapperClassName="mt-5"
                     label="Rich Text"

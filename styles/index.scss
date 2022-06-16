@@ -109,7 +109,8 @@
       max-height: 18rem;
       overflow-y: scroll;
       &-full-height {
-        max-height: 80vh;
+        max-height: calc(100vh - 370px);
+        max-width: 100%;
       }
       img.ProseMirror-selectednode {
         outline: 2px solid #1798b3;

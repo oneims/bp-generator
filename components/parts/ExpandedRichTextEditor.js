@@ -3,9 +3,7 @@ import { useAppContext } from "@/context/AppWrapper";
 import { Richtext } from "@/components/core/FormElements";
 import { useEditor } from "@craftjs/core";
 import { useEditor as useRichTextEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline";
-import Image from "@tiptap/extension-image";
+import RichTextExtensions from "@/lib/RichTextExtensions";
 
 const ExpandedRichTextEditor = (props) => {
   const { handlers, globalState } = useAppContext();
@@ -29,11 +27,11 @@ const ExpandedRichTextEditor = (props) => {
   });
 
   const richTextEditor = useRichTextEditor({
-    extensions: [StarterKit, Underline, Image],
+    extensions: RichTextExtensions,
     editorProps: {
       attributes: {
         class:
-          "prose p-4 focus:outline-none CUSTOM__rich-text-editor__content-editable CUSTOM__rich-text-editor__content-editable-full-height max-w-max",
+          "prose p-4 focus:outline-none CUSTOM__rich-text-editor__content-editable CUSTOM__rich-text-editor__content-editable-full-height",
       },
     },
     content: selected?.props[globalState.richTextSelectedFieldName],
@@ -50,9 +48,21 @@ const ExpandedRichTextEditor = (props) => {
         <div className="bg-white px-8 py-10 border border-theme-border">
           <div className="mb-2">
             <span
-              className="text-theme-notify text-sm cursor-pointer"
+              className="text-theme-notify text-sm cursor-pointer flex items-center max-w-max"
               onClick={() => handlers.handleExpandedRichText(false, null)}
             >
+              <span className="mr-1">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-3 w-3"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+                </svg>
+              </span>
               Back to page
             </span>
           </div>
