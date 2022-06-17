@@ -2,9 +2,17 @@ import React, { useState } from "react";
 import Logo from "../../../resources/Logo";
 const FrameHeader = (props) => {
   return (
-    <div className="py-3 mx-auto border-b-2 backdrop-blur">
-      <div className="container px-4 mx-auto flex justify-between items-center">
-        <div>
+    <div className={`${props.className} py-3 mx-auto border-b-2 backdrop-blur`}>
+      {props.sidebarEnabled && (
+        <div className="absolute inset-0 w-full h-full">
+          <img
+            src="https://tailwindcss.com/_next/static/media/docs@30.beeb08605f12f699c5abc3814763b65e.avif"
+            alt=""
+          />
+        </div>
+      )}
+      <div className="BS__container px-4 mx-auto flex justify-between items-center">
+        <div className={`${props.hideLogoOnLarge ? `lg:opacity-0` : ``}`}>
           <Logo primary />
         </div>
         <div>
