@@ -261,6 +261,7 @@ const PageEditor = () => {
           <Main>
             <div className="theme-row flex">
               <Sidebar
+                key={globalState.expandedRichText}
                 loading={isLoading}
                 renderLayers={renderLayers}
                 handleRenderLayers={handleRenderLayers}

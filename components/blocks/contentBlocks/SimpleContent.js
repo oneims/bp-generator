@@ -74,9 +74,10 @@ const SimpleContent = ({
       >
         {content && (
           <div className="container">
-            <div className={`mx-auto prose max-w-full THEME__mw-${maxWidth?.value}`}>
+            <div
+              className={`mx-auto MODULE__article-content max-w-full THEME__mw-${maxWidth?.value}`}
+            >
               {parse(content)}
-              {/* {content} */}
             </div>
           </div>
         )}
@@ -161,7 +162,6 @@ const SimpleContentSettings = () => {
                     }}
                     value={maxWidthSelected}
                   />
-
                   <Richtext
                     wrapperClassName="mt-5"
                     label="Rich Text"

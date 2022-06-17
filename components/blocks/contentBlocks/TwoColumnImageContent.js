@@ -1,6 +1,6 @@
 import React from "react";
 import { useNode, useEditor } from "@craftjs/core";
-import { Textarea, ImageField, LinkField, Richtext } from "@/components/core/FormElements";
+import { Textarea, ImageField, LinkField, Richtext, Toggle } from "@/components/core/FormElements";
 import { Disclosure } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 // Rich Text
@@ -25,6 +25,7 @@ const TwoColumnImageContent = ({
   buttonTitle,
   buttonDestination,
   image,
+  invertColumns,
 }) => {
   const { enabled, actions, query } = useEditor((state) => ({
     enabled: state.options.enabled,
@@ -77,8 +78,20 @@ const TwoColumnImageContent = ({
       >
         <div className="container position-relative">
           <div className="row">
-            <div className="col-lg-6 mb-4 mb-lg-0 order-lg-2">
-              <div className="BLOCK__content-blocks__twoColumnWithImage__content-wrapper ps-lg-4">
+            <div
+              className={`${
+                invertColumns
+                  ? `col-lg-6 mb-4 mb-lg-0 order-lg-1`
+                  : `col-lg-6 mb-4 mb-lg-0 order-lg-2`
+              }`}
+            >
+              <div
+                className={`${
+                  invertColumns
+                    ? `BLOCK__content-blocks__twoColumnWithImage__content-wrapper pe-lg-4`
+                    : `BLOCK__content-blocks__twoColumnWithImage__content-wrapper ps-lg-4`
+                }`}
+              >
                 {heading && (
                   <div className="BLOCK__content-blocks__twoColumnWithImage__heading-wrapper">
                     <h2 className="BLOCK__content-blocks__twoColumnWithImage__heading">
@@ -100,8 +113,8 @@ const TwoColumnImageContent = ({
               </div>
             </div>
             {image && (
-              <div className="col-lg-6 order-lg-1">
-                <div className="BLOCK__content-blocks__twoColumnWithImage__image-wrapper">
+              <div className={`${invertColumns ? `col-lg-6 order-lg-2` : `col-lg-6 order-lg-1`}`}>
+                <div className={`BLOCK__content-blocks__twoColumnWithImage__image-wrapper`}>
                   <figure className="my-0 mx-0">
                     <img className="THEME__br-8" src={image.url} alt={image.alt} />
                   </figure>
@@ -123,12 +136,14 @@ const TwoColumnImageContentSettings = () => {
     buttonTitle,
     buttonDestination,
     image,
+    invertColumns,
   } = useNode((node) => ({
     heading: node.data.props.heading,
     content: node.data.props.content,
     buttonTitle: node.data.props.buttonTitle,
     buttonDestination: node.data.props.buttonDestination,
     image: node.data.props.image,
+    invertColumns: node.data.props.invertColumns,
   }));
 
   const richTextEditor = useRichTextEditor({
@@ -208,6 +223,13 @@ const TwoColumnImageContentSettings = () => {
                     name="image"
                     handleRemove={() => setProp((props) => (props.image = null))}
                     onChange={(e) => setProp((props) => (props.image.alt = e.target.value))}
+                  />
+                  <Toggle
+                    wrapperClassName="mt-5"
+                    label="Invert Columns"
+                    name="invertColumns"
+                    onChange={(e) => setProp((props) => (props.invertColumns = e.target.checked))}
+                    value={invertColumns}
                   />
                 </Disclosure.Panel>
               </>

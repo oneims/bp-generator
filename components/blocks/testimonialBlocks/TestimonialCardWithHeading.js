@@ -271,6 +271,7 @@ const TestimonialCardWithHeadingSettings = () => {
                   <Toggle
                     wrapperClassName="mt-5"
                     label="Add Card Border"
+                    name="cardBorder"
                     onChange={(e) => setProp((props) => (props.cardBorder = e.target.checked))}
                     value={cardBorder}
                   />

@@ -44,7 +44,7 @@ const ExpandedRichTextEditor = (props) => {
 
   return (
     <>
-      <div className="bg-theme-panel px-8 py-8" style={{ height: "100vh" }}>
+      <div className="bg-theme-panel px-8 py-8" style={{ height: "calc(100vh - 100px)" }}>
         <div className="bg-white px-8 py-10 border border-theme-border">
           <div className="mb-2">
             <span
