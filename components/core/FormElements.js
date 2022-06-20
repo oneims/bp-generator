@@ -286,15 +286,15 @@ export const Slider = (props) => {
 const MenuBar = ({ editor }) => {
   const { handlers, richTextMedia } = useAppContext();
 
-  if (!editor) {
-    return null;
-  }
-
   useEffect(() => {
     if (richTextMedia && richTextMedia.intent) {
       editor.chain().focus().setImage({ src: richTextMedia.src }).run();
     }
   }, [richTextMedia]);
+
+  if (!editor) {
+    return null;
+  }
 
   return (
     <>

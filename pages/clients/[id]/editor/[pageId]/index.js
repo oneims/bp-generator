@@ -54,6 +54,11 @@ const PageEditor = () => {
     isLoading: false,
     isError: null,
   });
+  const [publishPage, setPublishPage] = useState({
+    response: null,
+    isLoading: false,
+    isError: null,
+  });
   const [pageQuery, setPageQuery] = useState(null);
   const [canSave, setCanSave] = useState(false);
   const [showPageSettings, setShowPageSettings] = useState(false);
@@ -205,6 +210,54 @@ const PageEditor = () => {
     putPayload();
   };
 
+  const handlePublishPage = (value) => {
+    const publishedAtTimestamp = new Date().toISOString();
+    updatePageDraft();
+    setPublishPage((prevState) => ({ ...prevState, isLoading: true }));
+    const payload = {
+      data: {
+        publishedAtTimestamp: value === "unpublish" ? null : publishedAtTimestamp,
+        status: value === "unpublish" ? "draft" : "published",
+        editorState: value === "unpublish" ? null : lz.encodeBase64(lz.compress(pageQuery)),
+      },
+    };
+    const putPayload = async () => {
+      await axios
+        .put(`${process.env.NEXT_PUBLIC_API_URL}/pages/${pageId}`, payload)
+        .then(Sleeper(500))
+        .then((res) => {
+          mutate(
+            `${process.env.NEXT_PUBLIC_API_URL}/pages/${pageId}?populate=blueprint&populate=client`,
+            (data) => {
+              return {
+                ...data,
+                publishedAtTimestamp: value === "unpublish" ? null : publishedAtTimestamp,
+                status: value === "unpublish" ? "draft" : "published",
+                editorState: value === "unpublish" ? null : lz.encodeBase64(lz.compress(pageQuery)),
+              };
+            },
+            false
+          );
+          if (typeof window !== "undefined" && pageData) {
+            window.location.href = `/clients/${id}/bp/${pageData?.blueprint?.data?.id}`;
+          }
+          setPublishPage((prevState) => ({
+            ...prevState,
+            response: res.data.data,
+            isLoading: false,
+          }));
+          mutate(
+            `${process.env.NEXT_PUBLIC_API_URL}/pages/${pageId}?populate=blueprint&populate=client`
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+          setPublishPage((prevState) => ({ ...prevState, isError: true, isLoading: false }));
+        });
+    };
+    putPayload();
+  };
+
   const enableResponsiveMode = () => {
     setEnableResponsive(enableResponsive ? false : true);
   };
@@ -253,6 +306,8 @@ const PageEditor = () => {
             canSave={canSave}
             updatePage={updatePage}
             updatePageDraft={updatePageDraft}
+            publishPage={publishPage}
+            handlePublishPage={handlePublishPage}
             router={router}
             clientId={id}
             pageData={data ? pageData : null}

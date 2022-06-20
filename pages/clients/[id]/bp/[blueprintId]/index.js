@@ -7,18 +7,15 @@ import Drawer from "@/components/parts/Drawer";
 import { useAppContext } from "@/context/AppWrapper";
 import Link from "next/link";
 import Spinner from "@/components/core/Spinner";
-
 import { useSWRConfig } from "swr";
 import axios from "axios";
 import { Sleeper } from "@/lib/Helpers";
-
 import { useBlueprintByIdGET } from "@/lib/Fetcher";
 import { useRouter } from "next/router";
-
 import { useForm } from "react-hook-form";
 import { InputLF, TextareaLF } from "@/components/core/FormElements";
-
 import { Dialog, Transition } from "@headlessui/react";
+import { parseISO, format } from "date-fns";
 
 import {
   DndContext,
@@ -385,7 +382,8 @@ const BlueprintSingular = () => {
                 <thead className="bg-theme-panel border-b border-theme-border">
                   <tr>
                     <th>Name</th>
-                    <th>Updated Date</th>
+                    <th>Last Updated</th>
+                    <th>Publish Date</th>
                     <th>Created Date</th>
                   </tr>
                 </thead>
@@ -401,9 +399,12 @@ const BlueprintSingular = () => {
                           key={elem.id}
                           clientId={id}
                           id={elem.id}
-                          title={elem.attributes.title}
-                          order={elem.attributes.orderId}
-                          status={elem.attributes.status}
+                          title={elem.attributes?.title}
+                          order={elem.attributes?.orderId}
+                          status={elem.attributes?.status}
+                          createdAt={elem.attributes?.createdAt}
+                          updatedAt={elem.attributes?.updatedAt}
+                          publishedAt={elem.attributes?.publishedAtTimestamp}
                         />
                       ))}
                     </SortableContext>
@@ -563,6 +564,21 @@ const BlueprintSingular = () => {
 
 const SortableItem = (props) => {
   const router = useRouter();
+  const timestamps = {
+    createdAt: {
+      date: props?.createdAt ? format(new Date(props?.createdAt), "MMM d, yyyy") : `...`,
+      time: props?.createdAt ? format(new Date(props?.createdAt), "hh:mm a") : `...`,
+    },
+    updatedAt: {
+      date: props?.updatedAt ? format(new Date(props?.updatedAt), "MMM d, yyyy") : `N/A`,
+      time: props?.updatedAt ? format(new Date(props?.updatedAt), "hh:mm a") : `...`,
+    },
+    publishedAt: {
+      date: props?.publishedAt ? format(new Date(props?.publishedAt), "MMM d, yyyy") : `N/A`,
+      time: props?.publishedAt ? format(new Date(props?.publishedAt), "hh:mm a") : `...`,
+    },
+  };
+
   const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
     id: props.id,
   });
@@ -587,10 +603,22 @@ const SortableItem = (props) => {
         </span>
       </td>
       <td>
-        May 29, 2021<span className="text-xs block">11:55 PM</span>
+        {timestamps.updatedAt.date ? timestamps.updatedAt.date : `...`}
+        <span className="text-xs block">
+          {timestamps.updatedAt.time ? timestamps.updatedAt.time : `...`}
+        </span>
       </td>
       <td>
-        May 29, 2021<span className="text-xs block">11:55 PM</span>
+        {timestamps.publishedAt.date ? timestamps.publishedAt.date : `...`}
+        <span className="text-xs block">
+          {timestamps.publishedAt.time ? timestamps.publishedAt.time : ``}
+        </span>
+      </td>
+      <td>
+        {timestamps.createdAt.date ? timestamps.createdAt.date : `...`}
+        <span className="text-xs block">
+          {timestamps.createdAt.time ? timestamps.createdAt.time : ``}
+        </span>
       </td>
     </tr>
   );
