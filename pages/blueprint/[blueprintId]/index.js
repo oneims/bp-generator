@@ -7,8 +7,9 @@ import { SSR__BlueprintByIdGET } from "@/lib/Fetcher";
 import { format } from "date-fns";
 
 const PublicBluePrintIndex = ({ data }) => {
-  let attributes, client, pages;
+  let attributes, client, pages, blueprintId;
   if (data) {
+    blueprintId = data.data.id;
     attributes = data.data.attributes;
     client = attributes.client.data.attributes;
     pages = attributes.pages.data;
@@ -30,10 +31,10 @@ const PublicBluePrintIndex = ({ data }) => {
         <ContentWrapper>
           {data && pages.length < 1 && (
             <div className="w-full mx-auto text-theme-text pt-5">
-              <h1 className="text-xl font-medium mb-3">Something's happening.</h1>
+              <h1 className="text-xl font-medium mb-3">Something&apos;s happening.</h1>
               <p className="text-sm mb-1">
-                We're currently working on this blueprint. Please come back to this page at a later
-                date.
+                We&apos;re currently working on this blueprint. Please come back to this page at a
+                later date.
               </p>
             </div>
           )}
@@ -50,6 +51,7 @@ const PublicBluePrintIndex = ({ data }) => {
                   {pages.map((elem) => (
                     <TableItem
                       key={elem.id}
+                      blueprintId={blueprintId}
                       id={elem.id}
                       title={elem.attributes?.title}
                       order={elem.attributes?.orderId}
@@ -87,8 +89,14 @@ const TableItem = (props) => {
 
   return (
     <tr>
-      <td>
-        <a href={`/clients/${props.clientId}/editor/${props.id}`}>{props.title}</a>
+      <td className="relative">
+        <a
+          className="absolute inset-0"
+          aria-label={props.title}
+          title={props.title}
+          href={`/blueprint/${props.blueprintId}/${props.id}`}
+        ></a>
+        <span>{props.title}</span>
         {/* <span className="text-xs block mb-1 mt-1">Order: {props.order}</span> */}
         <span className="text-xs block mt-2">
           <div
@@ -99,7 +107,13 @@ const TableItem = (props) => {
           {props.status === "published" ? `Published` : `Draft`}
         </span>
       </td>
-      <td>
+      <td className="relative">
+        <a
+          className="absolute inset-0"
+          aria-label={props.title}
+          title={props.title}
+          href={`/blueprint/${props.blueprintId}/${props.id}`}
+        ></a>
         {timestamps.publishedAt.date ? timestamps.publishedAt.date : `...`}
         <span className="text-xs block">
           {timestamps.publishedAt.time ? timestamps.publishedAt.time : ``}

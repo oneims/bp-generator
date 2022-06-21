@@ -35,7 +35,7 @@ const PageTitle = (props) => {
                   <div className="flex justify-between items-center -m-2">
                     {props.publicURL && (
                       <div className="column px-2">
-                        <a href={props.publicURL} target="_blank">
+                        <a href={props.publicURL} target="_blank" rel="noreferrer">
                           <button className="flex items-center px-6 py-2 mt-4 w-max rounded border border-theme-border bg-theme-panel-dark text-theme-text-light text-sm hover:bg-theme-panel-hover">
                             View
                             <span className="block pl-2">

@@ -103,7 +103,11 @@ const TwoColumnImageContent = ({
 
                 {buttonTitle && (
                   <div className="MODULE__button-wrapper mt-3 pt-2">
-                    <a href={buttonDestination ? buttonDestination : "#"} target="_blank">
+                    <a
+                      href={buttonDestination ? buttonDestination : "#"}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       <button type="button" className="THEME__button THEME__button-primary">
                         {buttonTitle}
                       </button>

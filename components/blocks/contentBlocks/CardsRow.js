@@ -133,7 +133,7 @@ const CardsRow = ({
                       {elem?.buttonText && (
                         <div className="MODULE__card__var-01__button-wrapper mt-auto">
                           <div className="MODULE__button-wrapper">
-                            <a href={elem?.buttonDestination} target="_blank">
+                            <a href={elem?.buttonDestination} target="_blank" rel="noreferrer">
                               <button type="button" className="THEME__button THEME__button-link">
                                 {elem?.buttonText}
                               </button>
