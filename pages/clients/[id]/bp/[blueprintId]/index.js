@@ -117,7 +117,7 @@ const BlueprintSingular = () => {
     pages = attributes.pages.data;
   }
 
-  console.log(pages);
+  // console.log(pages);
 
   const updateBlueprintMeta = (updatedData) => {
     setUpdateBlueprint((prevState) => ({ ...prevState, isLoading: true }));
@@ -338,6 +338,7 @@ const BlueprintSingular = () => {
             title={attributes.title}
             clientTitle={client.title}
             clientRoute={`/clients/${id}/bp`}
+            publicURL={`/blueprint/${blueprintId}`}
             renderActionButton
             renderOptionsButton
             actionsOnClick={() => setOpenModal(true)}
