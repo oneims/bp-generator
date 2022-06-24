@@ -5,7 +5,6 @@ import Main from "@/components/layouts/Main";
 import ContentWrapper from "@/components/parts/ContentWrapper";
 import Drawer from "@/components/parts/Drawer";
 import { useAppContext } from "@/context/AppWrapper";
-import Link from "next/link";
 import Spinner from "@/components/core/Spinner";
 import { useSWRConfig } from "swr";
 import axios from "axios";
@@ -15,7 +14,8 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { InputLF, TextareaLF } from "@/components/core/FormElements";
 import { Dialog, Transition } from "@headlessui/react";
-import { parseISO, format } from "date-fns";
+import { format } from "date-fns";
+import toast, { Toaster } from "react-hot-toast";
 
 import {
   DndContext,
@@ -65,59 +65,19 @@ const BlueprintSingular = () => {
     isLoading: false,
     isError: null,
   });
-  const [updatePage, setUpdatePage] = useState({
+  const [updateOrderIds, setUpdateOrderIds] = useState({
     response: null,
     isLoading: false,
     isError: null,
   });
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      orderId: 1,
-      title: "Dummy Page",
-      status: "Draft",
-    },
-    {
-      id: 2,
-      orderId: 2,
-      title: "Dummy Page 2",
-      status: "Draft",
-    },
-    {
-      id: 3,
-      orderId: 3,
-      title: "Dummy Page 3",
-      status: "Published",
-    },
-    {
-      id: 4,
-      orderId: 4,
-      title: "Dummy Page 4",
-      status: "Draft",
-    },
-    {
-      id: 5,
-      orderId: 5,
-      title: "Dummy Page 5",
-      status: "Draft",
-    },
-    {
-      id: 6,
-      orderId: 6,
-      title: "Dummy Page 6",
-      status: "Draft",
-    },
-  ]);
 
   let attributes, client, pages;
   if (data) {
-    console.log(data);
     attributes = data.data.attributes;
     client = attributes.client.data.attributes;
     pages = attributes.pages.data;
+    pages = pages.sort((a, b) => a.attributes.orderId - b.attributes.orderId);
   }
-
-  // console.log(pages);
 
   const updateBlueprintMeta = (updatedData) => {
     setUpdateBlueprint((prevState) => ({ ...prevState, isLoading: true }));
@@ -214,75 +174,71 @@ const BlueprintSingular = () => {
     })
   );
 
-  // function handleDragEnd(event) {
-  //   const { active, over } = event;
-
-  //   if (active.id !== over.id) {
-  //     setItems((items) => {
-  //       const oldIndex = items.findIndex((x) => x.id === active.id);
-  //       const newIndex = items.findIndex((x) => x.id === over.id);
-  //       return arrayMove(items, oldIndex, newIndex);
-  //     });
-  //     setItems((items) => {
-  //       const updatedItems = items.map((elem, index) => {
-  //         const obj = elem;
-  //         obj.orderId = index + 1;
-  //         return obj;
-  //       });
-  //       return arrayMove(updatedItems);
-  //     });
-  //   }
-  // }
-
   function handleDragEnd(event) {
     const { active, over } = event;
-
-    // const updatePage = (updatedData) => {
-    //   setUpdatePage((prevState) => ({ ...prevState, isLoading: true }));
-    //   const payload = {
-    //     data: {
-    //       title: updatedData.blueprintTitle,
-    //       description: updatedData.blueprintDescription,
-    //     },
-    //   };
-    //   const putPayload = async () => {
-    //     await axios
-    //       .put(`${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}`, payload)
-    //       .then(Sleeper(500))
-    //       .then((res) => {
-    //         mutate(
-    //           `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=pages`,
-    //           (data) => {
-    //             return {
-    //               ...data,
-    //               data: {
-    //                 ...data.data,
-    //                 attributes: {
-    //                   ...data.data.attributes,
-    //                   title: updatedData.blueprintTitle,
-    //                 },
-    //               },
-    //             };
-    //           },
-    //           false
-    //         );
-    //         setUpdateBlueprint((prevState) => ({
-    //           ...prevState,
-    //           response: res.data.data,
-    //           isLoading: false,
-    //         }));
-    //         mutate(
-    //           `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=pages`
-    //         );
-    //         handlers.handleDrawer();
-    //       })
-    //       .catch((err) => {
-    //         console.log(err);
-    //         setUpdateBlueprint((prevState) => ({ ...prevState, isError: true, isLoading: false }));
-    //       });
-    //   };
-    //   putPayload();
-    // };
+    let movedArray;
+    const handleOrderIds = () => {
+      if (movedArray && movedArray.length < 1) return null;
+      setUpdateOrderIds((prevState) => ({ ...prevState, isLoading: true }));
+      let endpoints = movedArray.map((elem) => {
+        return `${process.env.NEXT_PUBLIC_API_URL}/pages/${elem.id}`;
+      });
+      const putPayload = async () => {
+        await axios
+          .all(
+            endpoints.map((elem, index) => {
+              return axios.put(elem, {
+                data: {
+                  orderId: index + 1,
+                },
+              });
+            })
+          )
+          .then(Sleeper(700))
+          .then(
+            axios.spread((...res) => {
+              // mutate(
+              //   `${process.env.NEXT_PUBLIC_API_URL}/blueprints/${blueprintId}?populate=client&populate=pages`,
+              //   (data) => {
+              //     const oldIndex = pages.findIndex((x) => x.id === active.id);
+              //     const newIndex = pages.findIndex((x) => x.id === over.id);
+              //     movedArray = arrayMove(pages, oldIndex, newIndex);
+              //     console.log(movedArray);
+              //     return {
+              //       ...data,
+              //       data: {
+              //         ...data.data,
+              //         attributes: {
+              //           ...data.data.attributes,
+              //           pages: {
+              //             ...data.data.attributes.pages,
+              //             data: movedArray,
+              //           },
+              //         },
+              //       },
+              //     };
+              //   },
+              //   false
+              // );
+              setUpdateOrderIds((prevState) => ({
+                ...prevState,
+                response: res,
+                isLoading: false,
+              }));
+              toast.success("Order updated successfully");
+            })
+            // .catch((err) => {
+            //   console.log(err);
+            //   setUpdateOrderIds((prevState) => ({
+            //     ...prevState,
+            //     isError: true,
+            //     isLoading: false,
+            //   }));
+            // })
+          );
+      };
+      putPayload();
+    };
 
     if (active.id !== over.id) {
       mutate(
@@ -290,8 +246,11 @@ const BlueprintSingular = () => {
         (data) => {
           const oldIndex = pages.findIndex((x) => x.id === active.id);
           const newIndex = pages.findIndex((x) => x.id === over.id);
-          const movedArray = arrayMove(pages, oldIndex, newIndex);
-          console.log(data, oldIndex, newIndex, movedArray);
+          movedArray = arrayMove(pages, oldIndex, newIndex);
+          movedArray.forEach((elem, index) => {
+            elem.attributes.orderId = index + 1;
+          });
+          console.log(`movedArray`, movedArray);
           return {
             ...data,
             data: {
@@ -308,20 +267,7 @@ const BlueprintSingular = () => {
         },
         false
       );
-
-      // setItems((items) => {
-      //   const oldIndex = items.findIndex((x) => x.id === active.id);
-      //   const newIndex = items.findIndex((x) => x.id === over.id);
-      //   return arrayMove(items, oldIndex, newIndex);
-      // });
-      // setItems((items) => {
-      //   const updatedItems = items.map((elem, index) => {
-      //     const obj = elem;
-      //     obj.orderId = index + 1;
-      //     return obj;
-      //   });
-      //   return arrayMove(updatedItems);
-      // });
+      handleOrderIds();
     }
   }
 
@@ -395,11 +341,12 @@ const BlueprintSingular = () => {
                     onDragEnd={handleDragEnd}
                   >
                     <SortableContext items={pages} strategy={verticalListSortingStrategy}>
-                      {pages.map((elem) => (
+                      {pages.map((elem, index) => (
                         <SortableItem
                           key={elem.id}
                           clientId={id}
                           id={elem.id}
+                          index={index}
                           title={elem.attributes?.title}
                           order={elem.attributes?.orderId}
                           status={elem.attributes?.status}
@@ -559,6 +506,24 @@ const BlueprintSingular = () => {
           </div>
         </Dialog>
       </Transition.Root>
+      {updateOrderIds.isLoading && (
+        <>
+          <div className="COMPONENT__tint COMPONENT__tint-active backdrop-filter backdrop-blur-sm tint w-full h-full fixed inset-0 bg-gray-700 bg-opacity-80 CUSTOM__z-index-high">
+            <div
+              className="absolute top-1/2 left-1/2"
+              style={{ transform: `translate(-50%, -50%)` }}
+            >
+              <div>
+                <span className="text-white text-center block mb-4">
+                  Updating pages order, this should be quick...
+                </span>
+                <Spinner white />
+              </div>
+            </div>
+          </div>
+        </>
+      )}
+      <Toaster />
     </>
   );
 };

@@ -16,6 +16,7 @@ const PublicBluePrintIndex = ({ data }) => {
   }
 
   pages = pages.filter((elem, index) => pages[index].attributes.status === "published");
+  pages = pages.sort((a, b) => a.attributes.orderId - b.attributes.orderId);
 
   return (
     <>
