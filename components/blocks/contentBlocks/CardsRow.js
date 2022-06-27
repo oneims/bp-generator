@@ -173,7 +173,7 @@ const repeaterFields = (id) => {
   return meta;
 };
 
-const defaultRepeaterLength = 3;
+let defaultRepeaterLength = 3;
 
 const defaultRepeaterData = () => {
   let arr = [];
@@ -194,6 +194,12 @@ const CardsRowSettings = () => {
     description: node.data.props.description,
     repeater: node.data.props.repeater,
   }));
+
+  if (repeater.length > 0) {
+    const repeaterCopy = [...repeater];
+    const highestId = repeaterCopy.sort((a, b) => b.id - a.id)[0]?.id;
+    defaultRepeaterLength = highestId;
+  }
 
   const [repeaterEditingMeta, setRepeaterEditingMeta] = useState({
     editing: false,

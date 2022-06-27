@@ -227,10 +227,16 @@
       tr {
         background-color: #fff;
         transition: background-color 150ms ease-out 0s;
-        &:not(.loader-wrapper) {
+        &:not(.loader-wrapper),
+        &:not(.no-pointer-cursor) {
           &:hover {
             background-color: #f5f8fa;
             cursor: pointer;
+          }
+        }
+        &.auto-cursor {
+          &:hover {
+            cursor: auto;
           }
         }
       }
