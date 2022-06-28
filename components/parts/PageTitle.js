@@ -78,7 +78,9 @@ const PageTitle = (props) => {
                   <button
                     onClick={props.actionsOnClick}
                     type="button"
-                    className="px-6 py-2 mt-4 w-max rounded border border-theme-border bg-theme-panel-dark text-theme-text-light text-sm hover:bg-theme-panel-hover"
+                    className={`px-6 py-2  ${
+                      props.clientTitle && `mt-4`
+                    } w-max rounded border border-theme-border bg-theme-panel-dark text-theme-text-light text-sm hover:bg-theme-panel-hover`}
                   >
                     Add New
                   </button>

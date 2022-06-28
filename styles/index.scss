@@ -162,6 +162,49 @@
 }
 
 .COMPONENT {
+  &__badge {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 10px;
+    -webkit-font-smoothing: antialiased;
+    text-align: center;
+    text-transform: uppercase;
+    vertical-align: inherit;
+    hyphens: manual;
+    border-radius: 3px;
+    line-height: 20px;
+    background-color: rgb(234, 240, 246);
+    color: rgb(51, 71, 91);
+    padding: 3px 10px;
+    width: max-content;
+  }
+  &__card {
+    position: relative;
+    background-color: #fff;
+    border-radius: 8px;
+    transition: 0.2s ease;
+    cursor: pointer;
+    box-shadow: rgb(45 62 80 / 12%) 0px 1px 5px 0px;
+    &__body {
+      padding: 1.5rem 1rem;
+    }
+    &__image-wrapper {
+      img {
+        width: 100%;
+        height: auto;
+        border-top-right-radius: 8px;
+        border-top-left-radius: 8px;
+        object-fit: cover;
+        max-height: 300px;
+        @media (min-width: 768px) {
+          height: 200px;
+        }
+        @media (min-width: 992px) {
+          height: 250px;
+        }
+      }
+    }
+  }
   &__editor {
     > div {
       &:first-child {
