@@ -203,6 +203,26 @@
   &__border {
     border: 2px solid $theme-border-color !important;
   }
+  &__underlined-text {
+    position: relative;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    &:before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      max-width: 120px;
+      transform: translateX(-50%);
+      height: 2px;
+      left: 50%;
+    }
+    &-color-primary {
+      &:before {
+        background-color: $theme_primary-color;
+      }
+    }
+  }
   &__hide-after-992 {
     display: block;
     @media (min-width: 992px) {
@@ -240,11 +260,17 @@
     span {
       color: $white !important;
     }
+    a {
+      color: $white !important;
+      text-decoration: underline;
+    }
   }
   &__inherited-anchor {
     color: inherit !important;
+    text-decoration: unset;
     &:hover {
       color: inherit !important;
+      text-decoration: unset;
     }
   }
   &__full-cover-anchor {
@@ -270,6 +296,9 @@
   }
   &__overflow-hidden {
     overflow: hidden !important;
+  }
+  &__subtitle-text {
+    font-size: 1.125rem;
   }
   // New Theme items here
 }

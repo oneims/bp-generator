@@ -5,6 +5,7 @@ import Main from "@/components/layouts/Main";
 import ContentWrapper from "@/components/parts/ContentWrapper";
 import { SSR__BlueprintByIdGET } from "@/lib/Fetcher";
 import { format } from "date-fns";
+import { NextSeo } from "next-seo";
 
 const PublicBluePrintIndex = ({ data }) => {
   let attributes, client, pages, blueprintId;
@@ -20,6 +21,12 @@ const PublicBluePrintIndex = ({ data }) => {
 
   return (
     <>
+      <NextSeo
+        title={
+          data ? `${attributes.title} | Design Lab | OneIMS` : `Blueprint | Design Lab | OneIMS`
+        }
+        description={``}
+      />
       <DashboardHeader />
       <Main>
         <PageTitle

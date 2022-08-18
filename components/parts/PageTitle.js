@@ -98,7 +98,15 @@ const PageTitle = (props) => {
             {props.clientTitle && props.clientTitle === "Loading" ? (
               <span className="COMPONENT__skeleton-box mt-2 h-5 w-44 inline-block rounded"></span>
             ) : (
-              <span>{props.clientTitle}</span>
+              <>
+                {props.clientRoute ? (
+                  <Link href={props.clientRoute}>
+                    <span className="hover:underline cursor-pointer">{props.clientTitle}</span>
+                  </Link>
+                ) : (
+                  <span>{props.clientTitle}</span>
+                )}
+              </>
             )}
           </div>
         )}

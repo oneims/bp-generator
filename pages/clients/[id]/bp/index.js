@@ -5,19 +5,15 @@ import Main from "@/components/layouts/Main";
 import ContentWrapper from "@/components/parts/ContentWrapper";
 import Link from "next/link";
 import Spinner from "@/components/core/Spinner";
-
 import axios from "axios";
 import { Sleeper } from "@/lib/Helpers";
-
 import { InputLF } from "@/components/core/FormElements";
 import { Dialog, Transition } from "@headlessui/react";
-
 import { useForm } from "react-hook-form";
-
 import { useBlueprintsByClientGET } from "@/lib/Fetcher";
 import { useRouter } from "next/router";
-
 import { parseISO, format } from "date-fns";
+import { NextSeo } from "next-seo";
 
 const BlueprintsIndex = () => {
   const router = useRouter();
@@ -78,6 +74,14 @@ const BlueprintsIndex = () => {
   }, []);
   return (
     <>
+      <NextSeo
+        title={
+          data
+            ? `${data.data.attributes.title} Blueprints | Design Lab | OneIMS`
+            : `All Blueprints | Design Lab | OneIMS`
+        }
+        description={``}
+      />
       <DashboardHeader />
       <Main>
         {data && (
@@ -130,15 +134,43 @@ const BlueprintsIndex = () => {
                     );
                     const createdAtTime = format(new Date(elem.attributes?.createdAt), "hh:mm a");
                     return (
-                      <Link key={elem.id} href={`${router.asPath}/${elem.id}`}>
-                        <tr>
-                          <td>{elem.attributes.title}</td>
-                          <td>
-                            {createdAtDate}
-                            <span className="text-xs block">{createdAtTime}</span>
-                          </td>
-                        </tr>
-                      </Link>
+                      <tr key={elem.id} className="auto-cursor">
+                        <td>
+                          <div className="flex items-center justify-between">
+                            <div className="column">
+                              <span>{elem.attributes.title}</span>
+                            </div>
+                            <div className="column">
+                              <div className="flex justify-between items-center -m-2">
+                                <div className="column px-2">
+                                  <Link href={`${router.asPath}/${elem.id}`}>
+                                    <button
+                                      type="button"
+                                      className="cursor-pointer px-6 py-2 w-max rounded border border-theme-border bg-theme-panel-dark text-theme-text-light text-xs hover:bg-theme-panel-hover"
+                                    >
+                                      Edit
+                                    </button>
+                                  </Link>
+                                </div>
+                                <div className="column px-2">
+                                  <Link href={`${router.asPath}/${elem.id}/clone`}>
+                                    <button
+                                      type="button"
+                                      className="cursor-pointer px-6 py-2 w-max rounded border border-theme-border bg-theme-panel-dark text-theme-text-light text-xs hover:bg-theme-panel-hover"
+                                    >
+                                      Clone to a different client
+                                    </button>
+                                  </Link>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          {createdAtDate}
+                          <span className="text-xs block">{createdAtTime}</span>
+                        </td>
+                      </tr>
                     );
                   })}
                 </tbody>

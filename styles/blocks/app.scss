@@ -59,5 +59,71 @@
   }
   a {
     color: $theme_primary-color;
+    &:hover {
+      color: $theme_primary-color;
+      text-decoration: underline;
+    }
+  }
+}
+
+// Keyframe Animations
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35px;
+  }
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124px;
+  }
+}
+
+// @keyframes color {
+//   100%,
+//   0% {
+//     stroke: $theme_primary-color;
+//   }
+//   40% {
+//     stroke: $theme_primary-color;
+//   }
+//   66% {
+//     stroke: $theme_primary-color;
+//   }
+//   80%,
+//   90% {
+//     stroke: $theme_primary-color;
+//   }
+// }
+
+@keyframes colorWhite {
+  100%,
+  0% {
+    stroke: #fff;
+  }
+  40% {
+    stroke: #fff;
+  }
+  66% {
+    stroke: #fff;
+  }
+  80%,
+  90% {
+    stroke: #fff;
+  }
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
   }
 }
