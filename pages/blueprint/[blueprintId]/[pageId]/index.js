@@ -55,7 +55,7 @@ const PublicBluePrintPage = ({ archiveData, singularData }) => {
           <div className="viewport">
             <div
               style={{ width: "16.5rem" }}
-              className="aside hidden lg:block bg-white border-r-2 border-r-theme-panel fixed z-2 right-auto top-0 pb-10 overflow-y-auto h-screen"
+              className="aside hidden lg:block bg-white border-r-2 border-r-theme-panel fixed z-10 right-auto top-0 pb-10 overflow-y-auto h-screen"
             >
               <div className="absolute inset-0 w-full h-full">
                 <img src="/docs@30.beeb08605f12f699c5abc3814763b65e.png" alt="" />
