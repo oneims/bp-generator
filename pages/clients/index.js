@@ -7,64 +7,75 @@ import Spinner from "@/components/core/Spinner";
 import { useClientsGET } from "@/lib/Fetcher";
 import Link from "next/link";
 import { NextSeo } from "next-seo";
+import { useAppContext } from "@/context/AppWrapper";
 
 const ClientsIndex = () => {
+  const { user } = useAppContext();
+  if (!user.isLoggedIn && !user.isLoading) {
+    if (typeof window !== "undefined") {
+      location.replace("/login");
+    }
+  }
   const { data, isLoading, isError } = useClientsGET();
 
   return (
     <>
-      <NextSeo title={`All Clients | Design Lab | OneIMS`} description={``} />
-      <DashboardHeader />
-      <Main>
-        <PageTitle title=" All Clients" />
-        <ContentWrapper>
-          <div className="overflow-x-auto border border-theme-border">
-            <table className="COMPONENT__table table w-full text-theme-text text-sm">
-              <thead className="bg-theme-panel border-b border-theme-border">
-                <tr>
-                  <th>Name</th>
-                  <th></th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {isLoading && (
-                  <>
-                    <tr className="loader-wrapper">
-                      <td colSpan="12">
-                        <div className="min-h-max w-full flex flex-col justify-center items-center">
-                          <Spinner />
-                        </div>
-                      </td>
+      {user.isLoggedIn && !user.isLoading && (
+        <>
+          <NextSeo title={`All Clients | Design Lab | OneIMS`} description={``} />
+          <DashboardHeader />
+          <Main>
+            <PageTitle title=" All Clients" />
+            <ContentWrapper>
+              <div className="overflow-x-auto border border-theme-border">
+                <table className="COMPONENT__table table w-full text-theme-text text-sm">
+                  <thead className="bg-theme-panel border-b border-theme-border">
+                    <tr>
+                      <th>Name</th>
+                      <th></th>
+                      <th></th>
                     </tr>
-                  </>
-                )}
-                {data &&
-                  data.data.map((elem) => {
-                    const { id } = elem;
-                    const { title } = elem.attributes;
-                    return (
-                      <Link key={id} href={`/clients/${id}`}>
-                        <tr>
-                          <td>{title}</td>
-                          <td></td>
-                          <td className="text-center">
-                            <button
-                              type="button"
-                              className="px-6 py-2 w-max rounded border border-theme-border bg-theme-panel-dark text-theme-text-light text-xs hover:bg-theme-panel-hover"
-                            >
-                              View
-                            </button>
+                  </thead>
+                  <tbody>
+                    {isLoading && (
+                      <>
+                        <tr className="loader-wrapper">
+                          <td colSpan="12">
+                            <div className="min-h-max w-full flex flex-col justify-center items-center">
+                              <Spinner />
+                            </div>
                           </td>
                         </tr>
-                      </Link>
-                    );
-                  })}
-              </tbody>
-            </table>
-          </div>
-        </ContentWrapper>
-      </Main>
+                      </>
+                    )}
+                    {data &&
+                      data.data.map((elem) => {
+                        const { id } = elem;
+                        const { title } = elem.attributes;
+                        return (
+                          <Link key={id} href={`/clients/${id}`}>
+                            <tr>
+                              <td>{title}</td>
+                              <td></td>
+                              <td className="text-center">
+                                <button
+                                  type="button"
+                                  className="px-6 py-2 w-max rounded border border-theme-border bg-theme-panel-dark text-theme-text-light text-xs hover:bg-theme-panel-hover"
+                                >
+                                  View
+                                </button>
+                              </td>
+                            </tr>
+                          </Link>
+                        );
+                      })}
+                  </tbody>
+                </table>
+              </div>
+            </ContentWrapper>
+          </Main>
+        </>
+      )}
     </>
   );
 };

@@ -8,50 +8,63 @@ import Spinner from "@/components/core/Spinner";
 import { useClientGET } from "@/lib/Fetcher";
 import { useRouter } from "next/router";
 import { NextSeo } from "next-seo";
+import { useAppContext } from "@/context/AppWrapper";
 
 const ClientSingular = () => {
+  const { user } = useAppContext();
+  if (!user.isLoggedIn && !user.isLoading) {
+    if (typeof window !== "undefined") {
+      location.replace("/login");
+    }
+  }
   const router = useRouter();
   const { id } = router.query;
   const { data, isLoading, isError } = useClientGET(id);
   return (
     <>
-      <NextSeo
-        title={
-          data
-            ? `${data?.data?.attributes?.title} | Design Lab | OneIMS`
-            : `Client Overview | Design Lab | OneIMS`
-        }
-        description={``}
-      />
-      <DashboardHeader logoCentered />
-      <Main>
-        {isLoading && <PageTitle title="Loading" className="text-center" />}
-        {data && <PageTitle title={data.data.attributes.title} className="text-center" />}
-        {isLoading && (
-          <div className="flex justify-center items-center flex-col]" style={{ height: "400px" }}>
-            <Spinner />
-          </div>
-        )}
-        {data && (
-          <ContentWrapper className="max-w-lg pt-9">
-            <Link href={`${router.asPath}/bp`} passHref>
-              <div className="cursor-pointer card shadow-lg mb-5 text-theme-text border-2 border-theme-border">
-                <div className="card-body">
-                  <h2 className="card-title">Blueprint Designer</h2>
-                  <p>
-                    Create marketing blueprints and design prototypes from a drag and drop editor
-                  </p>
-                  <button
-                    type="button"
-                    className="px-6 py-2 mt-4 w-max rounded border border-theme-border bg-theme-panel-dark text-theme-text-light text-sm hover:bg-theme-panel-hover"
-                  >
-                    Access
-                  </button>
-                </div>
+      {user.isLoggedIn && !user.isLoading && (
+        <>
+          <NextSeo
+            title={
+              data
+                ? `${data?.data?.attributes?.title} | Design Lab | OneIMS`
+                : `Client Overview | Design Lab | OneIMS`
+            }
+            description={``}
+          />
+          <DashboardHeader logoCentered />
+          <Main>
+            {isLoading && <PageTitle title="Loading" className="text-center" />}
+            {data && <PageTitle title={data.data.attributes.title} className="text-center" />}
+            {isLoading && (
+              <div
+                className="flex justify-center items-center flex-col]"
+                style={{ height: "400px" }}
+              >
+                <Spinner />
               </div>
-            </Link>
+            )}
+            {data && (
+              <ContentWrapper className="max-w-lg pt-9">
+                <Link href={`${router.asPath}/bp`} passHref>
+                  <div className="cursor-pointer card shadow-lg mb-5 text-theme-text border-2 border-theme-border">
+                    <div className="card-body">
+                      <h2 className="card-title">Blueprint Designer</h2>
+                      <p>
+                        Create marketing blueprints and design prototypes from a drag and drop
+                        editor
+                      </p>
+                      <button
+                        type="button"
+                        className="px-6 py-2 mt-4 w-max rounded border border-theme-border bg-theme-panel-dark text-theme-text-light text-sm hover:bg-theme-panel-hover"
+                      >
+                        Access
+                      </button>
+                    </div>
+                  </div>
+                </Link>
 
-            {/* <div className="card shadow-lg text-theme-text border-2 border-theme-border">
+                {/* <div className="card shadow-lg text-theme-text border-2 border-theme-border">
               <div className="card-body">
                 <h2 className="card-title">Prototype Designer</h2>
                 <p>Rerum reiciendis beatae tenetur excepturi</p>
@@ -63,9 +76,11 @@ const ClientSingular = () => {
                 </button>
               </div>
             </div> */}
-          </ContentWrapper>
-        )}
-      </Main>
+              </ContentWrapper>
+            )}
+          </Main>
+        </>
+      )}
     </>
   );
 };

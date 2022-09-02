@@ -13,11 +13,13 @@ const Button = (props) => {
   }
   return (
     <button
-      type="button"
+      type={props.type ? props.type : "button"}
       onClick={props.onClick}
       className={`px-6 py-2 rounded inline-flex justify-center items-center ${classList} ${
         props.className
-      } ${props.loading ? `opacity-50 pointer-events-none` : ``}`}
+      } ${props.loading ? `opacity-50 pointer-events-none` : ``}  ${
+        props.disabled ? `opacity-40 pointer-events-none` : ``
+      }`}
     >
       {props.loading && <Spinner button white xs={props.xs} />}
       {props.children}
